@@ -1,8 +1,40 @@
 import React, { Component } from 'react';
 import {Input, Label, Col, Form, FormGroup, Button} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
 
 class Login extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        email : "",
+        password : "",
+      };
+    }
+
+    onHandleEmail = (e) => {
+      this.setState({email : e.target.value});
+    };
+
+    onHandlePassword = (e) => {
+      this.setState({password : e.target.value});
+    }
+
+    formSubmit = (e) => {
+      e.preventDefault();
+      const data = {
+        email: this.state.email,
+        password: this.state.password,
+      };
+      axios.post('http://localhost:3001/login', {"email": data.email, "password": data.password})
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    }
     render() { 
         return (
         <div className="container-fluid form-cont">
@@ -23,6 +55,7 @@ class Login extends React.Component {
                     id="email"
                     name="email"
                     placeholder="Email"
+                    onChange={this.onHandleEmail}
                   ></Input>
                 </FormGroup>
                 <hr />
@@ -33,6 +66,7 @@ class Login extends React.Component {
                     id="password"
                     name="password"
                     placeholder="Password"
+                    onChange={this.onHandlePassword}
                   ></Input>
                 </FormGroup>
                 <hr />
@@ -43,6 +77,7 @@ class Login extends React.Component {
                       type="submit"
                       className="btn btn-Normal"
                       color="btn btn-primary"
+                      onClick={this.formSubmit}
                     >
                       Login
                     </Button>

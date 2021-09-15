@@ -1,7 +1,10 @@
 const express = require("express");
+const cors = require('cors');
 
 const app = express();
-
+app.use(cors({
+    origin: '*'
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -18,8 +21,8 @@ const userCreds = {
 
 const serviceProvider = "Uber Eats";
 
-app.get("/", (req, res) => {
-    res.sendFile("views/index.html", {root : __dirname});
+app.post("/login", (req, res) => {
+    res.send("Received Successfully");
     console.log(req.body);
 });
 
