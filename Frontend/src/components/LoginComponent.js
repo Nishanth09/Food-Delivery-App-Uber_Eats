@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {Input, Label, Col, Form, FormGroup, Button} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
+import { Redirect } from 'react-router';
 
 class Login extends React.Component {
     constructor(props) {
@@ -9,6 +10,7 @@ class Login extends React.Component {
       this.state = {
         email : "",
         password : "",
+        flag : false
       };
     }
 
@@ -29,6 +31,11 @@ class Login extends React.Component {
       axios.post('http://localhost:3001/login', {"email": data.email, "password": data.password})
       .then((response) => {
         console.log(response);
+        if (response.status === 200) {
+          console.log("here");
+          this.setState({flag : true});
+          console.log(this.state.flag);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -36,12 +43,16 @@ class Login extends React.Component {
 
     }
     render() { 
+      let re = null;
+      if (this.state.flag) {
+        re = <Redirect to = "/landingpage"/>;
+      }
         return (
         <div className="container-fluid form-cont">
         <div className="flex-container">
           <div className="row">
+            {re}
             <div className="col col-sm-6 offset-sm-3">
-              <h3>Uber Eats</h3>
               <br />
               <h4>Welcome back</h4>
               <Form className="form-stacked">
@@ -58,7 +69,7 @@ class Login extends React.Component {
                     onChange={this.onHandleEmail}
                   ></Input>
                 </FormGroup>
-                <hr />
+                <br />
                 <FormGroup>
                   <Label htmlFor="password">Password</Label>
                   <Input
@@ -76,7 +87,7 @@ class Login extends React.Component {
                       data-testid="btn-submit"
                       type="submit"
                       className="btn btn-Normal"
-                      color="btn btn-primary"
+                      color="btn btn-success"
                       onClick={this.formSubmit}
                     >
                       Login
