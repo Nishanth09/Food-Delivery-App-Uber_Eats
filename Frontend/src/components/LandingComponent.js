@@ -1,30 +1,217 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {Link} from 'react-router-dom';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
+import FormControl from '@mui/material/FormControl';
+import RadioGroup from '@mui/material/RadioGroup';
+//import { MDBContainer, MDBRow, MDBRangeInput, MDBCard, MDBCol, MDBCardBody, MDBCardTitle, MDBCardImage, MDBIcon } from "mdbreact";
 
 class Landing extends React.Component {
+  state = {
+     sortDropDownFlag : false,
+     priceDropDownFlag : false,
+     deliveryDropDownFlag : false,
+     dietaryDropDownFlag : false
+  };
+  toggleSortDropDown = (e) => {
+    this.setState((prev) => ({sortDropDownFlag : !prev.sortDropDownFlag}))
+  }
+  togglePriceDropDown = (e) => {
+    this.setState((prev) => ({priceDropDownFlag : !prev.priceDropDownFlag}))
+  }
+  toggleDeliveryDropDown = (e) => {
+    this.setState((prev) => ({deliveryDropDownFlag : !prev.deliveryDropDownFlag}))
+  }
+  toggleDietaryDropDown = (e) => {
+    this.setState((prev) => ({dietaryDropDownFlag : !prev.dietaryDropDownFlag}))
+  }
     render() { 
-        return (
-            <div className = "container">
-                <br />
-                <br />
-                <br />
-                <br />
+      let sortDropDownResult = null;
+      let priceDropDownResult = null;
+      let deliveryDropDownResult = null;
+      let dietaryDropDownResult = null;
+      if (this.state.sortDropDownFlag) {
+        sortDropDownResult = (
+          <div>
+            <FormControl component="fieldset">
+            <RadioGroup
+              defaultValue="picked"
+              name="radio-buttons-group">
+              <FormControlLabel value="picked" control={<Radio size="small" />} label="Picked for you(default)" />
+              <FormControlLabel value="popular" control={<Radio size="small" />} label="Most popular" />
+              <FormControlLabel value="rating" control={<Radio size="small" />} label="Rating" />
+              <FormControlLabel value="delivery" control={<Radio size="small" />} label="Delivery time" />
+              </RadioGroup>
+              </FormControl>
+            </div>);
+      }
+
+      if (this.state.priceDropDownFlag) {
+        priceDropDownResult = (
+          <div style={{marginTop : "10px"}}>
+            <button className="btn btn-light btn-outline-secondary">$</button>{' '}
+            <button className="btn btn-light btn-outline-secondary">$$</button>{' '}
+            <button className="btn btn-light btn-outline-secondary">$$$</button>{' '}
+            <button className="btn btn-light btn-outline-secondary">$$$$</button>{' '}
+            </div>);
+      }
+
+      if (this.state.deliveryDropDownFlag) {
+        deliveryDropDownResult = (
+          <div> 
+            <input type="range" min="0" max="8" step="2" id="feerange" list="prices" />
+            <datalist id="prices">
+            <option value="0"></option>
+            <option value="2"></option>
+            <option value="4"></option>
+            <option value="6"></option>
+            <option value="8"></option>
+  </datalist>
+            </div>);
+      }
+
+      if (this.state.dietaryDropDownFlag) {
+        dietaryDropDownResult = (
+          <div style={{marginTop : "10px"}}>
             <div className="row">
-  <div className="col-md-8">
-      <h3><strong>Order food to your door</strong></h3>
-  </div>
-</div>
-<br />
-<div className="row">
-  <div className="col-md-6">
-  <div class="input-group mb-3">
-  <input type="text" class="form-control" placeholder="Enter delivery address" aria-label="Recipient's username" aria-describedby="basic-addon2" />
-</div>
-  </div>
-  <div className="col-md">
-  <button type="button" class="btn btn-dark">Find Food</button>
-  </div>
-</div>
-</div>
+              <div className="col-sm-5">
+              <button className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px"}}>Vegetarian</button>
+                </div>
+                <div className="col-sm-5 offset-sm-2">
+                <button className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px"}}>Vegan</button>
+                </div>
+              </div>
+              <div className="row" style={{marginTop:"10px"}}>
+              <div className="col-sm-5">
+              <button className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px"}}>Halal</button>
+                </div>
+                <div className="col-sm-6 offset-sm-1">
+                <button className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px", whiteSpace:"nowrap"}}>Gluten-free</button>
+                </div>
+              </div>
+            </div>);
+      }
+      let renderComponent = null;
+      renderComponent = <div className = "container">
+      <br />
+      <br />
+      <br />
+      <br />
+      <div className="row">
+          <div className="col-md-8">
+          <h3><strong>Order food to your door</strong></h3>
+          </div>
+          </div>
+          <br />
+          <div className="row">
+          <div className="col-md-6">
+          <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Enter delivery address" />
+          </div>
+          </div>
+          <div className="col-md">
+          <button type="button" class="btn btn-dark">Find Food</button>
+          </div>
+          </div>
+      </div>
+      return (
+          <div>
+            <div className="container">
+            <div className="row" style={{marginTop : "50px"}}>
+            <div className="col-sm-1">
+              <Link to ="/landingpage">
+                <img src={"./filters/deals.png"} width={75} height={75}></img>
+              </Link>
+              </div>
+              <div className="col-sm-1">
+              <Link to ="/landingpage">
+              <img src={"./filters/grocery.png"} width={75} height={75}></img>
+              </Link>
+              </div>
+              <div className="col-sm-1">
+              <Link to ="/landingpage">
+              <img src={"./filters/convenience.png"} width={75} height={75}></img>
+              </Link>
+              </div>
+              <div className="col-sm-1">
+              <Link to ="/landingpage">
+              <img src={"./filters/alcohol.png"} width={75} height={75}></img>
+              </Link>
+              </div>
+              <div className="col-sm-1">
+              <Link to ="/landingpage">
+              <img src={"./filters/pharmacy.jpg"} width={75} height={75}></img>
+              </Link>
+              </div>
+              <div className="col-sm-1">
+              <Link to ="/landingpage">
+              <img src={"./filters/flowers.jpg"} width={75} height={75}></img>
+              </Link>
+              </div>
+              <div className="col-sm-1">
+              <Link to ="/landingpage">
+              <img src={"./filters/top_eats.png"} width={75} height={75}></img>
+              </Link>
+              </div>
+              <div className="col-sm-1">
+              <Link to ="/landingpage">
+              <img src={"./filters/pizza.png"} width={75} height={75}></img>
+              </Link>
+              </div>
+              <div className="col-sm-1">
+              <Link to ="/landingpage">
+              <img src={"./filters/chinese.png"} width={75} height={75}></img>
+              </Link>
+              </div>
+              <div className="col-sm-1">
+              <Link to ="/landingpage">
+              <img src={"./filters/sushi.png"} width={75} height={75}></img>
+              </Link>
+              </div>
+              <div className="col-sm-1">
+              <Link to ="/landingpage">
+              <img src={"./filters/burger.png"} width={75} height={75}></img>
+              </Link>
+              </div>
+              <div className="col-sm-1">
+              <Link to ="/landingpage">
+              <img src={"./filters/indian.png"} width={75} height={75}></img>
+              </Link>
+              </div>
+              <hr />
+              </div>
+              <div className="row">
+                <div className="col-sm-3">
+                  <h3><strong>All Stores</strong></h3>
+                  <div className="row">
+                  <button className="btn dropdown-toggle" style={{backgroundColor:"transparent", textAlign : "left"}} onClick={this.toggleSortDropDown}>
+                    Sort
+                   </button>
+                   {sortDropDownResult}
+                    </div>
+                    <div className="row">
+                   <button className="btn dropdown-toggle" style={{backgroundColor:"transparent", textAlign : "left"}} onClick={this.togglePriceDropDown}>
+                    Price range
+                   </button>
+                   {priceDropDownResult}
+                    </div>
+                    <div className="row">
+                    <button className="btn dropdown-toggle" style={{backgroundColor:"transparent", textAlign : "left"}} onClick={this.toggleDeliveryDropDown}>
+                   Max delivery fee
+                   </button>
+                   {deliveryDropDownResult}
+                    </div>
+                    <div className="row">
+                    <button className="btn dropdown-toggle" style={{backgroundColor:"transparent", textAlign : "left"}} onClick={this.toggleDietaryDropDown}>
+                    Dietary
+                   </button>
+                   {dietaryDropDownResult}
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
         );
     }
 }
