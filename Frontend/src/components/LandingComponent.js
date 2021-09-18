@@ -123,61 +123,73 @@ class Landing extends React.Component {
               <Link to ="/landingpage">
                 <img src={"./filters/deals.png"} width={75} height={75}></img>
               </Link>
+              <label style={{marginLeft:"15px"}}>Deals</label>
               </div>
               <div className="col-sm-1">
               <Link to ="/landingpage">
               <img src={"./filters/grocery.png"} width={75} height={75}></img>
               </Link>
+              <label style={{marginLeft:"5px"}}>Grocery</label>
               </div>
               <div className="col-sm-1">
               <Link to ="/landingpage">
               <img src={"./filters/convenience.png"} width={75} height={75}></img>
               </Link>
+              <label style={{marginRight:"15px"}}>Convenience</label>
               </div>
               <div className="col-sm-1">
               <Link to ="/landingpage">
               <img src={"./filters/alcohol.png"} width={75} height={75}></img>
               </Link>
+              <label style={{marginLeft:"20px"}}>Alcohol</label>
               </div>
               <div className="col-sm-1">
               <Link to ="/landingpage">
               <img src={"./filters/pharmacy.jpg"} width={75} height={75}></img>
               </Link>
+              <label style={{marginRight:"10px", marginLeft:"5px"}}>Pharmacy</label>
               </div>
               <div className="col-sm-1">
               <Link to ="/landingpage">
               <img src={"./filters/flowers.jpg"} width={75} height={75}></img>
               </Link>
+              <label style={{marginLeft:"15px"}}>Flowers</label>
               </div>
               <div className="col-sm-1">
               <Link to ="/landingpage">
               <img src={"./filters/top_eats.png"} width={75} height={75}></img>
               </Link>
+              <label style={{marginLeft:"25px"}}>Top eats</label>
               </div>
               <div className="col-sm-1">
               <Link to ="/landingpage">
               <img src={"./filters/pizza.png"} width={75} height={75}></img>
               </Link>
+              <label style={{marginLeft:"20px"}}>Pizza</label>
               </div>
               <div className="col-sm-1">
               <Link to ="/landingpage">
               <img src={"./filters/chinese.png"} width={75} height={75}></img>
               </Link>
+              <label style={{marginLeft:"15px"}}>Chinese</label>
               </div>
               <div className="col-sm-1">
               <Link to ="/landingpage">
               <img src={"./filters/sushi.png"} width={75} height={75}></img>
               </Link>
+              <label style={{marginLeft:"20px"}}>Sushi</label>
               </div>
               <div className="col-sm-1">
               <Link to ="/landingpage">
               <img src={"./filters/burger.png"} width={75} height={75}></img>
               </Link>
+              <label style={{marginLeft:"15px"}}>Burgers</label>
               </div>
               <div className="col-sm-1">
               <Link to ="/landingpage">
               <img src={"./filters/indian.png"} width={75} height={75}></img>
               </Link>
+              <label style={{marginLeft:"15px"}}>Indian</label>
               </div>
               <hr />
               </div>
@@ -209,6 +221,26 @@ class Landing extends React.Component {
                    {dietaryDropDownResult}
                     </div>
                   </div>
+                  <div className="col-sm-9">
+                    <div className="row">
+                      <div className="col-sm-3">
+                      <img src={"./restaurants/mcdonalds.jpeg"} width={160} height={150}></img>
+                      <label style={{width:"160px"}}><strong>McDonald's Milpitas</strong></label>
+                        </div>
+                        <div className="col-sm-3">
+                        <img src={"./restaurants/jack_in_the_box.jpeg"} width={160} height={150}></img>
+                        <label style={{width:"160px"}}><strong>Jack in the box</strong></label>                       
+                        </div>
+                        <div className="col-sm-3">
+                        <img src={"./restaurants/tacobell.jpeg"} width={160} height={150}></img>
+                        <label style={{width:"160px"}}><strong>Taco Bell</strong></label>
+                        </div>
+                        <div className="col-sm-3">
+                        <img src={"./restaurants/guilin_noodles.jpeg"} width={160} height={150}></img>
+                        <label style={{width:"160px"}}><strong>Classic Guilin Rice Noodles</strong></label>
+                        </div>
+                      </div>
+                    </div>
                 </div>
             </div>
           </div>
