@@ -117,7 +117,7 @@ class Profile extends React.Component {
     return (
       <div>
         {redirectVar}
-        <div className="container" style={{ marginLeft: "250px", marginTop: "50px" }}>
+        <div className="container" style={{ marginLeft: "650px", marginTop: "50px" }}>
             <div className="row">
                 <h2>Hello, Nishanth</h2>
                 <div className="col col-sm-3">
@@ -201,14 +201,9 @@ class Profile extends React.Component {
   <div className="row">
 <div className="col-3 offset-2">
     <br />
-<button type="submit" className="btn btn-success">Update</button>
+<button type="submit" className="btn btn-success" style={{marginLeft:"50px"}}>Update</button>
 <br />
 </div>
-  </div>
-  <div className="row">
-      -
-      <br />
-<hr />
   </div>
 </div>
       </div>

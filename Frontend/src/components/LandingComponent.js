@@ -5,6 +5,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import FormControl from '@mui/material/FormControl';
 import RadioGroup from '@mui/material/RadioGroup';
+import Register from './RegisterComponent';
+import { Redirect } from 'react-router';
 //import { MDBContainer, MDBRow, MDBRangeInput, MDBCard, MDBCol, MDBCardBody, MDBCardTitle, MDBCardImage, MDBIcon } from "mdbreact";
 
 class Landing extends React.Component {
@@ -12,7 +14,8 @@ class Landing extends React.Component {
      sortDropDownFlag : false,
      priceDropDownFlag : false,
      deliveryDropDownFlag : false,
-     dietaryDropDownFlag : false
+     dietaryDropDownFlag : false,
+     flag : false
   };
   toggleSortDropDown = (e) => {
     this.setState((prev) => ({sortDropDownFlag : !prev.sortDropDownFlag}))
@@ -26,11 +29,19 @@ class Landing extends React.Component {
   toggleDietaryDropDown = (e) => {
     this.setState((prev) => ({dietaryDropDownFlag : !prev.dietaryDropDownFlag}))
   }
+  handleRestaurantPage = (e) => {
+    this.setState({flag : true});
+    console.log("-----", this.state.flag);
+  }
     render() { 
       let sortDropDownResult = null;
       let priceDropDownResult = null;
       let deliveryDropDownResult = null;
       let dietaryDropDownResult = null;
+      let redirectPage = null;
+      if (this.state.flag) {
+        redirectPage = <Redirect to="/restaurantpage" />
+      }
       if (this.state.sortDropDownFlag) {
         sortDropDownResult = (
           <div>
@@ -118,6 +129,7 @@ class Landing extends React.Component {
       return (
           <div>
             <div className="container">
+              {redirectPage}
             <div className="row" style={{marginTop : "50px"}}>
             <div className="col-sm-1">
               <Link to ="/landingpage">
@@ -195,7 +207,7 @@ class Landing extends React.Component {
               </div>
               <div className="row">
                 <div className="col-sm-3">
-                  <h3><strong>All Stores</strong></h3>
+                  <h4><strong>All Stores</strong></h4>
                   <div className="row">
                   <button className="btn dropdown-toggle" style={{backgroundColor:"transparent", textAlign : "left"}} onClick={this.toggleSortDropDown}>
                     Sort
@@ -223,23 +235,76 @@ class Landing extends React.Component {
                   </div>
                   <div className="col-sm-9">
                     <div className="row">
+                      <h2><strong>Restaurants near you</strong></h2>
+                      </div>
+                    <div className="row" style={{marginTop:"10px"}}>
                       <div className="col-sm-3">
-                      <img src={"./restaurants/mcdonalds.jpeg"} width={160} height={150}></img>
-                      <label style={{width:"160px"}}><strong>McDonald's Milpitas</strong></label>
+                      <link href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" rel="stylesheet"/>
+
+                      <div className="container" style={{position:"relative"}}>
+                        <button style={{border:"solid black 2px"}}><img src="./restaurants/mcdonalds.jpeg" width={160} height={150} style={{display:"block"}}></img></button>
+                        <a href="/profile"><i className="far fa-heart" style={{position:"absolute", top:"0", left:"4", marginLeft:"140px", color:"black", marginTop:"5px"}}></i></a>
+                        <label style={{width:"160px"}}><strong>McDonald's Milpitas</strong></label>
+                      </div>
+              
                         </div>
                         <div className="col-sm-3">
-                        <img src={"./restaurants/jack_in_the_box.jpeg"} width={160} height={150}></img>
-                        <label style={{width:"160px"}}><strong>Jack in the box</strong></label>                       
+                        <div className="container" style={{position:"relative"}}>
+                        <button style={{border:"solid black 2px"}}><img src="./restaurants/jack_in_the_box.jpeg" width={160} height={150} style={{display:"block"}}></img></button>
+                        <a href="/profile"><i className="far fa-heart" style={{position:"absolute", top:"0", left:"4", marginLeft:"140px", color:"black", marginTop:"5px"}}></i></a>
+                        <label style={{width:"160px"}}><strong>Jack in the box</strong></label>
+                      </div>              
                         </div>
                         <div className="col-sm-3">
-                        <img src={"./restaurants/tacobell.jpeg"} width={160} height={150}></img>
+                        <div className="container" style={{position:"relative"}}>
+                        <button style={{border:"solid black 2px"}}><img src="./restaurants/tacobell.jpeg" width={160} height={150} style={{display:"block"}}></img></button>
+                        <a href="/profile"><i className="far fa-heart" style={{position:"absolute", top:"0", left:"4", marginLeft:"140px", color:"black", marginTop:"5px"}}></i></a>
                         <label style={{width:"160px"}}><strong>Taco Bell</strong></label>
+                      </div>
                         </div>
                         <div className="col-sm-3">
-                        <img src={"./restaurants/guilin_noodles.jpeg"} width={160} height={150}></img>
+                        <div className="container" style={{position:"relative"}}>
+                        <button style={{border:"solid black 2px"}}><img src="./restaurants/guilin_noodles.jpeg" width={160} height={150} style={{display:"block"}}></img></button>
+                        <a href="/profile"><i className="far fa-heart" style={{position:"absolute", top:"0", left:"4", marginLeft:"140px", color:"black", marginTop:"5px"}}></i></a>
                         <label style={{width:"160px"}}><strong>Classic Guilin Rice Noodles</strong></label>
+                      </div>
                         </div>
                       </div>
+
+                      <div className="row" style={{marginTop:"10px"}}>
+                      <div className="col-sm-3">
+
+                      <div className="container" style={{position:"relative"}}>
+                      <button onClick={this.handleRestaurantPage} style={{border:"solid black 2px"}}><img src="./restaurants/tirupathi_bhimas.jpeg" width={160} height={150} style={{display:"block"}}></img></button>
+                        <a href="/profile"><i className="far fa-heart" style={{position:"absolute", top:"0", left:"4", marginLeft:"140px", color:"black", marginTop:"5px"}}></i></a>
+                        <label style={{width:"160px"}}><strong>Tirupathi Bhimas</strong></label>
+                      </div>
+              
+                        </div>
+                        <div className="col-sm-3">
+                        <div className="container" style={{position:"relative"}}>
+                        <button style={{border:"solid black 2px"}}><img src="./restaurants/tender_greens.jpeg" width={160} height={150} style={{display:"block"}}></img></button>
+                        <a href="/profile"><i className="far fa-heart" style={{position:"absolute", top:"0", left:"4", marginLeft:"140px", color:"black", marginTop:"5px"}}></i></a>
+                        <label style={{width:"160px"}}><strong>Tender Greens</strong></label>
+                      </div>              
+                        </div>
+                        <div className="col-sm-3">
+                        <div className="container" style={{position:"relative"}}>
+                        <button style={{border:"solid black 2px"}}><img src="./restaurants/fire_biryani.jpeg" width={160} height={150} style={{display:"block"}}></img></button>
+                        <a href="/profile"><i className="far fa-heart" style={{position:"absolute", top:"0", left:"4", marginLeft:"140px", color:"black", marginTop:"5px"}}></i></a>
+                        <label style={{width:"160px"}}><strong>Fire Biryani</strong></label>
+                      </div>
+                        </div>
+                        <div className="col-sm-3">
+                        <div className="container" style={{position:"relative"}}>
+                        <button style={{border:"solid black 2px"}}><img src="./restaurants/starbird_chicken.jpeg" width={160} height={150} style={{display:"block"}}></img></button>
+                        <a href="/profile"><i className="far fa-heart" style={{position:"absolute", top:"0", left:"4", marginLeft:"140px", color:"black", marginTop:"5px"}}></i></a>
+                        <label style={{width:"160px"}}><strong>Starbird Chicken</strong></label>
+                      </div>
+                        </div>
+                      </div>
+
+
                     </div>
                 </div>
             </div>

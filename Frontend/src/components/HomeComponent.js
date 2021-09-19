@@ -37,7 +37,7 @@ class Home extends React.Component {
       console.log("----------",cookie.load("cookie"));
       let name = "nishanth";
       let headerSection = null;
-      let flag = true;
+      let flag = false;
       if (flag) {
         headerSection = (<div className="col order-last">
         <div>
@@ -51,7 +51,7 @@ class Home extends React.Component {
         </div>);
       }
       else {
-        headerSection = (<div style={{marginTop:"5px"}}>{visitPage}</div>);
+        headerSection = (<div style={{marginTop:"5px", marginLeft:"200px"}}>{visitPage}</div>);
       } 
         return (
           <div class="container">
