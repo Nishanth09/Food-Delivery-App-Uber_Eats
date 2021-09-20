@@ -7,7 +7,6 @@ import FormControl from '@mui/material/FormControl';
 import RadioGroup from '@mui/material/RadioGroup';
 import Register from './RegisterComponent';
 import { Redirect } from 'react-router';
-//import { MDBContainer, MDBRow, MDBRangeInput, MDBCard, MDBCol, MDBCardBody, MDBCardTitle, MDBCardImage, MDBIcon } from "mdbreact";
 
 class Landing extends React.Component {
   state = {

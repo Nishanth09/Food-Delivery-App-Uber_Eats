@@ -5,15 +5,12 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { Redirect } from 'react-router';
 import Badge from "@material-ui/core/Badge";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-//import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import PersonAdd from '@mui/icons-material/PersonAdd';
-import Settings from '@mui/icons-material/Settings';
+import "../App.css";
 class Home extends React.Component {
   state = {
     menuFlag : null
@@ -37,21 +34,22 @@ class Home extends React.Component {
       console.log("----------",cookie.load("cookie"));
       let name = "nishanth";
       let headerSection = null;
-      let flag = false;
+      let flag = true;
       if (flag) {
         headerSection = (<div className="col order-last">
-        <div>
+        <div style={{marginTop:"10px"}}>
             <Link to="/login">
-              <button className="btn btn-login">Sign in</button>
+              <button className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px"}}>Sign in</button>
             </Link>
+            {' '}
             <Link to="/signup">
-              <button className="btn btn-login">Sign up</button>
+              <button className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px"}}>Sign up</button>
             </Link>
           </div>
         </div>);
       }
       else {
-        headerSection = (<div style={{marginTop:"5px", marginLeft:"200px"}}>{visitPage}</div>);
+        headerSection = (<div style={{marginTop:"10px", marginLeft:"200px"}}>{visitPage}</div>);
       } 
         return (
           <div class="container">
@@ -121,14 +119,33 @@ class Home extends React.Component {
       </Menu>
       </div>
     </div>
-    <div class="col-sm-3">
+    <div class="col-sm-2">
             <Link to="/landingpage">
           <button className="btn btn-login">
          <img src = {"./title_logo.png"} alt="Nothing"></img>
             </button>
              </Link>
     </div>
-    <div class="col-md-3 offset-5">
+    <div className="col-sm-2" style={{marginTop:"5px"}}>
+   <span className="btn btn-1">
+        <input type="checkbox" name="" id="switch" />
+        <label for="switch"></label>
+     </span>
+      </div>
+      <div className="col-md-2" style={{marginTop:"10px"}}>
+      <button className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px", width:"200px"}}>Location</button>
+    </div>
+    <div className="col-md-3" style={{marginTop:"10px", width:"300px"}}>
+    <link href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" rel="stylesheet"/>
+          <div className="input-group rounded">
+        <input type="search" className="form-control rounded" placeholder="Search" aria-label="Search"
+          aria-describedby="search-addon" />
+        <span className="input-group-text border-0" id="search-addon">
+          <i className="fas fa-search"></i>
+        </span>
+      </div>
+    </div>
+    <div className="col-md-2">
       {headerSection}
     </div>
   </div>

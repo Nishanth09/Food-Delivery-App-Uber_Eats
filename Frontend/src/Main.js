@@ -5,6 +5,7 @@ import Landing from './components/LandingComponent';
 import Login from './components/LoginComponent';
 import Profile from './components/ProfileComponent';
 import Register from './components/RegisterComponent';
+import Restaurant from './components/RestaurantComponent';
 
 class Main extends React.Component {
     render() { 
@@ -16,6 +17,7 @@ class Main extends React.Component {
             <Route path = "/signup" component = {Register}/>
             <Route path = "/landingpage" component = {Landing}/>
             <Route path = "/profile" component = {Profile}/>
+            <Route path = "/restaurantpage" component = {Restaurant}/>
         </div>);
     }
 }
