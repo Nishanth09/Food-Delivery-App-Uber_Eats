@@ -10,7 +10,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import "../App.css";
+import "../../App.css";
 class Home extends React.Component {
   state = {
     menuFlag : null
@@ -127,10 +127,12 @@ class Home extends React.Component {
              </Link>
     </div>
     <div className="col-sm-2" style={{marginTop:"5px"}}>
-   <span className="btn btn-1">
+   <div className="btn btn-1">
+     {/* <button className="btn btn-light btn-outline-secondary" style={{border:"None", outline:"None"}}>Delivery</button>
+     <button className="btn btn-light btn-outline-secondary" style={{border:"None", outline:"None"}}>Pick up</button>  */}
         <input type="checkbox" name="" id="switch" />
         <label for="switch"></label>
-     </span>
+     </div>
       </div>
       <div className="col-md-2" style={{marginTop:"10px"}}>
       <button className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px", width:"200px"}}>Location</button>

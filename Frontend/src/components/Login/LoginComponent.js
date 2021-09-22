@@ -3,6 +3,9 @@ import {Input, Label, Col, Form, FormGroup, Button} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { Redirect } from 'react-router';
+import {loginRedux} from '../../redux/reduxActions/loginAction'
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Login extends React.Component {
     constructor(props) {
@@ -28,19 +31,8 @@ class Login extends React.Component {
         email: this.state.email,
         password: this.state.password,
       };
-      axios.post('http://localhost:3001/login', {"email": data.email, "password": data.password})
-      .then((response) => {
-        console.log(response);
-        if (response.status === 200) {
-          console.log("here");
-          this.setState({flag : true});
-          console.log(this.state.flag);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
+      this.props.loginRedux(data);
+      //action to be called
     }
     render() { 
       let re = null;
@@ -102,5 +94,19 @@ class Login extends React.Component {
         );
     }
 }
+
+Login.propTypes = {
+  loginRedux: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
+}
+
+
+const mapStateToProps = state =>{
+  console.log("state mapstatetoprops in login",state);
+  return({
+      user: state.login.user
+  });
+}
+
+export default connect(mapStateToProps, {loginRedux})(Login);
  
-export default Login;

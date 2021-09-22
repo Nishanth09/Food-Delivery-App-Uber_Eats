@@ -32,10 +32,13 @@ const userCreds = {
 const serviceProvider = "Uber Eats";
 
 app.post("/login", (req, res) => {
-    if (req.body.email === userCreds.name && req.body.password === userCreds.password) {
-        res.send("Received Successfully");
-        console.log(req.body);
-    }
+    res.send("Received Successfully");
+    console.log(req.body);
+});
+
+app.post("/signup", (req, res) => {
+    res.send("registered!");
+    console.log(req.body);
 });
 
 app.listen(3001, (req, res) => {
