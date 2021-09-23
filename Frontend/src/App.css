@@ -2,6 +2,10 @@
   text-align: center;
 }
 
+.fullBody {
+  background-image: "./images/uber_eats_background.png";
+}
+
 .btn {
   position: relative;
   height: 56px;
@@ -13,7 +17,6 @@
   height: 50px;
   border-radius: 25px;
   outline: none;
-  cursor: none;
   appearance: none;
   font-family: "Raleway", sans-serif;
   font-weight: bold;

@@ -1,18 +1,11 @@
 import React, { Component } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Button, Row, Container, FormGroup, Label, Input } from "reactstrap";
 import { Redirect } from "react-router-dom";
-import {
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  Col,
-} from "reactstrap";
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {registerRedux} from '../../redux/reduxActions/registerAction';
-
+import Navbar from '../Landing/NavComponent';
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -35,77 +28,45 @@ class Register extends Component {
 
   render() {
     return (
-      <>
-        <div className="container-fluid form-cont">
-        <div className="flex-container">
-          <div className="row">
-            <div className="col col-sm-6 offset-sm-3">
-              <br />
-              <h4>Welcome to Uber Eats</h4>
-              <Form className="form-stacked">
-                <FormGroup>
-                  <Label htmlFor="name" className="Lable-align">
-                    Username
-                  </Label>
-                  <Input
-                    type="text"
-                    id="name"
-                    name="name"
-                    placeholder="Enter a username"
-                    onChange={(e) => this.setState({name : e.target.value})}
-                  ></Input>
+      <Container>
+        <Navbar />
+        <Row style={{textAlign:'center', marginTop:'10px'}}>
+              <h2>Let's get started</h2>
+              </Row>
+              <Row style={{ marginTop:'10px'}}>
+            <FormGroup>
+                <Label for="mobile">Enter your phone number (required)</Label>
+                <Input type="text" name="contact" id="contact" 
+                placeholder="Mobile number" 
+                onChange={(e) => {this.setState({ name: e.target.value })}} />
                 </FormGroup>
-                <br />
-                <FormGroup>
-                  <Label htmlFor="email" className="Lable-align">
-                    Username
-                  </Label>
-                  <Input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Enter the email"
-                    onChange={(e) => this.setState({email : e.target.value})}
-                  ></Input>
+            </Row>
+            <Row style={{ marginTop:'10px'}}>
+            <FormGroup>
+                <Label for="email">Email</Label>
+                <Input type="email" name="email" id="email" placeholder="Email"
+                onChange={(e) => this.setState({ email: e.target.value })} />
                 </FormGroup>
-                <br />
-                <FormGroup>
-                  <Label htmlFor="password">Password</Label>
-                  <Input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Password"
-                    onChange={(e) => this.setState({password : e.target.value})}
-                  ></Input>
-                </FormGroup>
-                <hr />
-                <FormGroup row>
-                  <Col>
-                    <Button
-                      data-testid="btn-submit"
-                      type="submit"
-                      className="btn btn-Normal"
-                      color="btn btn-success"
-                      onClick={this.onHandleSubmit}
-                    >
-                    Sign up
-                    </Button>
-                  </Col>
-                </FormGroup>
-              </Form>
-            </div>
-          </div>
-        </div>
-      </div>
-      </>
+            </Row>
+            <Row style={{ marginTop:'10px'}}>
+            <FormGroup>
+                  <Label for="examplePassword">Password</Label>
+                  <Input type="password" name="password" 
+                  id="examplePassword" placeholder="Enter password"
+                  onChange={(e) => this.setState({ password: e.target.value })} />
+            </FormGroup>
+            </Row>
+            <Row style={{ marginTop:'20px'}}>
+              <Button onClick={this.onHandleSubmit} style={{height:'40px', backgroundColor:'#1AB821'}}>Sign up</Button>
+            </Row>
+          </Container>
     );
 }
 }
 
 Register.propTypes = {
   registerRedux : PropTypes.func.isRequired,
-  details : PropTypes.object.isRequired
+  details : PropTypes.string.isRequired
 }
 
 const mapStateToProps = state => {

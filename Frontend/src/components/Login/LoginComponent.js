@@ -1,11 +1,15 @@
 import React from 'react';
-import {Input, Label, Col, Form, FormGroup, Button} from 'reactstrap';
+import {Input, Label, Form, FormGroup, 
+  Button, Container, Row, Col} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { Redirect } from 'react-router';
-import {loginRedux} from '../../redux/reduxActions/loginAction'
+import {loginRedux} from '../../redux/reduxActions/loginAction';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import login_logo from '../../images/login_logo.png'
+import { Link } from 'react-router-dom';
+import Navbar from '../Landing/NavComponent';
 
 class Login extends React.Component {
     constructor(props) {
@@ -25,79 +29,64 @@ class Login extends React.Component {
       this.setState({password : e.target.value});
     }
 
-    formSubmit = (e) => {
+    formSubmit = async (e) => {
       e.preventDefault();
       const data = {
         email: this.state.email,
         password: this.state.password,
       };
-      this.props.loginRedux(data);
+      await this.props.loginRedux(data);
+      console.log("....",this.props);
       //action to be called
     }
     render() { 
       let re = null;
-      if (this.state.flag) {
-        re = <Redirect to = "/landingpage"/>;
+      if (this.props.user) {
+        re = <Redirect to={{
+          pathname: '/home',
+          state: this.props.user
+      }}/>;
       }
         return (
-        <div className="container-fluid form-cont">
-        <div className="flex-container">
-          <div className="row">
+          <React.Fragment>
             {re}
-            <div className="col col-sm-6 offset-sm-3">
+          <Container>
+            <Row style={{textAlign:'center', marginTop:'10px'}}>
+              <img src={login_logo} alt="login_logo" style={{height:'40px',width:'500px', marginLeft:'330px', marginTop:'80px'}}></img>
               <br />
-              <h4>Welcome back</h4>
-              <Form className="form-stacked">
-                <FormGroup>
-                  <Label htmlFor="email" className="Lable-align">
-                    Email address
-                  </Label>
-                  <Input
-                    data-testid="email-input-box"
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Email"
-                    onChange={this.onHandleEmail}
-                  ></Input>
+              <h4 style={{textAlign:'left'}}>Welcome back</h4>
+              </Row>
+            <Row style={{ marginTop:'10px'}}>
+            <FormGroup>
+                <Label for="exampleEmail">Email</Label>
+                <Input type="email" name="email" id="exampleEmail" 
+                placeholder="Email or mobile number" onChange={this.onHandleEmail} />
                 </FormGroup>
-                <br />
-                <FormGroup>
-                  <Label htmlFor="password">Password</Label>
-                  <Input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Password"
-                    onChange={this.onHandlePassword}
-                  ></Input>
-                </FormGroup>
-                <hr />
-                <FormGroup row>
-                  <Col>
-                    <Button
-                      data-testid="btn-submit"
-                      type="submit"
-                      className="btn btn-Normal"
-                      color="btn btn-success"
-                      onClick={this.formSubmit}
-                    >
-                      Login
-                    </Button>
-                  </Col>
-                </FormGroup>
-              </Form>
-            </div>
-          </div>
-        </div>
-      </div>
+            </Row>
+            <Row style={{ marginTop:'10px'}}>
+            <FormGroup>
+                  <Label for="examplePassword">Password</Label>
+                  <Input type="password" name="password" id="examplePassword" 
+                  placeholder="Enter password" onChange={this.onHandlePassword} />
+            </FormGroup>
+            </Row>
+            <Row style={{ marginTop:'20px'}}>
+              <Button onClick={this.formSubmit} 
+              style={{height:'40px', backgroundColor:'#1AB821'}}>Login</Button>
+            </Row>
+            <Row style={{display:'inline-block', marginLeft:'300px', marginTop:'20px'}}>
+              <span>New to Uber?</span>
+              <Link to='/signup'>Create an account</Link>
+              </Row>
+          </Container>
+          </React.Fragment>
         );
     }
 }
 
 Login.propTypes = {
   loginRedux: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.string.isRequired
 }
 
 

@@ -7,7 +7,7 @@ export const registerRedux = (data) => async dispatch =>{
         console.log("Action in action");
         dispatch({
             type : REGISTER,
-            payload : response
+            payload : response.data
         })
     })
     .catch(error => {

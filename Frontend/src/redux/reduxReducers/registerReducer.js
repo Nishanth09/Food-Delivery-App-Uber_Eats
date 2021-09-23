@@ -1,7 +1,7 @@
 import { REGISTER } from "../types";
 
 const intialState = {
-    details : {}
+    details : ""
 }
 
 export default function(state = intialState, action) {
