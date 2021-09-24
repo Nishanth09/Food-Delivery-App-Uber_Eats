@@ -5,9 +5,6 @@ import title_logo from '../../images/title_logo.png';
 import AfterLoginNavbar from './AfterNavComponent';
 
 class Navbar extends React.Component {
-    constructor(props) {
-        super(props);
-    }
     render() { 
         let navbarDisplay = null;
         if (this.props.showFlag === "open") {
@@ -37,7 +34,7 @@ function BeforeLoginNavbar() {
               <Link className="btn btn-light" 
               style={{ textDecoration:'None', marginRight: '30px', marginTop:'10px' , 
               backgroundColor:'white', borderColor:'grey', 
-              borderRadius: '20px 20px 20px 20px ', color:'black'}}
+              borderRadius: '20px 20px 20px 20px', color:'black'}}
                to="/login">Sign In</Link>
             </Col>
           </Row>
@@ -46,14 +43,4 @@ function BeforeLoginNavbar() {
     );
 }
 
-
-
-const mapStateToProps = state =>{
-    console.log("state mapstatetoprops in navbar",state);
-    return({
-        user: state.login.user
-    });
-}
-
-// export default connect(mapStateToProps, { loginRedux })(Navbar);
 export default Navbar;

@@ -17,12 +17,48 @@ app.use(session({
     duration: 60 * 60 * 1000, 
     activeDuration: 5 * 60 * 1000,
 }));
+app.use(express.static('public/uploads'));
 
 const restaurantData = [
     {
         "name" : "Restaurant 1",
     }
-]
+];
+
+const restaurantDetails = [
+    {
+        "restaurantImage" : "http://localhost:3001/starbird_chicken.jpeg",
+        "name" : "Starbird Chicken"
+    },
+    {
+        "restaurantImage" : "http://localhost:3001/tender_greens.jpeg",
+        "name" : "Tender Greens"
+    },
+    {
+        "restaurantImage" : "http://localhost:3001/fire_biryani.jpeg",
+        "name" : "Fire Biryani"
+    },
+    {
+        "restaurantImage" : "http://localhost:3001/guilin_noodles.jpeg",
+        "name" : "Tirupathi Bhimas"
+    },
+    {
+        "restaurantImage" : "http://localhost:3001/jack_in_the_box.jpeg",
+        "name" : "Tirupathi Bhimas"
+    },
+    {
+        "restaurantImage" : "http://localhost:3001/mcdonalds.jpeg",
+        "name" : "Tirupathi Bhimas"
+    },
+    {
+        "restaurantImage" : "http://localhost:3001/tacobell.jpeg",
+        "name" : "Tirupathi Bhimas"
+    },
+    {
+        "restaurantImage" : "http://localhost:3001/tirupathi_bhimas.jpeg",
+        "name" : "Tirupathi Bhimas"
+    }
+];
 
 const userCreds = {
     "name" : "nishanth",
@@ -32,9 +68,14 @@ const userCreds = {
 const serviceProvider = "Uber Eats";
 
 app.post("/login", (req, res) => {
-    res.send("Received Successfully");
+    res.send(restaurantDetails);
     console.log(req.body);
 });
+
+app.get("/getAllRestaurants", (req, res) => {
+    res.send(restaurantDetails);
+    console.log(req.body);
+})
 
 app.post("/signup", (req, res) => {
     res.send("registered!");

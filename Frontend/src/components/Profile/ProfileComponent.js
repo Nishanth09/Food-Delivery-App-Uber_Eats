@@ -1,6 +1,4 @@
 import React from "react";
-import { Button, Form, FormGroup, Label, Input, Col } from "reactstrap";
-import axios from "axios";
 import { Redirect } from "react-router-dom";
 
 class Profile extends React.Component {
@@ -37,38 +35,6 @@ class Profile extends React.Component {
   submitForm = (e) => {
     //prevent page from refresh
     e.preventDefault();
-    const error = this.validateForm();
-    if (Object.keys(error).length == 0) {
-      //set the with credentials to true
-      axios.defaults.withCredentials = true;
-      //make a post request with the user data
-      axios
-        .post(
-          `http://localhost:8000/updateProfile`,
-          this.state.userinfo
-        )
-        .then((response) => {
-          if (response.status === 200) {
-            this.SetLocalStorage(JSON.stringify(this.state.userinfo));
-            this.setState({
-              authFlag: true,
-            });
-          } else {
-            this.setState({
-              loginError:
-                "<p style={{color: red}}>User is already registered</p>",
-              authFlag: false,
-            });
-          }
-        })
-        .catch(() => {
-          this.setState({
-            loginError: "User is already registered",
-          });
-        });
-    } else {
-      this.setState({ error });
-    }
   };
 
   validateForm = () => {
@@ -78,38 +44,13 @@ class Profile extends React.Component {
 
   handleFileUpload = (event) => {
     event.preventDefault();
-    // let data = new FormData();
-    // data.append("file", event.target.files[0]);
-    // axios
-    //   .post(`http://${config.ipAddress}:8000/upload`, data)
-    //   .then((response) => {
-    //     console.log(response);
-    //     let userinfo = this.state.userinfo;
-    //     userinfo.UserProfilePic =
-    //       `http://${config.ipAddress}:8000/` + response.data;
-    //     this.setState({
-    //       userinfo,
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.log("error " + error);
-    //     let userinfo = this.state.userinfo;
-    //     userinfo.UserProfilePic = "./assets/userIcon.jpg";
-    //     this.setState({
-    //       userinfo,
-    //     });
-    //   });
   };
 
   render() {
     let redirectVar = null;
-    // if (!cookie.load("cookie")) redirectVar = <Redirect to="/login" />;
-    // else if (this.state.authFlag) {
-    //   redirectVar = <Redirect to="/home" />;
-    // } else redirectVar = <Redirect to="/updateProfile" />;
     redirectVar = <Redirect to="/profile" />
     let picture = "";
-    if (this.state.userinfo.profilePic != "") {
+    if (this.state.userinfo.profilePic !== "") {
       picture = this.state.userinfo.UserProfilePic;
     } else {
       picture = "./userIcon.jpg";
@@ -117,12 +58,12 @@ class Profile extends React.Component {
     return (
       <div>
         {redirectVar}
-        <div className="container" style={{ marginLeft: "650px", marginTop: "50px" }}>
+        <div className="container" style={{ marginLeft: "350px", marginTop: "50px" }}>
             <div className="row">
                 <h2>Hello, Nishanth</h2>
                 <div className="col col-sm-3">
                 <label>Update your profile picture</label>
-                <img src={picture} alt="..." width={100} height={100}></img>
+                <img src={picture} alt="nothing" width={100} height={100}></img>
                 <input
                   className="btn"
                   style={{
@@ -196,12 +137,11 @@ class Profile extends React.Component {
                         </div>
                     </div>
                     <br />
-
   </div>
   <div className="row">
 <div className="col-3 offset-2">
     <br />
-<button type="submit" className="btn btn-success" style={{marginLeft:"50px"}}>Update</button>
+<button type="submit" className="btn btn-success" style={{marginLeft:"30px"}}>Update</button>
 <br />
 </div>
   </div>

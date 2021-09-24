@@ -1,7 +1,7 @@
-import {LOGIN, ERROR} from '../types'
+import {LOGIN} from '../types'
 
 const initialState = {
-    user : ""
+    user : []
 };
 
 export default function (state = initialState, action) {

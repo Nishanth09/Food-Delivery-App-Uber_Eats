@@ -15,9 +15,9 @@ class Main extends React.Component {
             <Route exact path = "/" component = {Landing}/>
             <Route path = "/login" component = {Login}/>
             <Route path = "/signup" component = {Register}/>
-            <Route path = "/home" component = {Home}/>
             <Route path = "/profile" component = {Profile}/>
             <Route path = "/restaurantpage" component = {Restaurant}/>
+            <Route path = "/home" component = {Home}/>
             </React.Fragment>
             );
     }

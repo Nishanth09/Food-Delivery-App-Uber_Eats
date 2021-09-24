@@ -1,15 +1,13 @@
 import React from 'react';
-import {Input, Label, Form, FormGroup, 
-  Button, Container, Row, Col} from 'reactstrap';
+import {Input, Label, FormGroup, 
+  Button, Container, Row} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
 import { Redirect } from 'react-router';
 import {loginRedux} from '../../redux/reduxActions/loginAction';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import login_logo from '../../images/login_logo.png'
 import { Link } from 'react-router-dom';
-import Navbar from '../Landing/NavComponent';
 
 class Login extends React.Component {
     constructor(props) {
@@ -36,12 +34,12 @@ class Login extends React.Component {
         password: this.state.password,
       };
       await this.props.loginRedux(data);
-      console.log("....",this.props);
+      this.setState({flag : true});
       //action to be called
     }
     render() { 
       let re = null;
-      if (this.props.user) {
+      if (this.state.flag) {
         re = <Redirect to={{
           pathname: '/home',
           state: this.props.user
@@ -52,7 +50,7 @@ class Login extends React.Component {
             {re}
           <Container>
             <Row style={{textAlign:'center', marginTop:'10px'}}>
-              <img src={login_logo} alt="login_logo" style={{height:'40px',width:'500px', marginLeft:'330px', marginTop:'80px'}}></img>
+              <img src={login_logo} alt="login_logo" style={{height:'40px',width:'400px', marginLeft:'250px', marginTop:'80px'}}></img>
               <br />
               <h4 style={{textAlign:'left'}}>Welcome back</h4>
               </Row>
@@ -86,7 +84,7 @@ class Login extends React.Component {
 
 Login.propTypes = {
   loginRedux: PropTypes.func.isRequired,
-  user: PropTypes.string.isRequired
+  user: PropTypes.array.isRequired
 }
 
 

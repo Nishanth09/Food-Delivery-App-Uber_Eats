@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Row, Container, FormGroup, Label, Input } from "reactstrap";
-import { Redirect } from "react-router-dom";
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {registerRedux} from '../../redux/reduxActions/registerAction';

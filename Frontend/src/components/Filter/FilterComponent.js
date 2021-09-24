@@ -5,15 +5,19 @@ import Radio from '@mui/material/Radio';
 import FormControl from '@mui/material/FormControl';
 import RadioGroup from '@mui/material/RadioGroup';
 import { Redirect } from 'react-router';
+import HomeBody from '../Home/BodyComponent';
 
 class Filters extends React.Component {
-    state = {
-        sortDropDownFlag : false,
-        priceDropDownFlag : false,
-        deliveryDropDownFlag : false,
-        dietaryDropDownFlag : false,
-        flag : false
-     }; 
+  constructor(props) {
+    super(props);
+    this.state = {
+      sortDropDownFlag : false,
+      priceDropDownFlag : false,
+      deliveryDropDownFlag : false,
+      dietaryDropDownFlag : false     
+    };
+  };
+     
      toggleSortDropDown = (e) => {
        this.setState((prev) => ({sortDropDownFlag : !prev.sortDropDownFlag}))
      }
@@ -26,10 +30,7 @@ class Filters extends React.Component {
      toggleDietaryDropDown = (e) => {
        this.setState((prev) => ({dietaryDropDownFlag : !prev.dietaryDropDownFlag}))
      }
-     handleRestaurantPage = (e) => {
-       this.setState({flag : true});
-       console.log("-----", this.state.flag);
-     }
+
        render() { 
          let sortDropDownResult = null;
          let priceDropDownResult = null;
@@ -107,73 +108,73 @@ class Filters extends React.Component {
                <div className="row" style={{marginTop : "50px"}}>
                <div className="col-sm-1">
                  <Link to ="/landingpage">
-                   <img src={"./filters/deals.png"} width={75} height={75}></img>
+                   <img src={"./filters/deals.png"} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginLeft:"15px"}}>Deals</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/grocery.png"} width={75} height={75}></img>
+                 <img src={"./filters/grocery.png"} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginLeft:"5px"}}>Grocery</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/convenience.png"} width={75} height={75}></img>
+                 <img src={"./filters/convenience.png"} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginRight:"15px"}}>Convenience</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/alcohol.png"} width={75} height={75}></img>
+                 <img src={"./filters/alcohol.png"} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginLeft:"20px"}}>Alcohol</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/pharmacy.jpg"} width={75} height={75}></img>
+                 <img src={"./filters/pharmacy.jpg"} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginRight:"10px", marginLeft:"5px"}}>Pharmacy</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/flowers.jpg"} width={75} height={75}></img>
+                 <img src={"./filters/flowers.jpg"} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginLeft:"15px"}}>Flowers</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/top_eats.png"} width={75} height={75}></img>
+                 <img src={"./filters/top_eats.png"} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginLeft:"25px"}}>Top eats</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/pizza.png"} width={75} height={75}></img>
+                 <img src={"./filters/pizza.png"} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginLeft:"20px"}}>Pizza</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/chinese.png"} width={75} height={75}></img>
+                 <img src={"./filters/chinese.png"} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginLeft:"15px"}}>Chinese</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/sushi.png"} width={75} height={75}></img>
+                 <img src={"./filters/sushi.png"} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginLeft:"20px"}}>Sushi</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/burger.png"} width={75} height={75}></img>
+                 <img src={"./filters/burger.png"} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginLeft:"15px"}}>Burgers</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/indian.png"} width={75} height={75}></img>
+                 <img src={"./filters/indian.png"} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginLeft:"15px"}}>Indian</label>
                  </div>
@@ -207,79 +208,7 @@ class Filters extends React.Component {
                       {dietaryDropDownResult}
                        </div>
                      </div>
-                     <div className="col-sm-9">
-                       <div className="row">
-                         <h2><strong>Restaurants near you</strong></h2>
-                         </div>
-                       <div className="row" style={{marginTop:"10px"}}>
-                         <div className="col-sm-3">
-                         <link href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" rel="stylesheet"/>
-   
-                         <div className="container" style={{position:"relative"}}>
-                           <button style={{border:"solid black 2px"}}><img src="./restaurants/mcdonalds.jpeg" width={160} height={150} style={{display:"block"}}></img></button>
-                           <a href="/profile"><i className="far fa-heart" style={{position:"absolute", top:"0", left:"4", marginLeft:"140px", color:"black", marginTop:"5px"}}></i></a>
-                           <label style={{width:"160px"}}><strong>McDonald's Milpitas</strong></label>
-                         </div>
-                 
-                           </div>
-                           <div className="col-sm-3">
-                           <div className="container" style={{position:"relative"}}>
-                           <button style={{border:"solid black 2px"}}><img src="./restaurants/jack_in_the_box.jpeg" width={160} height={150} style={{display:"block"}}></img></button>
-                           <a href="/profile"><i className="far fa-heart" style={{position:"absolute", top:"0", left:"4", marginLeft:"140px", color:"black", marginTop:"5px"}}></i></a>
-                           <label style={{width:"160px"}}><strong>Jack in the box</strong></label>
-                         </div>              
-                           </div>
-                           <div className="col-sm-3">
-                           <div className="container" style={{position:"relative"}}>
-                           <button style={{border:"solid black 2px"}}><img src="./restaurants/tacobell.jpeg" width={160} height={150} style={{display:"block"}}></img></button>
-                           <a href="/profile"><i className="far fa-heart" style={{position:"absolute", top:"0", left:"4", marginLeft:"140px", color:"black", marginTop:"5px"}}></i></a>
-                           <label style={{width:"160px"}}><strong>Taco Bell</strong></label>
-                         </div>
-                           </div>
-                           <div className="col-sm-3">
-                           <div className="container" style={{position:"relative"}}>
-                           <button style={{border:"solid black 2px"}}><img src="./restaurants/guilin_noodles.jpeg" width={160} height={150} style={{display:"block"}}></img></button>
-                           <a href="/profile"><i className="far fa-heart" style={{position:"absolute", top:"0", left:"4", marginLeft:"140px", color:"black", marginTop:"5px"}}></i></a>
-                           <label style={{width:"160px"}}><strong>Classic Guilin Rice Noodles</strong></label>
-                         </div>
-                           </div>
-                         </div>
-   
-                         <div className="row" style={{marginTop:"10px"}}>
-                         <div className="col-sm-3">
-   
-                         <div className="container" style={{position:"relative"}}>
-                         <button onClick={this.handleRestaurantPage} style={{border:"solid black 2px"}}><img src="./restaurants/tirupathi_bhimas.jpeg" width={160} height={150} style={{display:"block"}}></img></button>
-                           <a href="/profile"><i className="far fa-heart" style={{position:"absolute", top:"0", left:"4", marginLeft:"140px", color:"black", marginTop:"5px"}}></i></a>
-                           <label style={{width:"160px"}}><strong>Tirupathi Bhimas</strong></label>
-                         </div>
-                 
-                           </div>
-                           <div className="col-sm-3">
-                           <div className="container" style={{position:"relative"}}>
-                           <button style={{border:"solid black 2px"}}><img src="./restaurants/tender_greens.jpeg" width={160} height={150} style={{display:"block"}}></img></button>
-                           <a href="/profile"><i className="far fa-heart" style={{position:"absolute", top:"0", left:"4", marginLeft:"140px", color:"black", marginTop:"5px"}}></i></a>
-                           <label style={{width:"160px"}}><strong>Tender Greens</strong></label>
-                         </div>              
-                           </div>
-                           <div className="col-sm-3">
-                           <div className="container" style={{position:"relative"}}>
-                           <button style={{border:"solid black 2px"}}><img src="./restaurants/fire_biryani.jpeg" width={160} height={150} style={{display:"block"}}></img></button>
-                           <a href="/profile"><i className="far fa-heart" style={{position:"absolute", top:"0", left:"4", marginLeft:"140px", color:"black", marginTop:"5px"}}></i></a>
-                           <label style={{width:"160px"}}><strong>Fire Biryani</strong></label>
-                         </div>
-                           </div>
-                           <div className="col-sm-3">
-                           <div className="container" style={{position:"relative"}}>
-                           <button style={{border:"solid black 2px"}}><img src="./restaurants/starbird_chicken.jpeg" width={160} height={150} style={{display:"block"}}></img></button>
-                           <a href="/profile"><i className="far fa-heart" style={{position:"absolute", top:"0", left:"4", marginLeft:"140px", color:"black", marginTop:"5px"}}></i></a>
-                           <label style={{width:"160px"}}><strong>Starbird Chicken</strong></label>
-                         </div>
-                           </div>
-                         </div>
-   
-   
-                       </div>
+                    <HomeBody />
                    </div>
                </div>
              </div>

@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { Redirect } from 'react-router';
 import Badge from '@material-ui/core/Badge';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Avatar from '@mui/material/Avatar';
@@ -10,7 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import "../../App.css";
-import title_logo from '../../images/title_logo.png'
+import title_logo from '../../images/title_logo.png';
 
 class AfterLoginNavbar extends React.Component {
     state = {
@@ -25,13 +24,14 @@ class AfterLoginNavbar extends React.Component {
       }
     render() { 
         return (
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-1">
-            <div className="col order-first">
+        <div className="container">
+          <div className="row">
+            <div className="col-sm-1">
+            <div className="col order-first" style={{marginTop:"10px"}}>
             <IconButton onClick={this.onHandleClick} size="small" sx={{ ml: 2 }}>
             <img
                   src={"./dehaze_icon.webp"}
+                  alt="nothing"
                   width={30}
                   height={30}
                   className="rounded-circle"
@@ -92,36 +92,32 @@ class AfterLoginNavbar extends React.Component {
               </Menu>
               </div>
             </div>
-            <div class="col-sm-2">
+            <div className="col-sm-2">
                     <Link to="/landingpage">
                   <button className="btn btn-login">
-                 <img src = {title_logo} alt="Nothing"></img>
+                 <img src = {title_logo} width={120} height={20} alt="Nothing" style={{marginRight:"20px", paddingRight:"20px"}}></img>
                     </button>
                      </Link>
             </div>
-            <div className="col-sm-2" style={{marginTop:"5px"}}>
-           <div className="btn btn-1">
-             {/* <button className="btn btn-light btn-outline-secondary" style={{border:"None", outline:"None"}}>Delivery</button>
-             <button className="btn btn-light btn-outline-secondary" style={{border:"None", outline:"None"}}>Pick up</button>  */}
-                <input type="checkbox" name="" id="switch" />
-                <label for="switch"></label>
-             </div>
+            <div className="col-sm-3" style={{ marginTop:"5px"}}>
+            <button className="btn btn-light" style={{ outline:"None", width:"100px", borderRadius: '20px 20px 20px 20px', backgroundColor:"#D0CACA"}}>Delivery</button>
+             <button className="btn btn-light" style={{ outline:"None", width:"100px", borderRadius: '20px 20px 20px 20px'}}>Pick up</button>
               </div>
               <div className="col-md-2" style={{marginTop:"10px"}}>
-              <button className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px", width:"200px"}}>Location</button>
+              <button className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px"}}>Location</button>
             </div>
-            <div className="col-md-3" style={{marginTop:"10px", width:"300px"}}>
+            <div className="col-md-3" style={{marginTop:"10px"}}>
             <link href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" rel="stylesheet"/>
                   <div className="input-group rounded">
-                <input type="search" className="form-control rounded" placeholder="Search" aria-label="Search"
+                <input type="search" className="form-control rounded" placeholder="What are you craving?" aria-label="Search"
                   aria-describedby="search-addon" />
                 <span className="input-group-text border-0" id="search-addon">
                   <i className="fas fa-search"></i>
                 </span>
               </div>
             </div>
-            <div className="col-md-2">
-            <div style={{marginTop:"10px", marginLeft:"200px"}}><button type = "button" className="btn btn-dark">
+            <div className="col-md-1">
+            <div style={{marginTop:"10px"}}><button type = "button" className="btn btn-dark">
                 <Badge badgeContent={0} color="secondary">
         <ShoppingCartIcon />Cart
         </Badge>
