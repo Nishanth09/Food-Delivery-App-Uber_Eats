@@ -60,6 +60,29 @@ const restaurantDetails = [
     }
 ];
 
+const dishDetails = [
+    {
+        "dishName" : "Chicken Katsu",
+        "dishImage" : "http://localhost:3001/chicken_katsu.webp",
+        "description" : "chicken with katsu mixed with it"
+    },
+    {
+        "dishName" : "Hawaiian BBQ",
+        "dishImage" : "http://localhost:3001/hawaiin_bbq.webp",
+        "description" : "combo chicken and short ribs"
+    },
+    {
+        "dishName" : "Popcorn Shrimp",
+        "dishImage" : "http://localhost:3001/popcorn_shrimp.webp",
+        "description" : "served with french fries"
+    },
+    {
+        "dishName" : "Fish and Chips",
+        "dishImage" : "http://localhost:3001/fish_chips.webp",
+        "description" : "served with coke and fries"
+    }
+]
+
 const userCreds = {
     "name" : "nishanth",
     "password" : "password"
@@ -74,6 +97,11 @@ app.post("/login", (req, res) => {
 
 app.get("/getAllRestaurants", (req, res) => {
     res.send(restaurantDetails);
+    console.log(req.body);
+})
+
+app.get("/getDishes", (req, res) => {
+    res.send(dishDetails);
     console.log(req.body);
 })
 
