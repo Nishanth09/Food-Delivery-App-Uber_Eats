@@ -13,11 +13,15 @@ import title_logo from '../../images/title_logo.png';
 
 class AfterLoginNavbar extends React.Component {
     state = {
-        menuFlag : null
+        menuFlag : null,
+        cartCount : 0
       }
       onHandleClick = (e) => {
         console.log(e.currentTarget,"-------");
         this.setState({menuFlag : e.currentTarget});
+      }
+      handleCount = () => {
+        this.setState({cartCount: this.state.cartCount + 1 });
       }
       onHandleClose = (e) => {
         this.setState({menuFlag : null});
@@ -106,8 +110,8 @@ class AfterLoginNavbar extends React.Component {
               <div className="col-md-2" style={{marginTop:"10px"}}>
               <button className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px"}}>Location</button>
             </div>
-            <div className="col-md-3" style={{marginTop:"10px"}}>
-            <link href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" rel="stylesheet"/>
+            <div className="col-md-2" style={{marginTop:"10px"}}>
+            
                   <div className="input-group rounded">
                 <input type="search" className="form-control rounded" placeholder="What are you craving?" aria-label="Search"
                   aria-describedby="search-addon" />
@@ -116,12 +120,13 @@ class AfterLoginNavbar extends React.Component {
                 </span>
               </div>
             </div>
-            <div className="col-md-1">
-            <div style={{marginTop:"10px"}}><button type = "button" className="btn btn-dark">
+            <div className="col-md-2" style={{marginTop:"10px"}}>
+            <button type = "button" onClick={this.handleCount} className="btn btn-dark" style={{marginLeft:"-15px"}}>
                 <Badge badgeContent={0} color="secondary">
-        <ShoppingCartIcon />Cart
+        <ShoppingCartIcon />Cart {this.state.cartCount}
         </Badge>
-        </button> </div>
+        </button> 
+        
             </div>
           </div>
         </div>

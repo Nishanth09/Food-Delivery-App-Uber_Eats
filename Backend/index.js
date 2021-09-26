@@ -64,22 +64,26 @@ const dishDetails = [
     {
         "dishName" : "Chicken Katsu",
         "dishImage" : "http://localhost:3001/chicken_katsu.webp",
-        "description" : "chicken with katsu mixed with it"
+        "description" : "chicken with katsu mixed with it",
+        "price" : "$20.99"
     },
     {
         "dishName" : "Hawaiian BBQ",
         "dishImage" : "http://localhost:3001/hawaiin_bbq.webp",
-        "description" : "combo chicken and short ribs"
+        "description" : "combo chicken and short ribs",
+        "price" : "$12.99"
     },
     {
         "dishName" : "Popcorn Shrimp",
         "dishImage" : "http://localhost:3001/popcorn_shrimp.webp",
-        "description" : "served with french fries"
+        "description" : "served with french fries",
+        "price" : "$25.99"
     },
     {
         "dishName" : "Fish and Chips",
         "dishImage" : "http://localhost:3001/fish_chips.webp",
-        "description" : "served with coke and fries"
+        "description" : "served with coke and fries",
+        "price" : "$21.99"
     }
 ]
 

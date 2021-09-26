@@ -2,13 +2,12 @@ import React from 'react';
 import Navbar from '../Landing/NavComponent';
 import axios from 'axios';
 import { Redirect } from 'react-router';
-import '@trendmicro/react-modal/dist/react-modal.css';
-import Modal from '@trendmicro/react-modal';
+import PopUp from './PopUpComponent'
 class Restaurant extends React.Component {
     state = {
         dishesDetails : [],
         flag : false,
-        open : false
+        openPopUp : []
     }
     componentDidMount() {
         axios.get('http://localhost:3001/getDishes')
@@ -16,6 +15,7 @@ class Restaurant extends React.Component {
             this.setState({
                 dishesDetails : this.state.dishesDetails.concat(response.data) 
             });
+            for (let i of this.state.dishesDetails) this.state.openPopUp.push(false)
             console.log(this.state.dishesDetails[0].dishName,"--");
         })
         .catch(error => {
@@ -27,43 +27,34 @@ class Restaurant extends React.Component {
         this.setState({flag : true});
     }
 
-    onOpenModal = () => {
-        this.setState({ open: true });
-      };
-    
-    onCloseModal = () => {
-        this.setState({ open: false });
-      };
+    handleCart = (index) => {
+        let temp = this.state.openPopUp;
+        temp[index] = !temp[index];
+        this.setState({openPopUp : temp});
+    }
 
     render() {
-        const { open } = this.state;
         let details = null; 
         let redirectDish = null;
         if (this.state.flag) {
             redirectDish = <Redirect to='/home'/>;
         } 
         if (this.state.dishesDetails.length !== 0) {
-            details = this.state.dishesDetails.map(dish => {
+            details = this.state.dishesDetails.map((dish, index) => {
                 return (
                     <div className="col-sm-4" style={{marginTop:"30px"}}>
-                        <div className="row">
+                        <div className="row" onClick={this.handleCart.bind(this, index)}>
                         <div className="col-sm-9" style={{border:"solid #D0CACA 1px"}}>
-                        <button onClick={this.onOpenModal} style={{background:"none", border:"none"}}><label><strong>{dish.dishName}</strong></label>
+                        <label><strong>{dish.dishName}</strong></label>
                         <label style={{fontSize:"12px"}}>{dish.description}</label>
-                        <label>{dish.price}</label></button>
-                        <Modal open={open} onClose={this.onCloseModal}>
-                            <h2>Simple centered modal</h2>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-                                pulvinar risus non risus hendrerit venenatis. Pellentesque sit amet
-                                hendrerit risus, sed porttitor quam.
-                            </p>
-                        </Modal>
+                        <br />
+                        <label>{dish.price}</label>
                         </div>
                         <div className="col-sm-3">
                         <img src={dish.dishImage} alt="nothing" width={70} height={100} style={{display:"block", marginLeft:"-20px"}}></img>
                         </div>
                         </div>
+                        {this.state.openPopUp[index] ? <PopUp show={this.state.openPopUp[index]} onHide={this.handleCart.bind(this, index)} dishInfo={dish}/> : null}
                     </div>
                 )
             })
