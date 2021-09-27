@@ -27,16 +27,16 @@ class HomeBody extends React.Component {
         console.log("-----", this.state.flag);
     }
 
-    render() {
+    render() { 
         let redirectRestaurantPage = null; 
         let details = null;
         if (this.state.flag) {
             redirectRestaurantPage = <Redirect to='/restaurantpage'/>
         }
         if (this.state.restaurantDetails.length !== 0) {
-            details = this.state.restaurantDetails.map(restaurant => {
+            details = this.state.restaurantDetails.map((restaurant,index) => {
                 return (
-                <div className="col-sm-3" style={{marginTop:"30px"}}>
+                <div className="col-sm-3" style={{marginTop:"30px"}} key={index}>
                 <div className="container" style={{position:"relative"}}>
                 <button style={{border:"solid black 2px"}} onClick={this.handleRestaurantPage}>
                     <img src={restaurant.restaurantImage} alt="nothing" width={140} height={150} 

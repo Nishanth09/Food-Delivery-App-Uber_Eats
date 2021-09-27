@@ -21,7 +21,7 @@ class AfterLoginNavbar extends React.Component {
         this.setState({menuFlag : e.currentTarget});
       }
       handleCount = () => {
-        this.setState({cartCount: this.state.cartCount + 1 });
+        this.setState({cartCount: this.state.cartCount + 4 });
       }
       onHandleClose = (e) => {
         this.setState({menuFlag : null});
@@ -82,7 +82,7 @@ class AfterLoginNavbar extends React.Component {
                 </Link>
                 <MenuItem>
                   Orders
-                </MenuItem>
+                </MenuItem> 
                 <MenuItem>
                   Favorites
                 </MenuItem>
@@ -97,7 +97,7 @@ class AfterLoginNavbar extends React.Component {
               </div>
             </div>
             <div className="col-sm-2">
-                    <Link to="/landingpage">
+                    <Link to="/">
                   <button className="btn btn-login">
                  <img src = {title_logo} width={120} height={20} alt="Nothing" style={{marginRight:"20px", paddingRight:"20px"}}></img>
                     </button>
