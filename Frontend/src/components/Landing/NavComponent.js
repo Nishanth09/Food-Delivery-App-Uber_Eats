@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import {Col, Container, Row} from 'react-bootstrap';
 import title_logo from '../../images/title_logo.png';
 import AfterLoginNavbar from './AfterNavComponent';
+import { connect } from 'react-redux';
 
 class Navbar extends React.Component {
     render() { 
@@ -43,4 +44,11 @@ function BeforeLoginNavbar() {
     );
 }
 
-export default Navbar;
+const mapStateToProps = state =>{
+  console.log("state mapstatetoprops in navbar",state);
+  return({
+      cart: state.cart.cartItems
+  });
+}
+
+export default connect(mapStateToProps)(Navbar);

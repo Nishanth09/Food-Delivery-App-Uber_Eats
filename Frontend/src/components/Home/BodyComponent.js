@@ -1,24 +1,21 @@
 import React from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router';
-
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { restaurantRedux } from '../../redux/reduxActions/restaurantAction';
+import restaurantReducer from '../../redux/reduxReducers/restaurantReducer';
 class HomeBody extends React.Component {
-    state = {
-        restaurantDetails : [],
-        flag : false
-    };
-
-    componentDidMount() {
-        axios.get('http://localhost:3001/getAllRestaurants')
-        .then(response => {
-            this.setState({
-                restaurantDetails : this.state.restaurantDetails.concat(response.data) 
-            });
-            console.log(this.state.restaurantDetails[0].restaurantImage,"--");
-        })
-        .catch(error => {
-            console.log(error);
-        })
+    constructor(props) {
+        super(props);
+        this.state = {
+            restaurantDetails : [],
+            flag : false
+        };
+    }
+     
+    async componentDidMount() {
+        await this.props.restaurantRedux()
     }
 
     handleRestaurantPage = (e) => {
@@ -28,15 +25,16 @@ class HomeBody extends React.Component {
     }
 
     render() { 
+        console.log(this.props);
         let redirectRestaurantPage = null; 
         let details = null;
         if (this.state.flag) {
             redirectRestaurantPage = <Redirect to='/restaurantpage'/>
         }
-        if (this.state.restaurantDetails.length !== 0) {
-            details = this.state.restaurantDetails.map((restaurant,index) => {
+        if (this.props.restaurant.length !== 0) {
+            details = this.props.restaurant.map((restaurant,index) => {
                 return (
-                <div className="col-sm-3" style={{marginTop:"30px"}} key={index}>
+                <div className="col-sm-3" style={{marginTop:"30px"}} key={restaurant.id}>
                 <div className="container" style={{position:"relative"}}>
                 <button style={{border:"solid black 2px"}} onClick={this.handleRestaurantPage}>
                     <img src={restaurant.restaurantImage} alt="nothing" width={140} height={150} 
@@ -65,5 +63,17 @@ class HomeBody extends React.Component {
         );
     }
 }
+
+HomeBody.propTypes = {
+    restaurantRedux: PropTypes.func.isRequired,
+    restaurant: PropTypes.array.isRequired
+}
+  
+const mapStateToProps = state =>{
+    console.log("state mapstatetoprops in restaurant",state);
+    return({
+        restaurant: state.restaurant.restaurantDetails
+    });
+}
  
-export default HomeBody;
+export default connect(mapStateToProps, { restaurantRedux })(HomeBody);

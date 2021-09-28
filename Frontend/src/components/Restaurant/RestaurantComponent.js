@@ -1,27 +1,23 @@
 import React from 'react';
 import Navbar from '../Landing/NavComponent';
-import axios from 'axios';
 import { Redirect } from 'react-router';
-import PopUp from './PopUpComponent'
+import PopUp from './PopUpComponent';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { menuRedux } from '../../redux/reduxActions/restaurantAction';
 class Restaurant extends React.Component {
-    state = {
-        dishesDetails : [],
-        flag : false,
-        openPopUp : []
+    constructor(props) {
+        super(props);
+        this.state = {
+            dishesDetails : [],
+            flag : false,
+            openPopUp : []
+        }
     }
-    componentDidMount() {
-        axios.get('http://localhost:3001/getDishes')
-        .then(response => {
-            this.setState({
-                dishesDetails : this.state.dishesDetails.concat(response.data) 
-            });
-            for (let i of this.state.dishesDetails) this.state.openPopUp.push(false)
-            console.log(this.state.dishesDetails[0].dishName,"--");
-        })
-        .catch(error => {
-            console.log(error);
-        })
+    async componentDidMount() {
+        await this.props.menuRedux();
     }
+   
 
     handleDish = (e) => {
         this.setState({flag : true});
@@ -34,15 +30,16 @@ class Restaurant extends React.Component {
     }
 
     render() {
+        console.log(this.props,"[[")
         let details = null; 
         let redirectDish = null;
         if (this.state.flag) {
             redirectDish = <Redirect to='/home'/>;
         } 
-        if (this.state.dishesDetails.length !== 0) {
-            details = this.state.dishesDetails.map((dish, index) => {
+        if (this.props.menu.length !== 0) {
+            details = this.props.menu.map((dish, index) => {
                 return (
-                    <div className="col-sm-4" style={{marginTop:"30px"}}>
+                    <div className="col-sm-4" style={{marginTop:"30px"}} key={dish.id}>
                         <div className="row" onClick={this.handleCart.bind(this, index)}>
                         <div className="col-sm-9" style={{border:"solid #D0CACA 1px"}}>
                         <label><strong>{dish.dishName}</strong></label>
@@ -84,5 +81,19 @@ class Restaurant extends React.Component {
         );
     }
 }
+
+Restaurant.propTypes = {
+    menuRedux: PropTypes.func.isRequired,
+    menu: PropTypes.array.isRequired,
+    restaurant: PropTypes.array.isRequired
+}
+  
+const mapStateToProps = state =>{
+    console.log("state mapstatetoprops in restaurant",state);
+    return({
+        menu: state.restaurant.menuDetails,
+        restaurant: state.restaurant.restaurantDetails
+    });
+}
  
-export default Restaurant;
+export default connect(mapStateToProps, { menuRedux })(Restaurant);

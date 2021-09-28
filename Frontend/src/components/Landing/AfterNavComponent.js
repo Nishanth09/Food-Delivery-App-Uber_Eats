@@ -10,12 +10,18 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import "../../App.css";
 import title_logo from '../../images/title_logo.png';
+import { connect } from 'react-redux';
+import { cartRedux } from '../../redux/reduxActions/cartAction';
+import PropTypes from 'prop-types';
 
 class AfterLoginNavbar extends React.Component {
-    state = {
-        menuFlag : null,
-        cartCount : 0
-      }
+  constructor(props) {
+    super(props);
+    this.state = {
+      menuFlag : null,
+      cartCount : 0
+    }
+  }
       onHandleClick = (e) => {
         console.log(e.currentTarget,"-------");
         this.setState({menuFlag : e.currentTarget});
@@ -123,7 +129,7 @@ class AfterLoginNavbar extends React.Component {
             <div className="col-md-2" style={{marginTop:"10px"}}>
             <button type = "button" onClick={this.handleCount} className="btn btn-dark" style={{marginLeft:"-15px"}}>
                 <Badge badgeContent={0} color="secondary">
-        <ShoppingCartIcon />Cart {this.state.cartCount}
+        <ShoppingCartIcon />Cart {this.props.cart}
         </Badge>
         </button> 
         
@@ -133,5 +139,17 @@ class AfterLoginNavbar extends React.Component {
             );
     }
 }
- 
-export default AfterLoginNavbar;
+
+AfterLoginNavbar.propTypes = {
+  cartRedux: PropTypes.func.isRequired,
+  cart: PropTypes.array.isRequired
+}
+
+const mapStateToProps = state =>{
+  console.log("state mapstatetoprops in afternav",state);
+  return({
+      cart: state.cart.cartItems
+  });
+}
+
+export default connect(mapStateToProps, {cartRedux})(AfterLoginNavbar);

@@ -1,6 +1,5 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-//import ubereats_image from '../../images/ubereats_image.svg';
 import BodyContent from './BodyComponent';
 import Navbar from './NavComponent';
 import '../../App.css';

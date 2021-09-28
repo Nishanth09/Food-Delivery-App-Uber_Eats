@@ -1,16 +1,16 @@
-import {LOGIN} from '../types'
+import { CART } from '../types';
 
 const initialState = {
-    user : [] 
-}; 
+    cartItems : []
+}
 
 export default function (state = initialState, action) {
     switch (action.type) {
-        case LOGIN:
-            console.log("reducing action");
+        case CART:
+            console.log("cart reducing");
             return {
                 ...state,
-                user : action.payload
+                cartItems : action.payload
             };
         default:
             return state;

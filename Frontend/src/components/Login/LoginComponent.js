@@ -35,7 +35,7 @@ class Login extends React.Component {
       };
       await this.props.loginRedux(data);
       this.setState({flag : true});
-      //action to be called
+      //action to be called 
     }
     render() { 
       let re = null;
@@ -44,7 +44,7 @@ class Login extends React.Component {
           pathname: '/home',
           state: this.props.user
       }}/>;
-      }
+      } 
         return (
           <React.Fragment>
             {re}
@@ -79,7 +79,7 @@ class Login extends React.Component {
           </Container>
           </React.Fragment>
         );
-    }
+    } 
 }
 
 Login.propTypes = {
@@ -87,13 +87,12 @@ Login.propTypes = {
   user: PropTypes.array.isRequired
 }
 
-
 const mapStateToProps = state =>{
   console.log("state mapstatetoprops in login",state);
   return({
       user: state.login.user
   });
 }
-
+  
 export default connect(mapStateToProps, {loginRedux})(Login);
  
