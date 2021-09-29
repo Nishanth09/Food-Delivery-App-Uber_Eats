@@ -1,21 +1,37 @@
 import React from 'react';
-import './PopUp.css'
 import {Modal, Container, Row, Col, Button, Form} from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { cartRedux } from '../../redux/reduxActions/cartAction';
+import { cartRedux, minusCartRedux, plusCartRedux } from '../../redux/reduxActions/restaurantAction';
 import PropTypes from 'prop-types';
 
 class PopUp extends React.Component {
-    // handleClose = () => {
-    //     this.props.cartRedux()
-    //     this.props.onHide();
-    // }
-    handleCart = () => {
-        this.props.cartRedux();
-        this.props.cart.push(1);
+    constructor(props) {
+        super(props);
+        this.state = {
+            qty : 1
+        }
+    }
+    handleCart = (dishinfo) => {
+        this.props.cartRedux(dishinfo);
+        this.props.onHide();
+    }
+    handleMinus = (dishinfo) => {
+        this.setState((state, props) => {
+            return {
+              qty: state.qty - 1,
+            };
+          });
+        this.props.minusCartRedux(dishinfo);
+    }
+    handlePlus = (dishinfo) => {
+        this.setState((state, props) => {
+            return {
+              qty: state.qty + 1,
+            };
+          });
+        this.props.plusCartRedux(dishinfo);
     }
     render() { 
-        console.log(this.props);
         return (
             <Modal {...this.props} aria-labelledby="contained-modal-title-vcenter">
             <Modal.Header closeButton>
@@ -59,11 +75,18 @@ class PopUp extends React.Component {
                     <hr />
                     <Row>
                         <Col sm={4}>
-                        <Button style={{background:"grey", borderRadius:"100%", color:"black", border: "none", width:"40px"}}>-</Button>
-                        <Button style={{background:"grey", borderRadius:"100%", color:"black", border: "none", marginLeft:"40px", width:"40px"}}>+</Button>
+                        <Button onClick={this.handleMinus.bind(this, this.props.dishInfo)} 
+                        style={{background:"grey", borderRadius:"100%", color:"black", 
+                        border: "none", width:"40px"}}>-</Button>
+                        {this.state.qty}
+                        <Button onClick={this.handlePlus.bind(this, this.props.dishInfo)} 
+                        style={{background:"grey", borderRadius:"100%", color:"black", 
+                        border: "none", marginLeft:"40px", width:"40px"}}>+</Button>
                         </Col>
                         <Col sm={8}>
-                        <Button onClick={this.handleCart} style={{background:"black", width:"100%", border:"none"}}>Add to Cart</Button>
+                        <Button onClick={this.handleCart.bind(this, this.props.dishInfo)} 
+                        style={{background:"black", width:"100%", border:"none"}}>
+                            Add {this.state.qty} to Cart</Button>
                         </Col>
                         </Row>
               </Container>
@@ -75,14 +98,16 @@ class PopUp extends React.Component {
 
 PopUp.propTypes = {
     cartRedux: PropTypes.func.isRequired,
+    plusCartRedux: PropTypes.func.isRequired,
+    minusCartRedux: PropTypes.func.isRequired,
     cart: PropTypes.array.isRequired
 }
 
 const mapStateToProps = state =>{
     console.log("state mapstatetoprops in popup",state);
     return({
-        cart: state.cart.cartItems
+        cart: state.restaurant.cartItems
     });
 }
   
-export default connect(mapStateToProps, {cartRedux})(PopUp);
+export default connect(mapStateToProps, {cartRedux, plusCartRedux, minusCartRedux})(PopUp);

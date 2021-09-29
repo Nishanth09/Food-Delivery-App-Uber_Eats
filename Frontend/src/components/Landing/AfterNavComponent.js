@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import "../../App.css";
 import title_logo from '../../images/title_logo.png';
 import { connect } from 'react-redux';
-import { cartRedux } from '../../redux/reduxActions/cartAction';
+import { restaurantRedux } from '../../redux/reduxActions/restaurantAction';
 import PropTypes from 'prop-types';
 
 class AfterLoginNavbar extends React.Component {
@@ -33,6 +33,12 @@ class AfterLoginNavbar extends React.Component {
         this.setState({menuFlag : null});
       }
     render() { 
+      console.log("----===",this.props.cart);
+      let cartCount = null;
+      for (let item of this.props.cart) {
+        cartCount += item.qty;
+      }
+      console.log("cart count : ", cartCount);
         return (
         <div className="container">
           <div className="row">
@@ -129,7 +135,7 @@ class AfterLoginNavbar extends React.Component {
             <div className="col-md-2" style={{marginTop:"10px"}}>
             <button type = "button" onClick={this.handleCount} className="btn btn-dark" style={{marginLeft:"-15px"}}>
                 <Badge badgeContent={0} color="secondary">
-        <ShoppingCartIcon />Cart {this.props.cart}
+        <ShoppingCartIcon />Cart {this.props.cart.length}
         </Badge>
         </button> 
         
@@ -148,8 +154,8 @@ AfterLoginNavbar.propTypes = {
 const mapStateToProps = state =>{
   console.log("state mapstatetoprops in afternav",state);
   return({
-      cart: state.cart.cartItems
+      cart: state.restaurant.cartItems
   });
 }
 
-export default connect(mapStateToProps, {cartRedux})(AfterLoginNavbar);
+export default connect(mapStateToProps, {restaurantRedux})(AfterLoginNavbar);

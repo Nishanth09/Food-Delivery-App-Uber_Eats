@@ -47,7 +47,7 @@ function BeforeLoginNavbar() {
 const mapStateToProps = state =>{
   console.log("state mapstatetoprops in navbar",state);
   return({
-      cart: state.cart.cartItems
+      cart: state.restaurant.cartItems
   });
 }
 

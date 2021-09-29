@@ -1,4 +1,4 @@
-import { RESTAURANT, MENU, ERROR } from "../types";
+import { CART, RESTAURANT, MENU, ADD_CART, RMV_CART, ERROR } from "../types";
 import axios from 'axios';
 
 export const restaurantRedux = () => async dispatch => {
@@ -34,4 +34,28 @@ export const menuRedux = () => async dispatch => {
             payload: error
         })
     })
-} 
+}
+
+export const cartRedux = (data) => (dispatch) => {
+    console.log("action cart");
+    dispatch({
+        type : CART,
+        payload : data
+    })
+}
+
+export const minusCartRedux = (data) => (dispatch) => {
+    console.log("action cart");
+    dispatch({
+        type : RMV_CART,
+        payload : data
+    })
+}
+
+export const plusCartRedux = (data) => (dispatch) => {
+    console.log("action cart");
+    dispatch({
+        type : ADD_CART,
+        payload : data
+    })
+}
