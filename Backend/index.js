@@ -107,7 +107,12 @@ const userCreds = {
 const serviceProvider = "Uber Eats";
 
 app.post("/login", (req, res) => {
-    res.send(restaurantDetails);
+    res.send("Recieved successfully");
+    console.log(req.body);
+});
+
+app.post("/loginRestaurant", (req, res) => {
+    res.send("Recieved successfully from restaurant");
     console.log(req.body);
 });
 
