@@ -1,5 +1,7 @@
 export const LOGIN = 'LOGIN';
 
+export const RESTAURANT_LOGIN = 'RESTAURANT_LOGIN';
+
 export const ERROR = 'ERROR';
 
 export const REGISTER = 'REGISTER';

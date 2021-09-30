@@ -22,7 +22,7 @@ class BodyContent extends React.Component {
            </div>
            </div>
            <div className="col-md">
-           <button type="button" className="btn btn-dark">Find Food</button>
+           <button type="button" className="btn btn-dark" style={{height:"40px"}}>Find Food</button>
            </div>
            </div>
        </div>

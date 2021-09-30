@@ -2,7 +2,8 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import BodyContent from './BodyComponent';
 import Navbar from './NavComponent';
-import '../../App.css';
+import uber_eats_background from "../../images/uber_eats_background.png";
+
 
 class Landing extends React.Component {
   state = {
@@ -14,12 +15,12 @@ class Landing extends React.Component {
       renderContent = <BodyContent />;
     }
     return (
-    <React.Fragment>
+    <div style={{backgroundImage:`url(${uber_eats_background})`}}>
     <Navbar />
     {renderContent}
-    </React.Fragment>
+    </div>
     );
   }
 }
- 
+  
 export default Landing;

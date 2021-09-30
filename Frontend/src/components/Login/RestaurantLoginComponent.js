@@ -1,53 +1,46 @@
 import React from 'react';
-import {Input, Label, FormGroup, 
-  Button, Container, Row} from 'reactstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Redirect } from 'react-router';
-import {loginRedux} from '../../redux/reduxActions/loginAction';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import {Input, Label, FormGroup, Button, Container, Row} from 'reactstrap';
 import login_logo from '../../images/login_logo.png'
 import { Link } from 'react-router-dom';
+import {loginRestaurantRedux} from '../../redux/reduxActions/loginAction';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router';
 
-class Login extends React.Component {
+class RestaurantLogin extends React.Component {
     constructor(props) {
-      super(props);
-      this.state = {
-        email : "",
-        password : "",
-        flag : false
-      };
+        super(props);
+        this.state = {
+            email : null,
+            password : null,
+            flag : false
+        }
     }
-
     onHandleEmail = (e) => {
-      this.setState({email : e.target.value});
+        this.setState({email : e.target.value});
     };
-
+  
     onHandlePassword = (e) => {
-      this.setState({password : e.target.value});
+        this.setState({password : e.target.value});
     }
-
     formSubmit = async (e) => {
-      e.preventDefault();
-      const data = {
-        email: this.state.email,
-        password: this.state.password,
-      };
-      await this.props.loginRedux(data);
-      this.setState({flag : true});
-      //action to be called 
-    }
-    render() { 
-      let re = null;
-      if (this.state.flag) {
-        re = <Redirect to={{
-          pathname: '/home',
-          state: this.props.user
-      }}/>;
-      } 
+        e.preventDefault();
+        const data = {
+          email: this.state.email,
+          password: this.state.password,
+        };
+        await this.props.loginRestaurantRedux(data);
+        this.setState({flag : true});
+        //action to be called 
+      }
+    render() {
+        let redirectDashboard = null; 
+        if (this.state.flag) {
+            redirectDashboard = <Redirect to='/dashboard' />;
+        }
         return (
-          <div>
-            {re}
+            <div>
+                {redirectDashboard}
           <Container>
             <Row style={{textAlign:'center', marginTop:'10px'}}>
               <img src={login_logo} alt="login_logo" style={{height:'30px',width:'400px', marginLeft:'250px', marginTop:'80px'}}></img>
@@ -74,24 +67,23 @@ class Login extends React.Component {
             </Row>
             <Row style={{display:'inline-block', marginLeft:'300px', marginTop:'20px'}}>
               <span>New to Uber?</span>
-              <Link to='/signup'>Create an account</Link>
+              <Link to='/restaurantSignup'>Create an account</Link>
               </Row>
           </Container>
           </div>
         );
-    } 
+    }
 }
 
-Login.propTypes = {
-  loginRedux: PropTypes.func.isRequired,
-  user: PropTypes.array.isRequired
-}
-
-const mapStateToProps = state =>{
-  return({
-      user: state.login.userDetails
-  });
+RestaurantLogin.propTypes = {
+    loginRestaurantRedux: PropTypes.func.isRequired,
+    user: PropTypes.array.isRequired
 }
   
-export default connect(mapStateToProps, {loginRedux})(Login);
- 
+const mapStateToProps = state =>{
+    return({
+        user: state.login.userDetails
+    });
+}
+    
+export default connect(mapStateToProps, {loginRestaurantRedux})(RestaurantLogin);

@@ -1,44 +1,21 @@
-import React, { Component } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react';
 import { Button, Row, Container, FormGroup, Label, Input } from "reactstrap";
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {registerRedux} from '../../redux/reduxActions/registerAction';
-import login_logo from '../../images/login_logo.png';
 import { Link } from 'react-router-dom';
+import login_logo from '../../images/login_logo.png';
 
-class Register extends Component {
-  constructor(props) {
-    super(props);
-      this.state = {
-          name: "",
-          email: "",
-          password: ""
-      };
-  }
-
-  onHandleSubmit = async (e) => {
-    e.preventDefault();
-    const data = {
-      name: this.state.name,
-      email: this.state.email,
-      password: this.state.password
-    };
-    await this.props.registerRedux(data);
-  }
-
-  render() {
-    return (
-      <Container>
+class RestaurantRegister extends React.Component {
+    render() { 
+        return (
+            <Container>
          <Row style={{textAlign:'center', marginTop:'10px'}}>
               <img src={login_logo} alt="login_logo" style={{height:'30px',width:'400px', marginLeft:'250px', marginTop:'80px'}}></img>
               <h4 style={{textAlign:'left', marginTop:"30px"}}>Let's get started</h4>
               </Row>
               <Row style={{ marginTop:'10px'}}>
             <FormGroup>
-                <Label for="mobile">Enter your phone number (required)</Label>
-                <Input type="text" name="contact" id="contact" 
-                placeholder="Mobile number" 
+                <Label for="name">Enter the restaurant name</Label>
+                <Input type="text" name="rname" id="rname" 
+                placeholder="Restaurant name" 
                 onChange={(e) => {this.setState({ name: e.target.value })}} />
                 </FormGroup>
             </Row>
@@ -57,6 +34,14 @@ class Register extends Component {
                   onChange={(e) => this.setState({ password: e.target.value })} />
             </FormGroup>
             </Row>
+            <Row style={{ marginTop:'10px'}}>
+            <FormGroup>
+                  <Label for="location">Location</Label>
+                  <Input type="text" name="location" 
+                  id="location" placeholder="Enter location"
+                  onChange={(e) => this.setState({ location: e.target.value })} />
+            </FormGroup>
+            </Row>
             <Row style={{ marginTop:'20px'}}>
               <Button onClick={this.onHandleSubmit} style={{height:'40px', 
               backgroundColor:'#27AE60'}}>Sign up</Button>
@@ -65,21 +50,11 @@ class Register extends Component {
               <span>Already use Uber?</span>
               <Link to='/login'>Sign in</Link>
               </Row>
+              <Row style={{marginTop:"20px"}}>
+                  </Row>
           </Container>
-    );
+        );
+    }
 }
-}
-
-Register.propTypes = {
-  registerRedux : PropTypes.func.isRequired,
-  details : PropTypes.string.isRequired
-}
-
-const mapStateToProps = state => {
-  console.log("state mapstatetoprops in signup",state);
-    return({
-        details: state.register.details
-    });
-}
-
-export default connect(mapStateToProps, {registerRedux})(Register);
+ 
+export default RestaurantRegister;

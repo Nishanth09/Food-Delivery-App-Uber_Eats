@@ -27,16 +27,23 @@ function BeforeLoginNavbar() {
         <React.Fragment>
         <Container>
           <Row >
-            <Col style = {{marginTop: "10px"}}>
+            <Col sm={8} style = {{marginTop: "10px"}}>
             <Link to="/"><img alt="" style={{height:'100',width:'100'}} src={title_logo}/>
             </Link>
             </Col>
-            <Col style={{textAlign:'right'}}>
+            <Col sm={2}>
               <Link className="btn btn-light" 
               style={{ textDecoration:'None', marginRight: '30px', marginTop:'10px' , 
-              backgroundColor:'white', borderColor:'grey', 
+              backgroundColor:'#CACFD2', borderColor:'grey', 
               borderRadius: '20px 20px 20px 20px', color:'black'}}
-               to="/login">Sign In</Link>
+               to="/restaurantLogin">Restaurant Sign in</Link>
+            </Col>
+            <Col sm={2}>
+              <Link className="btn btn-light" 
+              style={{ textDecoration:'None', marginRight: '30px', marginTop:'10px' , 
+              backgroundColor:'#CACFD2', borderColor:'grey', 
+              borderRadius: '20px 20px 20px 20px', color:'black'}}
+               to="/login">Customer Sign In</Link>
             </Col>
           </Row>
         </Container>

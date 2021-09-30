@@ -1,7 +1,7 @@
-import {LOGIN} from '../types'
+import {LOGIN, RESTAURANT_LOGIN} from '../types'
 
 const initialState = {
-    user : [] 
+    userDetails : []
 }; 
 
 export default function (state = initialState, action) {
@@ -10,8 +10,13 @@ export default function (state = initialState, action) {
             console.log("reducing action");
             return {
                 ...state,
-                user : action.payload
+                userDetails : [action.payload]
             };
+        case RESTAURANT_LOGIN:
+            return {
+                ...state,
+                userDetails : [action.payload]
+            }
         default:
             return state;
     }
