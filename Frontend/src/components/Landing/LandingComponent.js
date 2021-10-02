@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import BodyContent from './BodyComponent';
 import Navbar from './NavComponent';
 import uber_eats_background from "../../images/uber_eats_background.png";
+import ub2 from "../../images/ub2.svg";
 
 
 class Landing extends React.Component {
@@ -15,7 +16,7 @@ class Landing extends React.Component {
       renderContent = <BodyContent />;
     }
     return (
-    <div style={{backgroundImage:`url(${uber_eats_background})`}}>
+    <div style={{backgroundImage:`url(${uber_eats_background})`, height:"608px", backgroundColor:"#ABEBC6"}}>
     <Navbar />
     {renderContent}
     </div>

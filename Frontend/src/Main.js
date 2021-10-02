@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import Dashboard from './components/Dashboard/DashBoardComponent';
 import ManagerProfile from './components/Dashboard/ManagerProfileComponent';
 import Menu from './components/Dashboard/MenuComponent';
 import SideBar from './components/Dashboard/SideBarComponent';
@@ -13,6 +12,11 @@ import Profile from './components/Profile/ProfileComponent';
 import Register from './components/Register/RegisterComponent';
 import RestaurantRegister from './components/Register/RestaurantRegisterComponent';
 import Restaurant from './components/Restaurant/RestaurantComponent';
+import Orders from './components/Dashboard/orders/OrdersComponent';
+import NewOrder from './components/Dashboard/orders/NewOrdersComponent';
+import DeliveredOrders from './components/Dashboard/orders/DeliveredOrdersComponent';
+import AllOrders from './components/Dashboard/orders/AllOrdersComponent';
+import CancelledOrers from './components/Dashboard/orders/CancelledOrdersComponent';
 
 class Main extends React.Component {
     render() { 
@@ -33,6 +37,11 @@ class Main extends React.Component {
             <Col sm={9}>
               <Route path="/dashboard/profile" component={ManagerProfile} />
               <Route path="/dashboard/menu" component={Menu} />
+              <Route path="/dashboard/orders" component={Orders} />
+              <Route path="/dashboard/orders/all" component={AllOrders} />
+              <Route path="/dashboard/orders/new" component={NewOrder} />
+              <Route path="/dashboard/orders/delivered" component={DeliveredOrders} />
+              <Route path="/dashboard/orders/cancelled" component={CancelledOrers} />
             </Col>
           </Row>
             </React.Fragment>

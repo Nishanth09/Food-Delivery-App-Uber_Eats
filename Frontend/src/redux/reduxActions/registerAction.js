@@ -1,12 +1,27 @@
-import { ERROR, REGISTER } from "../types";
+import { ERROR, SIGNUP_CUSTOMER, SIGNUP_RESTAURANT } from "../types";
 import axios from 'axios';
 
-export const registerRedux = (data) => async dispatch =>{
-    await axios.post('http://localhost:3001/signup', data)
+export const registerCustomerRedux = (data) => async dispatch =>{
+    await axios.post('http://localhost:3001/signup_user', data)
     .then(response => {
-        console.log("Action in action");
         dispatch({
-            type : REGISTER,
+            type : SIGNUP_CUSTOMER,
+            payload : response.data
+        })
+    })
+    .catch(error => {
+        dispatch({
+            type : ERROR,
+            payload : error
+        })
+    })
+}
+
+export const registerRestaurantRedux = (data) => async dispatch =>{
+    await axios.post('http://localhost:3001/signup_owner', data)
+    .then(response => {
+        dispatch({
+            type : SIGNUP_RESTAURANT,
             payload : response.data
         })
     })

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Input, Label, FormGroup, Button, Container, Row} from 'reactstrap';
-import login_logo from '../../images/login_logo.png'
+import login_logo from '../../images/login_logo.png';
 import { Link } from 'react-router-dom';
 import {loginRestaurantRedux} from '../../redux/reduxActions/loginAction';
 import { connect } from 'react-redux';
@@ -11,13 +11,13 @@ class RestaurantLogin extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            email : null,
+            username : null,
             password : null,
             flag : false
         }
     }
     onHandleEmail = (e) => {
-        this.setState({email : e.target.value});
+        this.setState({username : e.target.value});
     };
   
     onHandlePassword = (e) => {
@@ -26,32 +26,32 @@ class RestaurantLogin extends React.Component {
     formSubmit = async (e) => {
         e.preventDefault();
         const data = {
-          email: this.state.email,
+          username: this.state.username,
           password: this.state.password,
         };
         await this.props.loginRestaurantRedux(data);
         this.setState({flag : true});
-        //action to be called 
       }
     render() {
         let redirectDashboard = null; 
         if (this.state.flag) {
-            redirectDashboard = <Redirect to='/dashboard' />;
-        }
+            redirectDashboard = <Redirect to='/dashboard/profile' />;
+        } 
         return (
             <div>
                 {redirectDashboard}
           <Container>
             <Row style={{textAlign:'center', marginTop:'10px'}}>
-              <img src={login_logo} alt="login_logo" style={{height:'30px',width:'400px', marginLeft:'250px', marginTop:'80px'}}></img>
+              <Link to='/'><img src={login_logo} alt="login_logo" style={{height:'30px',width:'400px', marginTop:'80px'}}></img></Link>
               <br />
-              <h4 style={{textAlign:'left'}}>Welcome back</h4>
+              <label style={{marginTop:"10px", fontFamily:"sans-serif", fontWeight:"200", fontStyle:"italic"}}>For Restaurants</label>
+              <label style={{textAlign:'left', marginTop:"30px", fontWeight:"600", fontSize:"24px"}}>Welcome back</label>
               </Row>
             <Row style={{ marginTop:'10px'}}>
             <FormGroup>
-                <Label for="exampleEmail">Email</Label>
-                <Input type="email" name="email" id="exampleEmail" 
-                placeholder="Email or mobile number" onChange={this.onHandleEmail} />
+                <Label for="exampleEmail">Username</Label>
+                <Input type="text" name="username" id="exampleEmail" 
+                placeholder="Username" onChange={this.onHandleEmail} />
                 </FormGroup>
             </Row>
             <Row style={{ marginTop:'10px'}}>

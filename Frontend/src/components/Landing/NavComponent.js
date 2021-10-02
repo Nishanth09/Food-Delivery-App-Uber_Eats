@@ -21,29 +21,22 @@ class Navbar extends React.Component {
       );
     }
 }
-
+ 
 function BeforeLoginNavbar() {
     return (
         <React.Fragment>
         <Container>
           <Row >
-            <Col sm={8} style = {{marginTop: "10px"}}>
+            <Col sm={10} style = {{marginTop: "10px"}}>
             <Link to="/"><img alt="" style={{height:'100',width:'100'}} src={title_logo}/>
             </Link>
             </Col>
             <Col sm={2}>
               <Link className="btn btn-light" 
               style={{ textDecoration:'None', marginRight: '30px', marginTop:'10px' , 
-              backgroundColor:'#CACFD2', borderColor:'grey', 
-              borderRadius: '20px 20px 20px 20px', color:'black'}}
-               to="/restaurantLogin">Restaurant Sign in</Link>
-            </Col>
-            <Col sm={2}>
-              <Link className="btn btn-light" 
-              style={{ textDecoration:'None', marginRight: '30px', marginTop:'10px' , 
-              backgroundColor:'#CACFD2', borderColor:'grey', 
-              borderRadius: '20px 20px 20px 20px', color:'black'}}
-               to="/login">Customer Sign In</Link>
+              backgroundColor:'#E5E7E9', borderColor:'grey', 
+              borderRadius: '30px', width:"100px", border:'none', color:'black', fontWeight:"500"}}
+               to="/login">Sign In</Link>
             </Col>
           </Row>
         </Container>

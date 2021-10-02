@@ -1,10 +1,14 @@
 import { combineReducers } from 'redux';
 import loginReducer from './loginReducer';
+import logoutReducer from './logoutReducer';
 import registerReducer from './registerReducer';
 import restaurantReducer from './restaurantReducer';
+import userDetailsReducer from './userDetailsReducer';
 
 export default combineReducers({
     login : loginReducer,
     register : registerReducer,
-    restaurant : restaurantReducer
+    logout : logoutReducer,
+    restaurant : restaurantReducer,
+    user : userDetailsReducer
 })

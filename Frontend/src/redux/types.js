@@ -1,10 +1,18 @@
-export const LOGIN = 'LOGIN';
+export const LOGIN_CUSTOMER = 'LOGIN_CUSTOMER';
 
-export const RESTAURANT_LOGIN = 'RESTAURANT_LOGIN';
+export const LOGIN_RESTAURANT = 'LOGIN_RESTAURANT';
+
+export const SIGNUP_CUSTOMER = 'SIGNUP_CUSTOMER';
+
+export const SIGNUP_RESTAURANT = 'SIGNUP_RESTAURANT';
+
+export const LOGOUT_CUSTOMER = 'LOGOUT_CUSTOMER';
+
+export const LOGOUT_RESTAURANT = 'LOGOUT_RESTAURANT';
+
+export const GET_USER_DETAILS = 'GET_USER_DETAILS';
 
 export const ERROR = 'ERROR';
-
-export const REGISTER = 'REGISTER';
 
 export const RESTAURANT = 'RESTAURANT';
 

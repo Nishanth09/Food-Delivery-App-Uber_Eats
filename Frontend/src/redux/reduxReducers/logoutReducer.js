@@ -1,21 +1,21 @@
-import { SIGNUP_CUSTOMER, SIGNUP_RESTAURANT } from "../types";
+import {LOGOUT_CUSTOMER, LOGOUT_RESTAURANT} from '../types';
 
-const intialState = {
+const initialState = {
     response : ""
-}
+}; 
 
-export default function(state = intialState, action) {
+export default function (state = initialState, action) {
     switch (action.type) {
-        case SIGNUP_CUSTOMER:
+        case LOGOUT_CUSTOMER:
             return {
                 ...state,
                 response : action.payload
             };
-        case SIGNUP_RESTAURANT:
+        case LOGOUT_RESTAURANT:
             return {
                 ...state,
                 response : action.payload
-            };
+            }
         default:
             return state;
     }

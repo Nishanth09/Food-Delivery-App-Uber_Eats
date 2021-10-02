@@ -1,5 +1,11 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
+import login_logo from '../../images/login_logo.png';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {logoutCustomerRedux} from '../../redux/reduxActions/logoutAction';
+import {getUserDetailsRedux} from '../../redux/reduxActions/userDetailsAction';
+import { Button } from "reactstrap";
 
 class Profile extends React.Component {
     state = {
@@ -12,9 +18,7 @@ class Profile extends React.Component {
         state: "",
         profilePic: "",
       },
-      error: {},
-      loginError: "",
-      auth: false,
+      flag: false,
     };
 
   handleChange = (e) => {
@@ -26,15 +30,21 @@ class Profile extends React.Component {
     });
   };
 
-  componentDidMount() {
-        this.setState({
-          userinfo: this.state.userinfo
-        });
-  }
+// async componentDidMount() {
+//     await this.props.getUserDetailsRedux();
+//     this.setState({
+//       userinfo: this.state.userinfo
+//     });
+// }
 
-  submitForm = (e) => {
-    //prevent page from refresh
+  handleLogout = async (e) => {
     e.preventDefault();
+    const data = {
+      email: this.state.userinfo.email,
+      nickname: this.state.userinfo.nickname,
+    };
+    await this.props.logoutCustomerRedux();
+    this.setState({flag : true});
   };
 
   validateForm = () => {
@@ -47,23 +57,38 @@ class Profile extends React.Component {
   };
 
   render() {
-    let redirectVar = null;
-    redirectVar = <Redirect to="/profile" />
+    let redirectHome = null;
+    if (this.state.flag) {
+      redirectHome = <Redirect to="/" />
+    }
     let picture = "";
     if (this.state.userinfo.profilePic !== "") {
       picture = this.state.userinfo.UserProfilePic;
     } else {
-      picture = "./userIcon.jpg";
+      picture = "../../userIcon.jpg";
     }
     return (
       <div>
-        {redirectVar}
-        <div className="container" style={{ marginLeft: "350px", marginTop: "50px" }}>
-            <div className="row">
-                <h2>Hello, Nishanth</h2>
-                <div className="col col-sm-3">
+        {redirectHome}
+        <div className="container" style={{ marginTop: "20px"}}>
+          <div className="row">
+          <div className="col-sm-2">
+          <img src={login_logo} alt="login_logo" style={{height:'30px',width:'400px', marginLeft:'100px'}}></img>
+            </div>
+          <div className="col-sm-2 offset-sm-8">
+          <Button onClick={this.handleLogout} className="btn btn-secondary" style={{width:"100px"}}>logout</Button>
+          </div>
+            </div>
+            <div className="row" style={{marginTop:"30px"}}>
+              <div className="col-sm-4 offset-sm-4">
+              <div className="row">
+              <h2>Hello, Nishanth</h2>
                 <label>Update your profile picture</label>
-                <img src={picture} alt="nothing" width={100} height={100}></img>
+              </div>
+              <div className="row">
+              <img src={picture} alt="nothing" style={{width:"100px", height:"100px"}}></img>
+                </div>
+                <div className="row">
                 <input
                   className="btn"
                   style={{
@@ -75,10 +100,13 @@ class Profile extends React.Component {
                   name="image"
                   onChange={this.handleFileUpload}
                 />
-                    </div>
+                </div>
+                </div>
+                
             </div>
             <div className="row">
-                <div className="row"> 
+              <div className="col-sm-8 offset-sm-4">
+              <div className="row"> 
                     <div className="col col-sm-3">
                     <label for="name">Name</label>
                     <input type="text" className="form-control" id="name" placeholder="Enter your name" />
@@ -136,18 +164,34 @@ class Profile extends React.Component {
                         <input type="text" className="form-control" id="inputZip" />
                         </div>
                     </div>
+                </div>
+                
                     <br />
   </div>
   <div className="row">
-<div className="col-3 offset-2">
+<div className="col-sm-3 offset-sm-5">
     <br />
-<button type="submit" className="btn btn-success" style={{marginLeft:"30px"}}>Update</button>
-<br />
+<button type="submit" onClick={this.handleUpdate} className="btn btn-success" style={{marginLeft:"40px"}}>Update</button>
 </div>
   </div>
+  <div className="row" style={{marginTop:"30px"}}>
+    </div>
 </div>
       </div>
     );
   }
 }
-export default Profile; 
+
+Profile.propTypes = {
+  logoutCustomerRedux: PropTypes.func.isRequired,
+  getUserDetailsRedux: PropTypes.func.isRequired,
+  user: PropTypes.string.isRequired
+}
+
+const mapStateToProps = state =>{
+  return({
+      user: state.user.userDetails
+  });
+}
+  
+export default connect(mapStateToProps, {getUserDetailsRedux, logoutCustomerRedux})(Profile);

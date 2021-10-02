@@ -106,13 +106,24 @@ const userCreds = {
 
 const serviceProvider = "Uber Eats";
 
-app.post("/login", (req, res) => {
-    res.send("Recieved successfully");
+app.post("/loginCustomer", (req, res) => {
+    res.send("Recieved successfully from Customer");
     console.log(req.body);
 });
 
 app.post("/loginRestaurant", (req, res) => {
     res.send("Recieved successfully from restaurant");
+    console.log(req.body);
+});
+
+app.post("/logoutCustomer", (req, res) => {
+    console.log("log out customer");
+    res.send("Logged out from Customer");
+    console.log(req.body);
+});
+
+app.post("/logoutRestaurant", (req, res) => {
+    res.send("Logged out restaurant");
     console.log(req.body);
 });
 
@@ -126,8 +137,13 @@ app.get("/getDishes", (req, res) => {
     console.log(req.body);
 })
 
-app.post("/signup", (req, res) => {
-    res.send("registered!");
+app.post("/signupCustomer", (req, res) => {
+    res.send("registered customer!");
+    console.log(req.body);
+});
+
+app.post("/signupRestaurant", (req, res) => {
+    res.send("registered restaurant!");
     console.log(req.body);
 });
 

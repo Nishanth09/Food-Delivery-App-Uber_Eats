@@ -1,12 +1,12 @@
 import axios from 'axios';
-import {LOGIN, ERROR, RESTAURANT_LOGIN} from '../types'
+import {LOGIN_CUSTOMER, LOGIN_RESTAURANT, ERROR} from '../types'
 
-export const loginRedux = (data) => async dispatch => {
+export const loginCustomerRedux = (data) => async dispatch => {
     await axios.post('http://localhost:3001/login', data)
     .then((response) => {
         console.log("action taking place", response);
         dispatch({
-            type : LOGIN,
+            type : LOGIN_CUSTOMER,
             payload : response.data
         })
     })
@@ -20,11 +20,11 @@ export const loginRedux = (data) => async dispatch => {
 }
 
 export const loginRestaurantRedux = (data) => async dispatch => {
-    await axios.post('http://localhost:3001/loginRestaurant', data)
+    await axios.post('http://localhost:3001/login', data)
     .then((response) => {
         console.log("action taking place", response);
         dispatch({
-            type : RESTAURANT_LOGIN,
+            type : LOGIN_RESTAURANT,
             payload : response.data
         })
     })

@@ -3,7 +3,7 @@ import {Input, Label, FormGroup,
   Button, Container, Row} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Redirect } from 'react-router';
-import {loginRedux} from '../../redux/reduxActions/loginAction';
+import {loginCustomerRedux} from '../../redux/reduxActions/loginAction';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import login_logo from '../../images/login_logo.png'
@@ -13,14 +13,14 @@ class Login extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        email : "",
+        username : "",
         password : "",
         flag : false
       };
     }
 
     onHandleEmail = (e) => {
-      this.setState({email : e.target.value});
+      this.setState({username : e.target.value});
     };
 
     onHandlePassword = (e) => {
@@ -30,35 +30,36 @@ class Login extends React.Component {
     formSubmit = async (e) => {
       e.preventDefault();
       const data = {
-        email: this.state.email,
+        username: this.state.username,
         password: this.state.password,
       };
-      await this.props.loginRedux(data);
-      this.setState({flag : true});
-      //action to be called 
+      await this.props.loginCustomerRedux(data);
+      this.setState({flag : true}); 
     }
     render() { 
       let re = null;
       if (this.state.flag) {
-        re = <Redirect to={{
-          pathname: '/home',
-          state: this.props.user
-      }}/>;
+        re = <Redirect to='/profile' />
+      //   re = <Redirect to={{
+      //     pathname: '/home',
+      //     state: this.props.user
+      // }}/>;
       } 
         return (
           <div>
             {re}
           <Container>
             <Row style={{textAlign:'center', marginTop:'10px'}}>
-              <img src={login_logo} alt="login_logo" style={{height:'30px',width:'400px', marginLeft:'250px', marginTop:'80px'}}></img>
+              <Link to='/'><img src={login_logo} alt="login_logo" style={{height:'30px',width:'400px', marginTop:'80px'}}></img></Link>
               <br />
-              <h4 style={{textAlign:'left'}}>Welcome back</h4>
+              <label style={{marginTop:"10px", fontFamily:"sans-serif", fontWeight:"200", fontStyle:"italic"}}>For Customers</label>
+              <label style={{textAlign:'left', marginTop:"30px", fontWeight:"600", fontSize:"24px"}}>Welcome back</label>
               </Row>
             <Row style={{ marginTop:'10px'}}>
             <FormGroup>
-                <Label for="exampleEmail">Email</Label>
-                <Input type="email" name="email" id="exampleEmail" 
-                placeholder="Email or mobile number" onChange={this.onHandleEmail} />
+                <Label for="exampleEmail">Username</Label>
+                <Input type="username" name="email" id="exampleEmail" 
+                placeholder="Username" onChange={this.onHandleEmail} />
                 </FormGroup>
             </Row>
             <Row style={{ marginTop:'10px'}}>
@@ -76,14 +77,19 @@ class Login extends React.Component {
               <span>New to Uber?</span>
               <Link to='/signup'>Create an account</Link>
               </Row>
+              <br />
+              <Row style={{display:'inline-block', marginLeft:'300px', marginTop:'20px'}}>
+              <span>Restaurant user?</span>
+              <Link to='/restaurantLogin'>Login here</Link>
+              </Row>
           </Container>
           </div>
         );
     } 
 }
-
+  
 Login.propTypes = {
-  loginRedux: PropTypes.func.isRequired,
+  loginCustomerRedux: PropTypes.func.isRequired,
   user: PropTypes.array.isRequired
 }
 
@@ -93,5 +99,5 @@ const mapStateToProps = state =>{
   });
 }
   
-export default connect(mapStateToProps, {loginRedux})(Login);
+export default connect(mapStateToProps, {loginCustomerRedux})(Login);
  

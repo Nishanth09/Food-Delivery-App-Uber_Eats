@@ -3,53 +3,62 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Row, Container, FormGroup, Label, Input } from "reactstrap";
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {registerRedux} from '../../redux/reduxActions/registerAction';
+import {registerCustomerRedux} from '../../redux/reduxActions/registerAction';
 import login_logo from '../../images/login_logo.png';
 import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router';
 
 class Register extends Component {
   constructor(props) {
     super(props);
       this.state = {
-          name: "",
+          username: "",
           email: "",
-          password: ""
+          password: "",
+          flag : false
       };
   }
 
-  onHandleSubmit = async (e) => {
+onHandleSubmit = async (e) => {
     e.preventDefault();
     const data = {
-      name: this.state.name,
+      username: this.state.username,
       email: this.state.email,
       password: this.state.password
     };
-    await this.props.registerRedux(data);
-  }
+    await this.props.registerCustomerRedux(data);
+    this.setState({flag:true});
+}
 
   render() {
+    let redirectLogin = null;
+    if (this.state.flag) {
+      redirectLogin = <Redirect to='/login'/>
+    }
     return (
       <Container>
+        {redirectLogin}
          <Row style={{textAlign:'center', marginTop:'10px'}}>
-              <img src={login_logo} alt="login_logo" style={{height:'30px',width:'400px', marginLeft:'250px', marginTop:'80px'}}></img>
-              <h4 style={{textAlign:'left', marginTop:"30px"}}>Let's get started</h4>
+              <Link to='/'><img src={login_logo} alt="login_logo" style={{height:'30px',width:'400px', marginTop:'80px'}}></img></Link>
+              <label style={{marginTop:"10px", fontFamily:"sans-serif", fontWeight:"200", fontStyle:"italic"}}>For Customers</label>
+              <label style={{textAlign:'left', marginTop:"30px", fontWeight:"600", fontSize:"24px"}}>Let's get started</label>
               </Row>
-              <Row style={{ marginTop:'10px'}}>
+              <Row style={{ marginTop:'30px'}}>
             <FormGroup>
-                <Label for="mobile">Enter your phone number (required)</Label>
+                <Label for="mobile">Enter the username</Label>
                 <Input type="text" name="contact" id="contact" 
-                placeholder="Mobile number" 
-                onChange={(e) => {this.setState({ name: e.target.value })}} />
+                placeholder="Username" 
+                onChange={(e) => {this.setState({ username: e.target.value })}} />
                 </FormGroup>
             </Row>
-            <Row style={{ marginTop:'10px'}}>
+            <Row style={{ marginTop:'20px'}}>
             <FormGroup>
                 <Label for="email">Email</Label>
                 <Input type="email" name="email" id="email" placeholder="Email"
                 onChange={(e) => this.setState({ email: e.target.value })} />
                 </FormGroup>
             </Row>
-            <Row style={{ marginTop:'10px'}}>
+            <Row style={{ marginTop:'20px'}}>
             <FormGroup>
                   <Label for="examplePassword">Password</Label>
                   <Input type="password" name="password" 
@@ -57,7 +66,7 @@ class Register extends Component {
                   onChange={(e) => this.setState({ password: e.target.value })} />
             </FormGroup>
             </Row>
-            <Row style={{ marginTop:'20px'}}>
+            <Row style={{ marginTop:'30px'}}>
               <Button onClick={this.onHandleSubmit} style={{height:'40px', 
               backgroundColor:'#27AE60'}}>Sign up</Button>
             </Row>
@@ -71,15 +80,15 @@ class Register extends Component {
 }
 
 Register.propTypes = {
-  registerRedux : PropTypes.func.isRequired,
+  registerCustomerRedux : PropTypes.func.isRequired,
   details : PropTypes.string.isRequired
 }
 
 const mapStateToProps = state => {
   console.log("state mapstatetoprops in signup",state);
     return({
-        details: state.register.details
+        details: state.register.response
     });
 }
 
-export default connect(mapStateToProps, {registerRedux})(Register);
+export default connect(mapStateToProps, {registerCustomerRedux})(Register);
