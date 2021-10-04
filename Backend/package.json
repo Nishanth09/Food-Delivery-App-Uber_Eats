@@ -1,18 +1,25 @@
 {
-  "name": "uber_eats",
+  "name": "nodejs_orm",
   "version": "1.0.0",
-  "description": "Uber Eats Application",
+  "description": "Very thin ORM layer on Database.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app/server.js",
+    "dev": "nodemon app/server.js"
   },
-  "author": "Nishanth Inumpudi",
+  "author": "",
   "license": "ISC",
   "dependencies": {
-    "cookie-parser": "^1.4.5",
-    "cors": "^2.8.5",
     "express": "^4.17.1",
-    "express-session": "^1.17.2",
-    "nodemon": "^2.0.12"
+    "express-mysql-session": "^2.1.7",
+    "express-sessions": "^1.0.6",
+    "mysql2": "^2.3.0",
+    "nodemon": "^2.0.13",
+    "uuid": "^8.3.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0"
   }
 }
