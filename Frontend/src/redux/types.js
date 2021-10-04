@@ -16,6 +16,8 @@ export const ERROR = 'ERROR';
 
 export const RESTAURANT = 'RESTAURANT';
 
+export const MANAGE_RESTAURANT = 'MANAGE_RESTAURANT';
+
 export const MENU = 'MENU';
 
 export const CART = 'CART';

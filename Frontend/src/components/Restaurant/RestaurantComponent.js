@@ -18,7 +18,6 @@ class Restaurant extends React.Component {
         await this.props.menuRedux();
     }
    
-
     handleDish = (e) => {
         this.setState({flag : true});
     }

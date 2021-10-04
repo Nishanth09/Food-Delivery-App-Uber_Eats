@@ -77,7 +77,7 @@ class ManagerProfile extends React.Component {
                     </Row>
                     <Row style={{marginTop:"10px"}}>
                     <FormGroup>
-                        <Label for="contact">Description</Label>
+                        <Label for="contact">Contact</Label>
                         <Input type="text" name="contact" id="contact" 
                         placeholder="Enter your contact" />
                     </FormGroup>

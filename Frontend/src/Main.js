@@ -17,6 +17,8 @@ import NewOrder from './components/Dashboard/orders/NewOrdersComponent';
 import DeliveredOrders from './components/Dashboard/orders/DeliveredOrdersComponent';
 import AllOrders from './components/Dashboard/orders/AllOrdersComponent';
 import CancelledOrers from './components/Dashboard/orders/CancelledOrdersComponent';
+import Checkout from './components/Checkout/CheckoutComponent';
+import ManageRestaurant from './components/Dashboard/ManageComponent';
 
 class Main extends React.Component {
     render() { 
@@ -30,13 +32,15 @@ class Main extends React.Component {
             <Route path = "/profile" component = {Profile}/>
             <Route path = "/restaurantpage" component = {Restaurant}/>
             <Route path = "/home" component = {Home}/>
+            <Route path = "/checkout" component = {Checkout}/>
             <Row>
             <Col sm={3}>
               <Route path="/dashboard" component={SideBar}></Route>
             </Col>
             <Col sm={9}>
               <Route path="/dashboard/profile" component={ManagerProfile} />
-              <Route path="/dashboard/menu" component={Menu} />
+              <Route path="/dashboard/manage" component={ManageRestaurant} />
+              {/* <Route path="/dashboard/menu" component={Menu} /> */}
               <Route path="/dashboard/orders" component={Orders} />
               <Route path="/dashboard/orders/all" component={AllOrders} />
               <Route path="/dashboard/orders/new" component={NewOrder} />

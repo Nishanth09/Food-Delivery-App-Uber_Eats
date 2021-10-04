@@ -6,6 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import RadioGroup from '@mui/material/RadioGroup';
 import { Redirect } from 'react-router';
 import HomeBody from '../Home/BodyComponent';
+import { connect } from 'react-redux';
 
 class Filters extends React.Component {
   constructor(props) {
@@ -17,6 +18,10 @@ class Filters extends React.Component {
       dietaryDropDownFlag : false     
     };
   };
+
+  // componentDidMount() {
+  //   // get restaurant details
+  // }
      
      toggleSortDropDown = (e) => {
        this.setState((prev) => ({sortDropDownFlag : !prev.sortDropDownFlag}))
@@ -216,4 +221,4 @@ class Filters extends React.Component {
        }
 }
  
-export default Filters;
+export default connect()(Filters);

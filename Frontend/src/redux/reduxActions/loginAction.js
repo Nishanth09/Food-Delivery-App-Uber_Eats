@@ -2,7 +2,7 @@ import axios from 'axios';
 import {LOGIN_CUSTOMER, LOGIN_RESTAURANT, ERROR} from '../types'
 
 export const loginCustomerRedux = (data) => async dispatch => {
-    await axios.post('http://localhost:3001/login', data)
+    await axios.post('/api/login', data)
     .then((response) => {
         console.log("action taking place", response);
         dispatch({
@@ -20,7 +20,7 @@ export const loginCustomerRedux = (data) => async dispatch => {
 }
 
 export const loginRestaurantRedux = (data) => async dispatch => {
-    await axios.post('http://localhost:3001/login', data)
+    await axios.post('/api/login', data)
     .then((response) => {
         console.log("action taking place", response);
         dispatch({

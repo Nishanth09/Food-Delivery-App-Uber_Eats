@@ -30,12 +30,12 @@ class Profile extends React.Component {
     });
   };
 
-// async componentDidMount() {
-//     await this.props.getUserDetailsRedux();
-//     this.setState({
-//       userinfo: this.state.userinfo
-//     });
-// }
+async componentDidMount() {
+    await this.props.getUserDetailsRedux();
+    this.setState({
+      userinfo: this.state.userinfo
+    });
+}
 
   handleLogout = async (e) => {
     e.preventDefault();

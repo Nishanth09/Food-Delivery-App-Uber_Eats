@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import BodyContent from './BodyComponent';
 import Navbar from './NavComponent';
 import uber_eats_background from "../../images/uber_eats_background.png";
-import ub2 from "../../images/ub2.svg";
 
 
 class Landing extends React.Component {

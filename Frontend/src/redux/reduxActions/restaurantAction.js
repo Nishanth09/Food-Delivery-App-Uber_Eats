@@ -1,5 +1,21 @@
-import { CART, RESTAURANT, MENU, ADD_CART, RMV_CART, ERROR } from "../types";
+import { CART, RESTAURANT, MENU, ADD_CART, RMV_CART, MANAGE_RESTAURANT, ERROR } from "../types";
 import axios from 'axios';
+
+export const manageRestaurantRedux = (data) => async dispatch => {
+    await axios.post('/api/restaurant', data)
+    .then(response => {
+        dispatch({
+            type : MANAGE_RESTAURANT,
+            payload : response.data
+        })
+    })
+    .catch(error => {
+        dispatch({
+            type: ERROR,
+            payload: error
+        })
+    });
+} 
 
 export const restaurantRedux = () => async dispatch => {
     

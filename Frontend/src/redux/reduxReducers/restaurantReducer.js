@@ -1,4 +1,4 @@
-import { CART, MENU, RESTAURANT, ADD_CART, RMV_CART } from "../types";
+import { CART, MENU, RESTAURANT, ADD_CART, RMV_CART, MANAGE_RESTAURANT } from "../types";
 
 const initialState = {
     restaurantDetails : [],
@@ -8,6 +8,11 @@ const initialState = {
 
 export default function(state = initialState, action) {
     switch (action.type) {
+        case MANAGE_RESTAURANT:
+            return {
+                ...state,
+                
+            }
         case RESTAURANT:
             return {
                 ...state,

@@ -22,8 +22,13 @@ class SideBar extends React.Component {
                     <div style={{marginTop:"10px"}}>
                     <Link 
                     style={{ textDecoration:'none', border:'none', color:'black'}}
-                    to="/dashboard/menu">Menu</Link>
+                    to="/dashboard/manage">Manage</Link>
                     </div>
+                    {/* <div style={{marginTop:"10px"}}>
+                    <Link 
+                    style={{ textDecoration:'none', border:'none', color:'black'}}
+                    to="/dashboard/menu">Menu</Link>
+                    </div> */}
                     <div style={{marginTop:"10px"}}>
                     <Link 
                     style={{ textDecoration:'none', border:'none', color:'black'}}

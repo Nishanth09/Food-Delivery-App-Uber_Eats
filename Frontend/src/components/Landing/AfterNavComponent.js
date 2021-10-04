@@ -13,21 +13,22 @@ import title_logo from '../../images/title_logo.png';
 import { connect } from 'react-redux';
 import { restaurantRedux } from '../../redux/reduxActions/restaurantAction';
 import PropTypes from 'prop-types';
+import CartPopUp from './CartPopUpComponent';
 
 class AfterLoginNavbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       menuFlag : null,
-      cartCount : 0
+      cartFlag : 0
     }
   }
       onHandleClick = (e) => {
         console.log(e.currentTarget,"-------");
         this.setState({menuFlag : e.currentTarget});
       }
-      handleCount = () => {
-        this.setState({cartCount: this.state.cartCount + 4 });
+      handleCart = () => {
+        this.setState({cartFlag: !this.state.cartFlag});
       }
       onHandleClose = (e) => {
         this.setState({menuFlag : null});
@@ -133,12 +134,12 @@ class AfterLoginNavbar extends React.Component {
               </div>
             </div>
             <div className="col-md-2" style={{marginTop:"10px"}}>
-            <button type = "button" onClick={this.handleCount} className="btn btn-dark" style={{marginLeft:"-15px"}}>
+            <button type = "button" onClick={this.handleCart} className="btn btn-dark" style={{marginLeft:"-15px"}}>
                 <Badge badgeContent={0} color="secondary">
         <ShoppingCartIcon />Cart {this.props.cart.length}
         </Badge>
         </button> 
-        
+                {this.state.cartFlag ? <CartPopUp isOpen = {this.state.cartFlag} toggle = {this.handleCart}/> : null}
             </div>
           </div>
         </div>
