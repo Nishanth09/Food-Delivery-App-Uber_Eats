@@ -3,6 +3,7 @@ const app = express()
 const session = require('express-session')
 const settings = require('./settings')
 const users = require("./models/user_model")
+const restaurants = require("./models/restaurants_model")
 const session_store = require('./sessions')
 const models = require('./models/all_models')
 //const cors = require('cors');
@@ -54,6 +55,7 @@ app.post(`${settings.BASE_API_URL}/login`, (req,res) => {
             //user is authenticated check for duplicate username
             let userid = results[0].userid
             req.session.userid = userid
+            console.log(`${user_name} is authorized`)
             res.status(200).send("User Authorized")
 
         }else{
@@ -172,12 +174,15 @@ app.get(`${settings.BASE_API_URL}/logout`, (req, res) => {
 })
 
 app.post(`${settings.BASE_API_URL}/restaurant`, (req, res) => {
+    console.log(req.session.userid,"====", req.body);
     if (req.session.userid){
-        let rest_data = req.body.data
+        console.log(req.session.userid);
+        let rest_data = req.body
         //TODO: image_magic
         rest_data["ownerid"] = req.session.userid
         models.restaurants.save(rest_data, (e, r, f) => {
             if(e) {
+                console.log(e);
                 res.status(500).end()
                 return
             }
@@ -186,11 +191,79 @@ app.post(`${settings.BASE_API_URL}/restaurant`, (req, res) => {
     }else{
         res.status(401).redirect("/")
     }
+})
 
+app.get(`${settings.BASE_API_URL}/restaurant`, (req, res) => {
+    if (req.session.userid) {
+        let restaurantDetails = [
+            "name",
+            "address",
+            "open_timings",
+            "close_timings",
+            "items"
+        ]
+        restaurants.simple_select(restaurantDetails, {"ownerid": req.session.userid}, (err, results, fields) => {
+            if (err){
+                console.log(err);
+                res.status(500).end()
+                return
+            }
+            if(results[0]){
+                let resDetails = {
+                    "name": results[0].name,
+                    "address": results[0].address,
+                    "open_timings": results[0].open_timings,
+                    "close_timings": results[0].close_timings,
+                    "items": results[0].items
+                }
+                res.status(200).send(JSON.stringify(resDetails))        
+                return
+            }else{
+                res.status(404).end()
+            }
+        })
+    } else {
+        res.status(401).end();
+    }
+})
+
+app.get(`${settings.BASE_API_URL}/getAllRestaurants`, (req, res) => {
+    if (req.session.userid) {
+        let restaurantDetails = [
+            "name",
+            "address",
+            "open_timings",
+            "close_timings",
+            "items"
+        ]
+        restaurants.simple_select(restaurantDetails, {}, (err, results, fields) => {
+            if (err){
+                console.log(err);
+                res.status(500).end()
+                return
+            }
+            if(results[0]){
+                console.log(results);
+                let resDetails = {
+                    "name": results[0].name,
+                    "address": results[0].address,
+                    "open_timings": results[0].open_timings,
+                    "close_timings": results[0].close_timings,
+                    "items": results[0].items
+                }
+                res.status(200).send(JSON.stringify(resDetails))        
+                return
+            }
+        })
+    }
+    else {
+        res.status(401).end();
+    }
 })
 
 app.put(`${settings.BASE_API_URL}/restaurant`, (req, res) => {
     if (req.session.userid){
+        console.log(req.session.userid);
         let rest_data = req.body.data
         //get rest id
 
