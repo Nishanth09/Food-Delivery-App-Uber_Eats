@@ -39,11 +39,11 @@ class Login extends React.Component {
     render() { 
       let re = null;
       if (this.state.flag) {
-        re = <Redirect to='/profile' />
-      //   re = <Redirect to={{
-      //     pathname: '/home',
-      //     state: this.props.user
-      // }}/>;
+        // re = <Redirect to='/profile' />
+        re = <Redirect to={{
+          pathname: '/home',
+          state: this.props.user
+      }}/>;
       } 
         return (
           <div>

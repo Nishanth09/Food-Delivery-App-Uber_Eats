@@ -5,7 +5,7 @@ import { Container } from 'react-bootstrap';
 import Filters from './FilterComponent';
 class Home extends React.Component {
   render() { 
-    let check = this.props.location.state;
+    //let check = this.props.location.state;
     let renderNav = null;
     // if (check) {
       renderNav = <Navbar showFlag="open"/>;

@@ -4,7 +4,6 @@ import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { restaurantRedux } from '../../redux/reduxActions/restaurantAction';
-import restaurantReducer from '../../redux/reduxReducers/restaurantReducer';
 class HomeBody extends React.Component {
     constructor(props) {
         super(props);
@@ -16,6 +15,7 @@ class HomeBody extends React.Component {
      
     async componentDidMount() {
         await this.props.restaurantRedux()
+        console.log("Restaurant Details :",this.props.restaurantDetails)
     }
 
     handleRestaurantPage = (e) => {
@@ -25,29 +25,30 @@ class HomeBody extends React.Component {
     }
 
     render() { 
-        console.log(this.props);
+        console.log("Restaurant Details :",this.props.restaurantDetails)
+        //console.log(this.props);
         let redirectRestaurantPage = null; 
         let details = null;
-        if (this.state.flag) {
-            redirectRestaurantPage = <Redirect to='/restaurantpage'/>
-        }
-        if (this.props.restaurant.length !== 0) {
-            details = this.props.restaurant.map((restaurant,index) => {
-                return (
-                <div className="col-sm-3" style={{marginTop:"30px"}} key={restaurant.id}>
-                <div className="container" style={{position:"relative"}}>
-                <button style={{border:"solid black 2px"}} onClick={this.handleRestaurantPage}>
-                    <img src={restaurant.restaurantImage} alt="nothing" width={140} height={150} 
-                    style={{display:"block"}}></img></button>
-                <a href="/profile"><i className="far fa-heart" 
-                style={{position:"absolute", top:"0", left:"4", marginLeft:"130px", 
-                color:"black", marginTop:"5px"}}></i></a>
-                <label style={{width:"160px"}}><strong>{restaurant.name}</strong></label>
-              </div>
-                </div>
-                )
-            })
-        }
+        // if (this.state.flag) {
+        //     redirectRestaurantPage = <Redirect to='/restaurantpage'/>
+        // }
+        // if (this.props.restaurantDetails.length !== 0) {
+        //     details = this.props.restaurantDetails.map((restaurant,index) => {
+        //         return (
+        //         <div className="col-sm-3" style={{marginTop:"30px"}} key={restaurant.id}>
+        //         <div className="container" style={{position:"relative"}}>
+        //         <button style={{border:"solid black 2px"}} onClick={this.handleRestaurantPage}>
+        //             <img src={restaurant.restaurantImage} alt="nothing" width={140} height={150} 
+        //             style={{display:"block"}}></img></button>
+        //         <a href="/profile"><i className="far fa-heart" 
+        //         style={{position:"absolute", top:"0", left:"4", marginLeft:"130px", 
+        //         color:"black", marginTop:"5px"}}></i></a>
+        //         <label style={{width:"160px"}}><strong>{restaurant.name}</strong></label>
+        //       </div>
+        //         </div>
+        //         )
+        //     })
+        // }
         return (
             <div className="col-sm-9">
                 {redirectRestaurantPage}
@@ -66,13 +67,13 @@ class HomeBody extends React.Component {
 
 HomeBody.propTypes = {
     restaurantRedux: PropTypes.func.isRequired,
-    restaurant: PropTypes.array.isRequired
+    restaurantDetails: PropTypes.array.isRequired
 }
   
 const mapStateToProps = state =>{
     console.log("state mapstatetoprops in restaurant",state);
     return({
-        restaurant: state.restaurant.restaurantDetails
+        restaurantDetails: state.restaurant.restaurantDetails
     });
 }
  
