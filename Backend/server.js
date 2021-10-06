@@ -48,6 +48,7 @@ app.post(`${settings.BASE_API_URL}/login`, (req,res) => {
         if (err){
             console.log(err);
             res.status(500).send("Internal Server Error");
+            return
         }
 
         //Be careful with this check all use cases
@@ -55,14 +56,37 @@ app.post(`${settings.BASE_API_URL}/login`, (req,res) => {
             //user is authenticated check for duplicate username
             let userid = results[0].userid
             req.session.userid = userid
-            console.log(`${user_name} is authorized`)
-            res.status(200).send("User Authorized")
-
+            let user_fields = [
+                "username",
+                "email",
+                "account_type"
+            ]
+            users.simple_select(user_fields, {"userid": req.session.userid}, (err, results, fields) => {
+                if (err){
+                    console.log(err);
+                    res.status(500).end()
+                    return
+                }
+                if(results[0]){
+                    let user_obj = {
+                        "username": results[0].username,
+                        "email": results[0].email,
+                        "account_type": results[0].account_type
+                    }
+                    res.status(200).send(JSON.stringify(user_obj))        
+                    return
+                } else{
+                    res.status(404).end()
+                    return
+                }
+            })
+            // console.log(`${user_name} is authorized`)
+            // res.status(200).send("User Authorized")
         }else{
            res.status(401).send("Not Authorized")
+           return
         }
     })
-
 })
 
 
@@ -104,9 +128,52 @@ app.get(`${settings.BASE_API_URL}/user_details`, (req, res) => {
                 }
                 res.status(200).send(JSON.stringify(user_obj))        
                 return
+            }else{
+                res.status(404).end()
             }
         })
     }else{
+        res.status(401).end()
+    }
+});
+
+app.post(`${settings.BASE_API_URL}/user_details`, (req, res) => {
+    if (req.session.userid) {
+        let username = req.body.username
+        let nickname = req.body.nickname
+        let email = req.body.email
+        let mobile = req.body.mobile
+        let dob = req.body.dob
+        let street = req.body.street
+        let city = req.body.city
+        let country = req.body.country
+        let state = req.body.state
+        let fav_restaurant = req.body.fav_restaurant
+        let zip = req.body.zip
+        let account_type = req.body.account_type
+        users.save({
+            "username" :username,
+            "nickname" : nickname,
+            "email" : email,
+            "mobile" : mobile,
+            "dob" : dob,
+            "street" : street,
+            "city" : city,
+            "country" : country,
+            "state" : state,
+            "fav_restaurant" : fav_restaurant,
+            "zip" : zip,
+            "account_type": account_type
+        }, (err, results, fields) => {
+            if (err){
+                console.log(err)
+                res.status(500).end()
+                return
+            }
+            res.status(200).send("users details updated successfully");
+            return
+        })
+    } else {
         res.status(401).end()
     }
 });
@@ -227,7 +294,7 @@ app.get(`${settings.BASE_API_URL}/restaurant`, (req, res) => {
     }
 })
 
-app.get(`${settings.BASE_API_URL}/getAllRestaurants`, (req, res) => {
+app.get(`${settings.BASE_API_URL}/get_all_restaurants`, (req, res) => {
     if (req.session.userid) {
         let restaurantDetails = [
             "name",
@@ -236,6 +303,24 @@ app.get(`${settings.BASE_API_URL}/getAllRestaurants`, (req, res) => {
             "close_timings",
             "items"
         ]
+        // for getting state
+        let state = null;
+        users.simple_select(["state"], {"userid": req.session.userid}, (err, results, fields) => {
+            if (err){
+                console.log(err);
+                res.status(500).end()
+                return
+            }
+            if(results[0]){
+                state = results[0].state; 
+            }
+        })
+
+        console.log("state",state)
+
+
+
+
         restaurants.simple_select(restaurantDetails, {}, (err, results, fields) => {
             if (err){
                 console.log(err);
@@ -243,21 +328,40 @@ app.get(`${settings.BASE_API_URL}/getAllRestaurants`, (req, res) => {
                 return
             }
             if(results[0]){
-                console.log(results);
-                let resDetails = {
-                    "name": results[0].name,
-                    "address": results[0].address,
-                    "open_timings": results[0].open_timings,
-                    "close_timings": results[0].close_timings,
-                    "items": results[0].items
+                let rDetails = [];
+                for (let res of results) {
+                    let resDetails = {
+                        "name": res.name,
+                        "address": res.address,
+                        "open_timings": res.open_timings,
+                        "close_timings": res.close_timings,
+                        "items": res.items
+                    }
+                    rDetails.push(resDetails)
                 }
-                res.status(200).send(JSON.stringify(resDetails))        
+                console.log(rDetails);
+                
+                res.status(200).send(JSON.stringify(rDetails))        
+                return
+            } else {
+                res.status(404).end()
                 return
             }
         })
     }
     else {
         res.status(401).end();
+        return
+    }
+})
+
+app.get(`${settings.BASE_API_URL}/get_delivery_restaurants`, (req, res) => {
+    if (req.session.userid) {
+        
+    }
+    else {
+        res.status(401).end();
+        return
     }
 })
 
