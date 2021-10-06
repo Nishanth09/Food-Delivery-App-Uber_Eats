@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import "../../App.css";
 import title_logo from '../../images/title_logo.png';
 import { connect } from 'react-redux';
-import { restaurantRedux } from '../../redux/reduxActions/restaurantAction';
+import { restaurantRedux, deliveryRedux } from '../../redux/reduxActions/restaurantAction';
 import PropTypes from 'prop-types';
 import CartPopUp from './CartPopUpComponent';
 
@@ -24,7 +24,6 @@ class AfterLoginNavbar extends React.Component {
     }
   }
       onHandleClick = (e) => {
-        console.log(e.currentTarget,"-------");
         this.setState({menuFlag : e.currentTarget});
       }
       handleCart = () => {
@@ -33,13 +32,14 @@ class AfterLoginNavbar extends React.Component {
       onHandleClose = (e) => {
         this.setState({menuFlag : null});
       }
+      handleDelivery = (e) => {
+        this.props.deliveryRedux();
+      }
     render() { 
-      console.log("----===",this.props.cart);
       let cartCount = null;
       for (let item of this.props.cart) {
         cartCount += item.qty;
       }
-      console.log("cart count : ", cartCount);
         return (
         <div className="container">
           <div className="row">
@@ -117,7 +117,7 @@ class AfterLoginNavbar extends React.Component {
                      </Link>
             </div>
             <div className="col-sm-3" style={{ marginTop:"5px"}}>
-            <button className="btn btn-light" style={{ outline:"None", width:"100px", borderRadius: '20px 20px 20px 20px', backgroundColor:"#D0CACA"}}>Delivery</button>
+            <button onClick={this.handleDelivery} className="btn btn-light" style={{ outline:"None", width:"100px", borderRadius: '20px 20px 20px 20px', backgroundColor:"#D0CACA"}}>Delivery</button>
              <button className="btn btn-light" style={{ outline:"None", width:"100px", borderRadius: '20px 20px 20px 20px'}}>Pick up</button>
               </div>
               <div className="col-md-2" style={{marginTop:"10px"}}>
@@ -148,15 +148,15 @@ class AfterLoginNavbar extends React.Component {
 }
 
 AfterLoginNavbar.propTypes = {
-  cartRedux: PropTypes.func.isRequired,
+  //cartRedux: PropTypes.func.isRequired,
+  deliveryRedux: PropTypes.func.isRequired,
   cart: PropTypes.array.isRequired
 }
 
 const mapStateToProps = state =>{
-  console.log("state mapstatetoprops in afternav",state);
   return({
       cart: state.restaurant.cartItems
   });
 }
 
-export default connect(mapStateToProps, {restaurantRedux})(AfterLoginNavbar);
+export default connect(mapStateToProps, {restaurantRedux, deliveryRedux})(AfterLoginNavbar);

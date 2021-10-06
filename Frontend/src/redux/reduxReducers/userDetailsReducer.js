@@ -1,7 +1,8 @@
-import { GET_USER_DETAILS } from '../types'
+import { GET_USER_DETAILS, UPDATE_USER_DETAILS } from '../types'
 
 const initialState = {
-    userDetails : []
+    userDetails : {},
+    msg : ""
 }; 
 
 export default function (state = initialState, action) {
@@ -10,7 +11,12 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 userDetails : action.payload
-            };
+            }
+        case UPDATE_USER_DETAILS:
+            return {
+                ...state,
+                msg : action.payload
+            }
         default:
             return state;
     }

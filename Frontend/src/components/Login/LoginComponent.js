@@ -1,12 +1,12 @@
 import React from 'react';
 import {Input, Label, FormGroup, 
-  Button, Container, Row} from 'reactstrap';
+  Button, Container, Row, Col} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Redirect } from 'react-router';
 import {loginCustomerRedux} from '../../redux/reduxActions/loginAction';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import login_logo from '../../images/login_logo.png'
+import login_logo from '../../images/login_logo.png';
 import { Link } from 'react-router-dom';
 
 class Login extends React.Component {
@@ -37,24 +37,38 @@ class Login extends React.Component {
       this.setState({flag : true}); 
     }
     render() { 
-      let re = null;
+      let renderHome = null;
+      if (JSON.parse(localStorage.getItem("userData"))) {
+        renderHome = <Redirect to = '/home'/>;
+      }
+      let displayError = null;
       if (this.state.flag) {
-        // re = <Redirect to='/profile' />
-        re = <Redirect to={{
-          pathname: '/home',
-          state: this.props.user
-      }}/>;
+        if (this.props.userDetails.username && this.props.userDetails.email && this.props.userDetails.account_type === "C") {
+          localStorage.setItem("userData", JSON.stringify(this.props.userDetails));
+          renderHome = <Redirect to = '/home'/>;
+          // renderHome = <Redirect to={{
+          //   pathname: '/home',
+          //   state: this.props.user
+          // }}/>;
+        } else {
+          displayError = "Couldn't find an account. Please enter valid credentials"
+        }
       } 
         return (
           <div>
-            {re}
+            {renderHome}
           <Container>
             <Row style={{textAlign:'center', marginTop:'10px'}}>
               <Link to='/'><img src={login_logo} alt="login_logo" style={{height:'30px',width:'400px', marginTop:'80px'}}></img></Link>
               <br />
               <label style={{marginTop:"10px", fontFamily:"sans-serif", fontWeight:"200", fontStyle:"italic"}}>For Customers</label>
-              <label style={{textAlign:'left', marginTop:"30px", fontWeight:"600", fontSize:"24px"}}>Welcome back</label>
-              </Row>
+            </Row>
+            <Row style={{color:"red", marginTop:"10px", textAlign:"center"}}>
+              <Col sm={{size : 6, offset : 3}}>
+              {displayError}
+              </Col>
+            </Row>
+            <label style={{textAlign:'left', marginTop:"30px", fontWeight:"600", fontSize:"24px"}}>Welcome back</label>
             <Row style={{ marginTop:'10px'}}>
             <FormGroup>
                 <Label for="exampleEmail">Username</Label>
@@ -90,12 +104,12 @@ class Login extends React.Component {
   
 Login.propTypes = {
   loginCustomerRedux: PropTypes.func.isRequired,
-  user: PropTypes.array.isRequired
+  userDetails: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state =>{
   return({
-      user: state.login.userDetails
+    userDetails: state.login.userDetails
   });
 }
   

@@ -16,7 +16,6 @@ class CartPopUp extends React.Component {
     render() { 
         let checkoutRedirect = null;
         if (this.state.checkoutFlag) {
-            console.log("---")
             checkoutRedirect = <Redirect to='/checkout'/>
         }
         return (

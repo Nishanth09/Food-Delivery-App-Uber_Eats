@@ -15,40 +15,36 @@ class HomeBody extends React.Component {
      
     async componentDidMount() {
         await this.props.restaurantRedux()
-        console.log("Restaurant Details :",this.props.restaurantDetails)
     }
 
     handleRestaurantPage = (e) => {
-        console.log("8787",this.state.restaurantDetails);
         this.setState({flag : true});
-        console.log("-----", this.state.flag);
     }
 
     render() { 
-        console.log("Restaurant Details :",this.props.restaurantDetails)
-        //console.log(this.props);
+        console.log(this.props.restaurantDetails);
         let redirectRestaurantPage = null; 
         let details = null;
         // if (this.state.flag) {
         //     redirectRestaurantPage = <Redirect to='/restaurantpage'/>
         // }
-        // if (this.props.restaurantDetails.length !== 0) {
-        //     details = this.props.restaurantDetails.map((restaurant,index) => {
-        //         return (
-        //         <div className="col-sm-3" style={{marginTop:"30px"}} key={restaurant.id}>
-        //         <div className="container" style={{position:"relative"}}>
-        //         <button style={{border:"solid black 2px"}} onClick={this.handleRestaurantPage}>
-        //             <img src={restaurant.restaurantImage} alt="nothing" width={140} height={150} 
-        //             style={{display:"block"}}></img></button>
-        //         <a href="/profile"><i className="far fa-heart" 
-        //         style={{position:"absolute", top:"0", left:"4", marginLeft:"130px", 
-        //         color:"black", marginTop:"5px"}}></i></a>
-        //         <label style={{width:"160px"}}><strong>{restaurant.name}</strong></label>
-        //       </div>
-        //         </div>
-        //         )
-        //     })
-        // }
+        if (this.props.restaurantDetails.length !== 0) {
+            details = this.props.restaurantDetails.map((restaurant,index) => {
+                return (
+                <div className="col-sm-3" style={{marginTop:"30px"}} key={index}>
+                <div className="container" style={{position:"relative",  border:"solid black 1px", height:"175px"}}>
+                {/* <button style={{border:"solid black 2px"}} onClick={this.handleRestaurantPage}>
+                    <img src={restaurant.restaurantImage} alt="nothing" width={140} height={150} 
+                    style={{display:"block"}}></img></button> */}
+                <a href="/profile"><i className="far fa-heart" 
+                style={{position:"absolute", top:"0", left:"4", marginLeft:"130px", 
+                color:"black", marginTop:"5px"}}></i></a>
+                <label style={{width:"160px"}}><strong>{restaurant.name}</strong></label>
+              </div>
+                </div>
+                )
+            })
+        }
         return (
             <div className="col-sm-9">
                 {redirectRestaurantPage}
@@ -71,7 +67,6 @@ HomeBody.propTypes = {
 }
   
 const mapStateToProps = state =>{
-    console.log("state mapstatetoprops in restaurant",state);
     return({
         restaurantDetails: state.restaurant.restaurantDetails
     });

@@ -4,23 +4,35 @@ import login_logo from '../../images/login_logo.png';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {logoutCustomerRedux} from '../../redux/reduxActions/logoutAction';
-import {getUserDetailsRedux} from '../../redux/reduxActions/userDetailsAction';
+import {getUserDetailsRedux, updateUserDetailsRedux} from '../../redux/reduxActions/userDetailsAction';
 import { Button } from "reactstrap";
-
+import { CountryDropdown } from 'react-country-region-selector';
+import { Link } from 'react-router-dom';
 class Profile extends React.Component {
-    state = {
+  constructor(props) {
+    super(props);
+    this.state = {
       userinfo: {
         name: "",
         nickname: "",
         email: "",
+        mobile: "",
+        fav_restaurant: "",
         dob: "",
         city: "",
-        state: "",
-        profilePic: "",
+        street: "",
+        zip: ""
       },
       flag: false,
-    };
+      country : "",
+      currentState : ""
+    }
+  }
 
+  selectCountry (val) {
+      this.setState({ country: val });
+  }
+  
   handleChange = (e) => {
     this.setState({
       userinfo: {
@@ -38,25 +50,36 @@ async componentDidMount() {
 }
 
   handleLogout = async (e) => {
-    e.preventDefault();
-    const data = {
-      email: this.state.userinfo.email,
-      nickname: this.state.userinfo.nickname,
-    };
+    window.localStorage.clear();
     await this.props.logoutCustomerRedux();
     this.setState({flag : true});
   };
 
-  validateForm = () => {
-    var error = {};
-    return error;
-  };
+  handleState = (e) => {
+    this.setState({currentState : e.target.value})
+  }
 
-  handleFileUpload = (event) => {
-    event.preventDefault();
-  };
+  handleUpdate = async (e) => {
+    e.preventDefault();
+    const data = {
+      name : this.state.userinfo.name,
+      nickname : this.state.userinfo.nickname,
+      email : this.state.userinfo.email,
+      mobile : this.state.userinfo.mobile,
+      fav_restaurant : this.state.userinfo.fav_restaurant,
+      dob : this.state.userinfo.dob,
+      city : this.state.userinfo.city,
+      state : this.state.currentState, 
+      street : this.state.userinfo.street,
+      zip : this.state.userinfo.zip,
+      nickname : this.state.country
+    }
+    await this.props.updateUserDetailsRedux(data);
+  }
 
   render() {
+    console.log(this.props.msg);
+    const { country } = this.state;
     let redirectHome = null;
     if (this.state.flag) {
       redirectHome = <Redirect to="/" />
@@ -73,7 +96,7 @@ async componentDidMount() {
         <div className="container" style={{ marginTop: "20px"}}>
           <div className="row">
           <div className="col-sm-2">
-          <img src={login_logo} alt="login_logo" style={{height:'30px',width:'400px', marginLeft:'100px'}}></img>
+          <Link to='/'><img src={login_logo} alt="login_logo" style={{height:'30px',width:'400px', marginLeft:'100px'}}></img></Link>
             </div>
           <div className="col-sm-2 offset-sm-8">
           <Button onClick={this.handleLogout} className="btn btn-secondary" style={{width:"100px"}}>logout</Button>
@@ -109,60 +132,114 @@ async componentDidMount() {
               <div className="row"> 
                     <div className="col col-sm-3">
                     <label for="name">Name</label>
-                    <input type="text" className="form-control" id="name" placeholder="Enter your name" />
+                    <input onChange={this.handleChange} name="name" type="text" className="form-control" id="name" />
                     </div>
 
                     <div className="col col-sm-3">
                     <label for="nickname">Nick name</label>
-                    <input type="text" className="form-control" id="nickname" placeholder="Nick name" />
+                    <input onChange={this.handleChange} name="nickname" type="text" className="form-control" id="nickname" />
                     </div>
                 </div>
                 <div className="row"> 
                 <div className="col col-sm-3">
                         <label for="email">Email</label>
-                        <input type="email" className="form-control" id="email" placeholder="Enter your email" />
+                        <input onChange={this.handleChange} name="email" type="email" className="form-control" id="email" />
                         </div>
 
                     <div className="col col-sm-3">
                         <label for="contact">Contact</label>
-                        <input type="text" className="form-control" id="contact" placeholder="+1(123)4567890" />
+                        <input onChange={this.handleChange} name="mobile" type="text" className="form-control" id="contact" placeholder="+1(123)4567890" />
                     </div>
                 </div>
                 <div className="row">
                         <div className="col col-sm-3">
                             <label for="favorites">Favorites</label>
-                            <input type="text" className="form-control" id="favorites" placeholder="Enter your favorite dishes" />
+                            <input onChange={this.handleChange} name="fav_restaurant" type="text" className="form-control" id="favorites" />
                         </div>
 
                         <div className="col col-sm-3">
                             <label for="dob">Date of birth</label>
-                            <input type="text" className="form-control" id="dob" placeholder="mm-dd-yyyy" />
+                            <input onChange={this.handleChange} name="dob" type="text" className="form-control" id="dob" placeholder="mm-dd-yyyy" />
                         </div>
                     </div>
                     <div className="row">
                         <div className="col col-sm-3">
                         <label for="inputCity">City</label>
-                        <input type="text" className="form-control" id="inputCity" />
+                        <input onChange={this.handleChange} name="city" type="text" className="form-control" id="inputCity" />
                         </div>
 
                         <div className="col col-sm-3">
                         <label for="inputState">State</label>
-                        <select id="inputState" className="form-control">
-                            <option selected>Choose...</option>
-                            <option>...</option>
+                        <select onChange={this.handleState} value={this.state.currentState} id="inputState" className="form-control">
+                            <option>Alaska</option>
+                            <option>Arizona</option>
+                            <option>Arkansas</option>
+                            <option>California</option>
+                            <option>Colorado</option>
+                            <option>Connecticut</option>
+                            <option>Delaware</option>
+                            <option>Florida</option>
+                            <option>Georgia</option>
+                            <option>Hawaii</option>
+                            <option>Idaho</option>
+                            <option>Illinois</option>
+                            <option>Indiana</option>
+                            <option>Iowa</option>
+                            <option>Kansas</option>
+                            <option>Kentucky</option>
+                            <option>Louisiana</option>
+                            <option>Maine</option>
+                            <option>Maryland</option>
+                            <option>Massachusetts</option>
+                            <option>Michigan</option>
+                            <option>Minnesota</option>
+                            <option>Mississippi</option>
+                            <option>Missouri</option>
+                            <option>Montana</option>
+                            <option>Nebraska</option>
+                            <option>Nevada</option>
+                            <option>New Hampshire</option>
+                            <option>New Jersey</option>
+                            <option>New Mexico</option>
+                            <option>New York</option>
+                            <option>North Carolina</option>
+                            <option>North Dakota</option>
+                            <option>Ohio</option>
+                            <option>Oklahoma</option>
+                            <option>Oregon</option>
+                            <option>Pennsylvania</option>
+                            <option>Rhode Island</option>
+                            <option>South Carolina</option>
+                            <option>South Dakota</option>
+                            <option>Tennessee</option>
+                            <option>Texas</option>
+                            <option>Utah</option>
+                            <option>Vermont</option>
+                            <option>Virginia</option>
+                            <option>Washington</option>
+                            <option>West Virginia</option>
+                            <option>Wisconsin</option>
+                            <option>Wyoming</option>
                         </select>
                         </div>
                     </div>
                     <div className="row">
                     <div className="col col-sm-3">
                         <label for="address">Address</label>
-                        <input type="text" className="form-control" id="address" />
+                        <input onChange={this.handleChange} name="street" type="text" className="form-control" id="address" />
                         </div>
 
                     <div className="col col-sm-3">
                         <label for="inputZip">Zip</label>
-                        <input type="text" className="form-control" id="inputZip" />
+                        <input onChange={this.handleChange} name="zip" type="text" className="form-control" id="inputZip" />
                         </div>
+                    </div>
+                    <div className="row" style={{marginTop:"20px"}}>
+                    <div className="col col-sm-6">
+                    <CountryDropdown
+                      value={country}
+                      onChange={(val) => this.selectCountry(val)} />  
+                    </div>
                     </div>
                 </div>
                 
@@ -184,14 +261,17 @@ async componentDidMount() {
 
 Profile.propTypes = {
   logoutCustomerRedux: PropTypes.func.isRequired,
+  updateUserDetailsRedux: PropTypes.func.isRequired,
   getUserDetailsRedux: PropTypes.func.isRequired,
-  user: PropTypes.string.isRequired
+  userDetails: PropTypes.object.isRequired,
+  msg: PropTypes.string.isRequired
 }
 
 const mapStateToProps = state =>{
   return({
-      user: state.user.userDetails
+    userDetails: state.user.userDetails,
+    msg: state.user.msg
   });
 }
   
-export default connect(mapStateToProps, {getUserDetailsRedux, logoutCustomerRedux})(Profile);
+export default connect(mapStateToProps, {getUserDetailsRedux, updateUserDetailsRedux, logoutCustomerRedux})(Profile);

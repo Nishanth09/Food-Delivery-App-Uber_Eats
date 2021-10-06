@@ -13,9 +13,7 @@ class ManagerProfile extends React.Component {
     }
 
     handleLogout = async (e) => {
-        e.preventDefault();
-        const data = {
-        };
+        window.localStorage.clear();
         await this.props.logoutRestaurantRedux();
         this.setState({flag : true});
     };

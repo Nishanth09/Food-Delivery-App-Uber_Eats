@@ -1,4 +1,4 @@
-import { CART, RESTAURANT, MENU, ADD_CART, RMV_CART, ERROR } from "../types";
+import { CART, RESTAURANT, MENU, ADD_CART, RMV_CART, DELIVERY_RESTAURANTS, ERROR } from "../types";
 import axios from 'axios';
 
 // export const manageRestaurantRedux = (data) => async dispatch => {
@@ -18,17 +18,30 @@ import axios from 'axios';
 // } 
 
 export const restaurantRedux = () => async dispatch => {
-    
-    await axios.get('/api/getAllRestaurants')
+    await axios.get('/api/get_all_restaurants')
     .then(response => {
-        console.log("reducing action restaurant");
         dispatch({
             type : RESTAURANT,
             payload : response.data
         })  
-    }) 
+    })
     .catch(error => {
-        console.log("error recieved from restaurant req", error);
+        dispatch({
+            type: ERROR,
+            payload: error
+        })
+    });
+}
+
+export const deliveryRedux = () => async dispatch => {
+    await axios.get('/api/get_delivery_restaurants')
+    .then(response => {
+        dispatch({
+            type : DELIVERY_RESTAURANTS,
+            payload : response.data
+        })  
+    })
+    .catch(error => {
         dispatch({
             type: ERROR,
             payload: error

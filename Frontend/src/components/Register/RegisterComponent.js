@@ -85,7 +85,6 @@ Register.propTypes = {
 }
 
 const mapStateToProps = state => {
-  console.log("state mapstatetoprops in signup",state);
     return({
         details: state.register.response
     });

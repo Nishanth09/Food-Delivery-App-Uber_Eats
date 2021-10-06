@@ -104,7 +104,6 @@ PopUp.propTypes = {
 }
 
 const mapStateToProps = state =>{
-    console.log("state mapstatetoprops in popup",state);
     return({
         cart: state.restaurant.cartItems
     });

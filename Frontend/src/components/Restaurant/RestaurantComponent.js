@@ -29,7 +29,6 @@ class Restaurant extends React.Component {
     }
 
     render() {
-        console.log(this.props,"[[")
         let details = null; 
         let redirectDish = null;
         if (this.state.flag) {
@@ -88,7 +87,6 @@ Restaurant.propTypes = {
 }
   
 const mapStateToProps = state =>{
-    console.log("state mapstatetoprops in restaurant",state);
     return({
         menu: state.restaurant.menuDetails,
         restaurant: state.restaurant.restaurantDetails

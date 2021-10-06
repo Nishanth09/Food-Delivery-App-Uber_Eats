@@ -71,7 +71,6 @@ class ManageRestaurant extends React.Component {
     
     editDish = (index, field, value) => {
         let temp = this.state.dishesList
-
         temp[index][field] = value
         this.setState({dishesList: temp})
     }

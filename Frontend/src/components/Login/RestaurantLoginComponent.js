@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input, Label, FormGroup, Button, Container, Row} from 'reactstrap';
+import {Input, Label, FormGroup, Button, Container, Row, Col} from 'reactstrap';
 import login_logo from '../../images/login_logo.png';
 import { Link } from 'react-router-dom';
 import {loginRestaurantRedux} from '../../redux/reduxActions/loginAction';
@@ -33,21 +33,41 @@ class RestaurantLogin extends React.Component {
         this.setState({flag : true});
       }
     render() {
-        let redirectDashboard = null; 
+        let renderDashboard = null;
+        if (JSON.parse(localStorage.getItem("userData"))) {
+            renderDashboard = <Redirect to = '/dashboard'/>;
+        }
+        let displayError = null;
         if (this.state.flag) {
-            redirectDashboard = <Redirect to='/dashboard/profile' />;
+            if (this.props.userDetails.username && this.props.userDetails.email && this.props.userDetails.account_type === "O") {
+            localStorage.setItem("userData", JSON.stringify(this.props.userDetails));
+            renderDashboard = <Redirect to = '/dashboard'/>;
+            // renderHome = <Redirect to={{
+            //   pathname: '/home',
+            //   state: this.props.user
+            // }}/>;
+            } else {
+            displayError = "Couldn't find an account. Please enter valid credentials"
+            }
         } 
         return (
             <div>
-                {redirectDashboard}
+                {renderDashboard}
           <Container>
             <Row style={{textAlign:'center', marginTop:'10px'}}>
               <Link to='/'><img src={login_logo} alt="login_logo" style={{height:'30px',width:'400px', marginTop:'80px'}}></img></Link>
               <br />
               <label style={{marginTop:"10px", fontFamily:"sans-serif", fontWeight:"200", fontStyle:"italic"}}>For Restaurants</label>
-              <label style={{textAlign:'left', marginTop:"30px", fontWeight:"600", fontSize:"24px"}}>Welcome back</label>
+              
               </Row>
+            <Row style={{color:"red", marginTop:"10px", textAlign:"center"}}>
+              <Col sm={{size : 6, offset : 3}}>
+              {displayError}
+              </Col>
+            </Row>
+            <label style={{textAlign:'left', marginTop:"30px", fontWeight:"600", fontSize:"24px"}}>Welcome back</label>
             <Row style={{ marginTop:'10px'}}>
+                
             <FormGroup>
                 <Label for="exampleEmail">Username</Label>
                 <Input type="text" name="username" id="exampleEmail" 
@@ -77,12 +97,12 @@ class RestaurantLogin extends React.Component {
 
 RestaurantLogin.propTypes = {
     loginRestaurantRedux: PropTypes.func.isRequired,
-    user: PropTypes.array.isRequired
+    userDetails: PropTypes.object.isRequired
 }
   
 const mapStateToProps = state =>{
     return({
-        user: state.login.userDetails
+        userDetails: state.login.userDetails
     });
 }
     

@@ -98,10 +98,7 @@ class Filters extends React.Component {
                  </div>
                  <div className="row" style={{marginTop:"10px"}}>
                  <div className="col-sm-5">
-                 <button className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px"}}>Halal</button>
-                   </div>
-                   <div className="col-sm-6 offset-sm-1">
-                   <button className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px", whiteSpace:"nowrap"}}>Gluten-free</button>
+                 <button className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px"}}>Non Vegetarian</button>
                    </div>
                  </div>
                </div>);

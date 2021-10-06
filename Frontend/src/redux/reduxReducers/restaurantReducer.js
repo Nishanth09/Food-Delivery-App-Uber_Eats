@@ -1,4 +1,4 @@
-import { CART, MENU, RESTAURANT, ADD_CART, RMV_CART } from "../types";
+import { CART, MENU, RESTAURANT, ADD_CART, RMV_CART, DELIVERY_RESTAURANTS } from "../types";
 
 const initialState = {
     restaurantDetails : [],
@@ -13,6 +13,11 @@ export default function(state = initialState, action) {
                 ...state,
                 restaurantDetails : action.payload
             };
+        case DELIVERY_RESTAURANTS:
+            return {
+                ...state,
+                restaurantDetails : action.payload
+            }
         case MENU:
             return {
                 ...state,

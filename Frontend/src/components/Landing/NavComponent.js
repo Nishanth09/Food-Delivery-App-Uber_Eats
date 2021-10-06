@@ -13,7 +13,6 @@ class Navbar extends React.Component {
         } else {
             navbarDisplay = <BeforeLoginNavbar />;
         }
-        console.log("======",this.props);
         return (
         <div>
             {navbarDisplay}
@@ -45,7 +44,6 @@ function BeforeLoginNavbar() {
 }
 
 const mapStateToProps = state =>{
-  console.log("state mapstatetoprops in navbar",state);
   return({
       cart: state.restaurant.cartItems
   });
