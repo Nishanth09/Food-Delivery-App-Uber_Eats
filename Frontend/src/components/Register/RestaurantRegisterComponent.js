@@ -43,16 +43,16 @@ class RestaurantRegister extends React.Component {
               </Row>
               <Row style={{ marginTop:'10px'}}>
             <FormGroup>
-                <Label for="username">Enter the restaurant name</Label>
+                <Label for="username">User name</Label>
                 <Input type="text" username="rname" id="rname" 
-                placeholder="Restaurant name" 
+                placeholder="Enter username" 
                 onChange={(e) => {this.setState({ username: e.target.value })}} />
                 </FormGroup>
             </Row>
             <Row style={{ marginTop:'20px'}}>
             <FormGroup>
                 <Label for="email">Email</Label>
-                <Input type="email" name="email" id="email" placeholder="Email"
+                <Input type="email" name="email" id="email" placeholder="Enter email"
                 onChange={(e) => this.setState({ email: e.target.value })} />
                 </FormGroup>
             </Row>

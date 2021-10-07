@@ -2,7 +2,7 @@ import { ERROR, SIGNUP_CUSTOMER, SIGNUP_RESTAURANT } from "../types";
 import axios from 'axios';
 
 export const registerCustomerRedux = (data) => async dispatch =>{
-    await axios.post('http://localhost:3001/signup_user', data)
+    await axios.post('api/signup_user', data)
     .then(response => {
         dispatch({
             type : SIGNUP_CUSTOMER,
@@ -18,7 +18,7 @@ export const registerCustomerRedux = (data) => async dispatch =>{
 }
 
 export const registerRestaurantRedux = (data) => async dispatch =>{
-    await axios.post('http://localhost:3001/signup_owner', data)
+    await axios.post('api/signup_owner', data)
     .then(response => {
         dispatch({
             type : SIGNUP_RESTAURANT,

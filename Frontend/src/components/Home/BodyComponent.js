@@ -4,6 +4,7 @@ import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { restaurantRedux } from '../../redux/reduxActions/restaurantAction';
+import { getUserDetailsRedux } from '../../redux/reduxActions/userDetailsAction';
 class HomeBody extends React.Component {
     constructor(props) {
         super(props);
@@ -14,7 +15,12 @@ class HomeBody extends React.Component {
     }
      
     async componentDidMount() {
-        await this.props.restaurantRedux()
+        await this.props.getUserDetailsRedux()
+        console.log(this.props.userDetails)
+        const data = {
+            "state" : this.props.userDetails.state
+        } 
+        await this.props.restaurantRedux(data)
     }
 
     handleRestaurantPage = (e) => {
@@ -22,12 +28,12 @@ class HomeBody extends React.Component {
     }
 
     render() { 
-        console.log(this.props.restaurantDetails);
+        //console.log(this.props.restaurantDetails);
         let redirectRestaurantPage = null; 
         let details = null;
-        // if (this.state.flag) {
-        //     redirectRestaurantPage = <Redirect to='/restaurantpage'/>
-        // }
+        if (this.state.flag) {
+            redirectRestaurantPage = <Redirect to='/restaurantpage'/>
+        }
         if (this.props.restaurantDetails.length !== 0) {
             details = this.props.restaurantDetails.map((restaurant,index) => {
                 return (
@@ -62,14 +68,17 @@ class HomeBody extends React.Component {
 }
 
 HomeBody.propTypes = {
+    getUserDetailsRedux : PropTypes.func.isRequired,
+    userDetails: PropTypes.object.isRequired,
     restaurantRedux: PropTypes.func.isRequired,
     restaurantDetails: PropTypes.array.isRequired
 }
   
 const mapStateToProps = state =>{
     return({
-        restaurantDetails: state.restaurant.restaurantDetails
+        restaurantDetails : state.restaurant.restaurantDetails,
+        userDetails : state.user.userDetails
     });
 }
  
-export default connect(mapStateToProps, { restaurantRedux })(HomeBody);
+export default connect(mapStateToProps, { getUserDetailsRedux, restaurantRedux })(HomeBody);

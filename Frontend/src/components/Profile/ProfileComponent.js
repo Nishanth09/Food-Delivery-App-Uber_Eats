@@ -4,7 +4,7 @@ import login_logo from '../../images/login_logo.png';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {logoutCustomerRedux} from '../../redux/reduxActions/logoutAction';
-import {getUserDetailsRedux, updateUserDetailsRedux} from '../../redux/reduxActions/userDetailsAction';
+import {getUserDetailsRedux, postUserDetailsRedux} from '../../redux/reduxActions/userDetailsAction';
 import { Button } from "reactstrap";
 import { CountryDropdown } from 'react-country-region-selector';
 import { Link } from 'react-router-dom';
@@ -42,14 +42,15 @@ class Profile extends React.Component {
     });
   };
 
-async componentDidMount() {
-    await this.props.getUserDetailsRedux();
-    this.setState({
-      userinfo: this.state.userinfo
-    });
-}
+// async componentDidMount() {
+//     await this.props.getUserDetailsRedux();
+//     this.setState({
+//       userinfo: this.state.userinfo
+//     });
+// }
 
   handleLogout = async (e) => {
+    console.log("logout clicked")
     window.localStorage.clear();
     await this.props.logoutCustomerRedux();
     this.setState({flag : true});
@@ -62,19 +63,18 @@ async componentDidMount() {
   handleUpdate = async (e) => {
     e.preventDefault();
     const data = {
-      name : this.state.userinfo.name,
+      userid : this.props.userDetails.userid,
       nickname : this.state.userinfo.nickname,
-      email : this.state.userinfo.email,
       mobile : this.state.userinfo.mobile,
       fav_restaurant : this.state.userinfo.fav_restaurant,
-      dob : this.state.userinfo.dob,
       city : this.state.userinfo.city,
       state : this.state.currentState, 
       street : this.state.userinfo.street,
       zip : this.state.userinfo.zip,
-      nickname : this.state.country
+      country : this.state.country
     }
-    await this.props.updateUserDetailsRedux(data);
+    await this.props.postUserDetailsRedux(data);
+    console.log("msg : ", this.props.msg)
   }
 
   render() {
@@ -131,45 +131,45 @@ async componentDidMount() {
               <div className="col-sm-8 offset-sm-4">
               <div className="row"> 
                     <div className="col col-sm-3">
-                    <label for="name">Name</label>
-                    <input onChange={this.handleChange} name="name" type="text" className="form-control" id="name" />
+                    <label>Name</label>
+                    <input onChange={this.handleChange} value={this.props.userDetails.username} name="name" type="text" className="form-control" id="name" />
                     </div>
 
                     <div className="col col-sm-3">
-                    <label for="nickname">Nick name</label>
+                    <label>Nick name</label>
                     <input onChange={this.handleChange} name="nickname" type="text" className="form-control" id="nickname" />
                     </div>
                 </div>
                 <div className="row"> 
                 <div className="col col-sm-3">
-                        <label for="email">Email</label>
-                        <input onChange={this.handleChange} name="email" type="email" className="form-control" id="email" />
+                        <label>Email</label>
+                        <input onChange={this.handleChange} value={this.props.userDetails.email} name="email" type="email" className="form-control" id="email" />
                         </div>
 
                     <div className="col col-sm-3">
-                        <label for="contact">Contact</label>
+                        <label>Contact</label>
                         <input onChange={this.handleChange} name="mobile" type="text" className="form-control" id="contact" placeholder="+1(123)4567890" />
                     </div>
                 </div>
                 <div className="row">
                         <div className="col col-sm-3">
-                            <label for="favorites">Favorites</label>
+                            <label>Favorites</label>
                             <input onChange={this.handleChange} name="fav_restaurant" type="text" className="form-control" id="favorites" />
                         </div>
 
                         <div className="col col-sm-3">
-                            <label for="dob">Date of birth</label>
-                            <input onChange={this.handleChange} name="dob" type="text" className="form-control" id="dob" placeholder="mm-dd-yyyy" />
+                            <label>Date of birth</label>
+                            <input onChange={this.handleChange} value={this.props.userDetails.dob} name="dob" type="text" className="form-control" id="dob" placeholder="mm-dd-yyyy" />
                         </div>
                     </div>
                     <div className="row">
                         <div className="col col-sm-3">
-                        <label for="inputCity">City</label>
+                        <label>City</label>
                         <input onChange={this.handleChange} name="city" type="text" className="form-control" id="inputCity" />
                         </div>
 
                         <div className="col col-sm-3">
-                        <label for="inputState">State</label>
+                        <label>State</label>
                         <select onChange={this.handleState} value={this.state.currentState} id="inputState" className="form-control">
                             <option>Alaska</option>
                             <option>Arizona</option>
@@ -225,12 +225,12 @@ async componentDidMount() {
                     </div>
                     <div className="row">
                     <div className="col col-sm-3">
-                        <label for="address">Address</label>
+                        <label>Address</label>
                         <input onChange={this.handleChange} name="street" type="text" className="form-control" id="address" />
                         </div>
 
                     <div className="col col-sm-3">
-                        <label for="inputZip">Zip</label>
+                        <label>Zip</label>
                         <input onChange={this.handleChange} name="zip" type="text" className="form-control" id="inputZip" />
                         </div>
                     </div>
@@ -261,8 +261,8 @@ async componentDidMount() {
 
 Profile.propTypes = {
   logoutCustomerRedux: PropTypes.func.isRequired,
-  updateUserDetailsRedux: PropTypes.func.isRequired,
-  getUserDetailsRedux: PropTypes.func.isRequired,
+  postUserDetailsRedux: PropTypes.func.isRequired,
+  //getUserDetailsRedux: PropTypes.func.isRequired,
   userDetails: PropTypes.object.isRequired,
   msg: PropTypes.string.isRequired
 }
@@ -274,4 +274,4 @@ const mapStateToProps = state =>{
   });
 }
   
-export default connect(mapStateToProps, {getUserDetailsRedux, updateUserDetailsRedux, logoutCustomerRedux})(Profile);
+export default connect(mapStateToProps, {postUserDetailsRedux, logoutCustomerRedux})(Profile);

@@ -1,4 +1,5 @@
-import { CART, RESTAURANT, MENU, ADD_CART, RMV_CART, DELIVERY_RESTAURANTS, ERROR } from "../types";
+import { CART, RESTAURANT, MENU, ADD_CART, RMV_CART, DELIVERY_RESTAURANTS,
+     ERROR } from "../types";
 import axios from 'axios';
 
 // export const manageRestaurantRedux = (data) => async dispatch => {
@@ -15,10 +16,13 @@ import axios from 'axios';
 //             payload: error
 //         })
 //     });
-// } 
+// }
 
-export const restaurantRedux = () => async dispatch => {
-    await axios.get('/api/get_all_restaurants')
+
+export const restaurantRedux = (data) => async dispatch => {
+    await axios.get('/api/get_all_restaurants', {
+        params:data
+    })
     .then(response => {
         dispatch({
             type : RESTAURANT,

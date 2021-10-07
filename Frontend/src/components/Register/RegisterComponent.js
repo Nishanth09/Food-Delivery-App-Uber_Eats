@@ -15,6 +15,7 @@ class Register extends Component {
           username: "",
           email: "",
           password: "",
+          dob: "",
           flag : false
       };
   }
@@ -24,7 +25,8 @@ onHandleSubmit = async (e) => {
     const data = {
       username: this.state.username,
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
+      dob: this.state.dob
     };
     await this.props.registerCustomerRedux(data);
     this.setState({flag:true});
@@ -56,6 +58,13 @@ onHandleSubmit = async (e) => {
                 <Label for="email">Email</Label>
                 <Input type="email" name="email" id="email" placeholder="Email"
                 onChange={(e) => this.setState({ email: e.target.value })} />
+                </FormGroup>
+            </Row>
+            <Row style={{ marginTop:'20px'}}>
+            <FormGroup>
+                <Label for="dob">Date of birth</Label>
+                <Input type="text" name="dob" id="dob" placeholder="yyyy-mm-dd"
+                onChange={(e) => this.setState({ dob: e.target.value })} />
                 </FormGroup>
             </Row>
             <Row style={{ marginTop:'20px'}}>

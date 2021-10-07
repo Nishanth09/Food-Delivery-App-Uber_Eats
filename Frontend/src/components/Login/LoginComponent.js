@@ -43,6 +43,7 @@ class Login extends React.Component {
       }
       let displayError = null;
       if (this.state.flag) {
+        console.log(this.props.userDetails.username, this.props.userDetails.email, this.props.userDetails.account_type)
         if (this.props.userDetails.username && this.props.userDetails.email && this.props.userDetails.account_type === "C") {
           localStorage.setItem("userData", JSON.stringify(this.props.userDetails));
           renderHome = <Redirect to = '/home'/>;
