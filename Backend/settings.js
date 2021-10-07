@@ -11,6 +11,8 @@ const MODE = "dev"
 const SESSION_SECRET = "asdfshdifsjdf234234ifdjskdfj832498"
 const SESSION_KEY = "cmpe273_session_key"
 
+const STATIC_PATH = "./app/static"
+
 
 module.exports = {
     MYSQL_DATABASE,
@@ -21,5 +23,6 @@ module.exports = {
     SESSION_SECRET,
     SESSION_KEY,
     MODE,
-    BASE_API_URL
+    BASE_API_URL,
+    STATIC_PATH
 }

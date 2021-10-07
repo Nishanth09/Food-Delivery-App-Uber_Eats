@@ -20,6 +20,10 @@ const restaurants_table = {
             "primary_key": true 
         },
         {
+            "name": "resimg",
+            "type": "CHAR(36)",
+        },
+        {
             "name": "ownerid",
             "type": "CHAR(36)",
             "not_null": true,
@@ -34,6 +38,20 @@ const restaurants_table = {
             "name": "items",
             "type": "JSON",
             "not_null": true, 
+        },
+        {
+            "name": "description",
+            "type": "CHAR(36)"
+        },
+        {
+            "name": "mode",
+            "type": "CHAR(36)",
+            "not_null": true
+        },
+        {
+            "name": "dietary",
+            "type": "CHAR(36)",
+            "not_null": true
         },
         {
             "name": "address",

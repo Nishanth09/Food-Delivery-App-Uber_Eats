@@ -50,6 +50,10 @@ const orders_table = {
             "not_null": true,
         },
         {
+            "name": "delivery_address",
+            "type": "CHAR(36)"
+        },
+        {
             "name": "order_time",
             "type": "DATETIME",
             "not_null": true,

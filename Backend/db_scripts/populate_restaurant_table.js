@@ -5,12 +5,14 @@ let rest_data = [
     {
         "ownerid": "44848bd4-5a15-46b3-87ad-d522c4212ace",
         "name": "Tasty Richards",
+        "resimg": "img",
         "items": [
             {
                 "name" : "Chicken Katsu",
                 "image" : "http://localhost:3001/chicken_katsu.webp",
                 "description" : "chicken with katsu mixed with it",
                 "price" : "$20.99",
+                "main_ingredients": "chicken",
                 "category": "Main Course"
             },
             {
@@ -18,6 +20,7 @@ let rest_data = [
                 "image" : "http://localhost:3001/hawaiin_bbq.webp",
                 "description" : "combo chicken and short ribs",
                 "price" : "$12.99",
+                "main_ingredients": "chicken",
                 "category": "Main Course"
             },
             {
@@ -25,16 +28,20 @@ let rest_data = [
                 "image" : "http://localhost:3001/popcorn_shrimp.webp",
                 "description" : "served with french fries",
                 "price" : "$25.99",
+                "main_ingredients": "chicken",
                 "category": "Starter"
             },
             {
                 "name" : "Fish and Chips",
                 "image" : "http://localhost:3001/fish_chips.webp",
                 "description" : "served with coke and fries",
+                "main_ingredients": "chicken",
                 "price" : "$21.99",
                 "category": "Starter"
             }        
         ],
+        "dietary": "Non-veg",
+        "mode": "both",
         "address": "345 S Main St, San Jose, 93134",
         "open_timings": "06:00",
         "close_timings": "21:00"

@@ -9,6 +9,7 @@ let orders_data = [
         "order_status": "ordered",
         "order_items": [{"name": "Chicken Katsu", "price": "20.99"}, 
                         {"name": "Popcorn Shrimp", "price": "25.99"}],
+        "delivery_address":"123 st",
         "price": "48.30",
         "order_time": "2021-09-21 6:00:00"
     }
@@ -31,4 +32,3 @@ base.select("users", ["userid"], "account_type=?", ["C"], (err, results, fields)
          
     })
 })
-

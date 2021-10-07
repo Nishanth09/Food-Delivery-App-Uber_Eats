@@ -72,6 +72,10 @@ const users_table = {
             "not_null": true
         },
         {
+            "name": "address",
+            "type": "CHAR(36)"
+        },
+        {
             "name": "dob",
             "type": "DATE",
             "not_null": true

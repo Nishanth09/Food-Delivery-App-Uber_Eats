@@ -1,7 +1,6 @@
 const base = require("./base")
 const { v4: uuidv4 } = require("uuid")
 
-
 module.exports.create_table = (table_details, callback) => {
     base.create_table(table_details, callback) 
 }

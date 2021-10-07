@@ -6,12 +6,15 @@ const users = require("./models/user_model")
 const restaurants = require("./models/restaurants_model")
 const session_store = require('./sessions')
 const models = require('./models/all_models')
+const fileUpload = require('express-fileupload');
+const { v4: uuidv4 } = require("uuid")
+
+
 //const cors = require('cors');
 const port = 3001
 app.use(express.json()) // for parsing application/json
-// app.use(cors({
-//     origin: 'http://localhost:3000'
-// }));
+app.use('/api/static',express.static(settings.STATIC_PATH))
+app.use(fileUpload())
 app.use(
     session(
         {
@@ -50,7 +53,7 @@ app.post(`${settings.BASE_API_URL}/login`, (req,res) => {
             res.status(500).send("Internal Server Error");
             return
         }
-
+        console.log("login res: ",results)
         //Be careful with this check all use cases
         if(results[0] !== undefined ){
             //user is authenticated check for duplicate username
@@ -67,6 +70,7 @@ app.post(`${settings.BASE_API_URL}/login`, (req,res) => {
                     res.status(500).end()
                     return
                 }
+                console.log("login res: ",results)
                 if(results[0]){
                     let user_obj = {
                         "username": results[0].username,
@@ -89,6 +93,55 @@ app.post(`${settings.BASE_API_URL}/login`, (req,res) => {
     })
 })
 
+//verify if username already exists
+app.post(`${settings.BASE_API_URL}/signup_user`, (req, res) => {
+    console.log(req.body);
+    let username = req.body.username
+    let password = req.body.password
+    let email = req.body.email
+    let account_type = "C"
+    let dob = req.body.dob
+
+    users.save({
+        "username": username,
+        "password": password,
+        "email": email,
+        "account_type": account_type,
+        "dob": dob
+    }, (err, results, fields) => {
+        if (err){
+            console.log(err)
+            res.status(500).end()
+            return
+        }
+        res.status(200).send("Customer Registered successfully");
+    })
+})
+
+app.post(`${settings.BASE_API_URL}/signup_owner`, (req, res) => {
+    let username = req.body.username
+    let password = req.body.password
+    let email = req.body.email
+    let city = req.body.city
+    let account_type = "O"
+    let dob = "1983-09-21"
+
+    users.save({
+        "username": username,
+        "password": password,
+        "email": email,
+        "account_type": account_type,
+        "dob": dob,
+        "city": city
+    }, (err, results, fields) => {
+        if (err){
+            console.log(err)
+            res.status(500).end()
+            return
+        }
+        res.status(200).send("Restaurant Registered successfully");
+    })
+})
 
 app.get(`${settings.BASE_API_URL}/user_details`, (req, res) => {
     console.log("Requested for user details!", req.session);
@@ -114,6 +167,7 @@ app.get(`${settings.BASE_API_URL}/user_details`, (req, res) => {
             }
             if(results[0]){
                 let user_obj = {
+                    "userid": req.session.userid,
                     "username": results[0].username,
                     "nickname": results[0].nickname,
                     "mobile": results[0].mobile,
@@ -139,31 +193,25 @@ app.get(`${settings.BASE_API_URL}/user_details`, (req, res) => {
 
 app.post(`${settings.BASE_API_URL}/user_details`, (req, res) => {
     if (req.session.userid) {
-        let username = req.body.username
+        let userid = req.body.userid
         let nickname = req.body.nickname
-        let email = req.body.email
         let mobile = req.body.mobile
-        let dob = req.body.dob
         let street = req.body.street
         let city = req.body.city
         let country = req.body.country
         let state = req.body.state
         let fav_restaurant = req.body.fav_restaurant
         let zip = req.body.zip
-        let account_type = req.body.account_type
         users.save({
-            "username" :username,
+            "userid" : userid,
             "nickname" : nickname,
-            "email" : email,
             "mobile" : mobile,
-            "dob" : dob,
             "street" : street,
             "city" : city,
             "country" : country,
             "state" : state,
             "fav_restaurant" : fav_restaurant,
             "zip" : zip,
-            "account_type": account_type
         }, (err, results, fields) => {
             if (err){
                 console.log(err)
@@ -177,56 +225,6 @@ app.post(`${settings.BASE_API_URL}/user_details`, (req, res) => {
         res.status(401).end()
     }
 });
-
-//verify if username already exists
-app.post("/signup_user", (req, res) => {
-    console.log(req.body);
-    let username = req.body.username
-    let password = req.body.password
-    let email = req.body.email
-    let account_type = "C"
-    let dob = "1980-08-21"
-
-    users.save({
-        "username": username,
-        "password": password,
-        "email": email,
-        "account_type": account_type,
-        "dob": dob
-    }, (err, results, fields) => {
-        if (err){
-            console.log(err)
-            res.status(500).end()
-            return
-        }
-        res.status(200).send("Customer Registered successfully");
-    })
-})
-
-app.post("/signup_owner", (req, res) => {
-    let username = req.body.username
-    let password = req.body.password
-    let email = req.body.email
-    let city = req.body.city
-    let account_type = "O"
-    let dob = "1983-09-21"
-
-    users.save({
-        "username": username,
-        "password": password,
-        "email": email,
-        "account_type": account_type,
-        "dob": dob,
-        "city": city
-    }, (err, results, fields) => {
-        if (err){
-            console.log(err)
-            res.status(500).end()
-            return
-        }
-        res.status(200).send("Restaurant Registered successfully");
-    })
-})
 
 app.get(`${settings.BASE_API_URL}/logout`, (req, res) => {
     console.log(`logging off ${req.session.userid}`)
@@ -296,6 +294,7 @@ app.get(`${settings.BASE_API_URL}/restaurant`, (req, res) => {
 
 app.get(`${settings.BASE_API_URL}/get_all_restaurants`, (req, res) => {
     if (req.session.userid) {
+        console.log("user id in get all : ", req.session.userid);
         let restaurantDetails = [
             "name",
             "address",
@@ -303,54 +302,69 @@ app.get(`${settings.BASE_API_URL}/get_all_restaurants`, (req, res) => {
             "close_timings",
             "items"
         ]
-        // for getting state
-        let state = null;
-        users.simple_select(["state"], {"userid": req.session.userid}, (err, results, fields) => {
-            if (err){
-                console.log(err);
-                res.status(500).end()
-                return
-            }
-            if(results[0]){
-                state = results[0].state; 
-            }
-        })
-
-        console.log("state",state)
-
-
-
-
-        restaurants.simple_select(restaurantDetails, {}, (err, results, fields) => {
-            if (err){
-                console.log(err);
-                res.status(500).end()
-                return
-            }
-            if(results[0]){
-                let rDetails = [];
-                for (let res of results) {
-                    let resDetails = {
-                        "name": res.name,
-                        "address": res.address,
-                        "open_timings": res.open_timings,
-                        "close_timings": res.close_timings,
-                        "items": res.items
-                    }
-                    rDetails.push(resDetails)
+        console.log("params : ", req.query.state);
+        if(req.query.state) {
+            console.log("state not null")
+            restaurants.simple_select(restaurantDetails, {"ownerid" : req.session.userid}, (err, results, fields) => {
+                if (err){
+                    console.log(err);
+                    res.status(500).end()
+                    return
                 }
-                console.log(rDetails);
-                
-                res.status(200).send(JSON.stringify(rDetails))        
-                return
-            } else {
-                res.status(404).end()
-                return
-            }
-        })
+                if(results[0]){
+                    let rDetails = [];
+                    for (let res of results) {
+                        let resDetails = {
+                            "name": res.name,
+                            "address": res.address,
+                            "open_timings": res.open_timings,
+                            "close_timings": res.close_timings,
+                            "items": res.items
+                        }
+                        rDetails.push(resDetails)
+                    }
+                    console.log(rDetails);
+                    
+                    res.status(200).send(JSON.stringify(rDetails))        
+                    return
+                } else {
+                    res.status(404).end()
+                    return
+                }
+            })
+        } else {
+            console.log("state null")
+            restaurants.simple_select(restaurantDetails, {}, (err, results, fields) => {
+                if (err){
+                    console.log(err);
+                    res.status(500).end()
+                    return
+                }
+                if(results[0]){
+                    let rDetails = [];
+                    for (let res of results) {
+                        let resDetails = {
+                            "name": res.name,
+                            "address": res.address,
+                            "open_timings": res.open_timings,
+                            "close_timings": res.close_timings,
+                            "items": res.items
+                        }
+                        rDetails.push(resDetails)
+                    }
+                    console.log(rDetails);
+                    
+                    res.status(200).send(JSON.stringify(rDetails))        
+                    return
+                } else {
+                    res.status(404).end()
+                    return
+                }
+            })
+        }  
     }
     else {
-        res.status(401).end();
+        res.status(401).end("unauthorized");
         return
     }
 })
@@ -385,6 +399,32 @@ app.put(`${settings.BASE_API_URL}/restaurant`, (req, res) => {
     }
 
 })
+
+app.post('/api/upload_image', function(req, res) {
+    let dishImage;
+    let uploadPath;
+    console.log(req.files)
+    if (!req.files || Object.keys(req.files).length === 0) {
+      return res.status(400).send('No files were uploaded.');
+    }
+  
+    // The name of the input field (i.e. "dishImage") is used to retrieve the uploaded file
+    dishImage= req.files.file;
+    file_format = dishImage.name.split(".").length == 2 ? dishImage.name.split(".")[1] : ""
+    let saving_filename = uuidv4() + "." + file_format
+    uploadPath = settings.STATIC_PATH + "/images/" +  saving_filename;
+    console.log(uploadPath)
+  
+    // Use the mv() method to place the file somewhere on your server
+    dishImage.mv(uploadPath, function(err) {
+      if (err){
+          console.log(err)
+        return res.status(500).send(err);
+      }
+  
+      res.send({"file_path": saving_filename});
+    });
+  });
 
 
 app.listen(port, () => {
