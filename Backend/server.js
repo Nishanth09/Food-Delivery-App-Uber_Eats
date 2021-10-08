@@ -20,7 +20,7 @@ app.use(
         {
             "key": settings.SESSION_KEY,
             "secret": settings.SESSION_SECRET,
-            "cookie": { "maxAge": 360000},
+            "cookie": { "maxAge": 3600000},
             "resave": false,
             "saveUninitialized": true,
             "store": session_store.store
@@ -243,8 +243,9 @@ app.post(`${settings.BASE_API_URL}/restaurant`, (req, res) => {
     if (req.session.userid){
         console.log(req.session.userid);
         let rest_data = req.body
-        //TODO: image_magic
+        //rest_data["restid"] = req.body.restid
         rest_data["ownerid"] = req.session.userid
+        console.log("rest_data", rest_data)
         models.restaurants.save(rest_data, (e, r, f) => {
             if(e) {
                 console.log(e);
@@ -258,14 +259,36 @@ app.post(`${settings.BASE_API_URL}/restaurant`, (req, res) => {
     }
 })
 
+app.put(`${settings.BASE_API_URL}/restaurant`, (req, res) => {
+    if (req.session.userid){
+        console.log(req.session.userid);
+        let rest_data = req.body
+        //get rest id
+        rest_data["ownerid"] = req.session.userid
+        models.restaurants.save(rest_data, (e, r, f) => {
+            if(e) {
+                res.status(500).end()
+                return
+            }
+            res.status(200).send("Successfully updated restaurant")
+        })
+    }else{
+        res.status(401).redirect("/")
+    }
+
+})
+
 app.get(`${settings.BASE_API_URL}/restaurant`, (req, res) => {
     if (req.session.userid) {
         let restaurantDetails = [
+            "restid",
+            "resimg",
             "name",
             "address",
             "open_timings",
             "close_timings",
-            "items"
+            "items",
+            "state"
         ]
         restaurants.simple_select(restaurantDetails, {"ownerid": req.session.userid}, (err, results, fields) => {
             if (err){
@@ -275,13 +298,17 @@ app.get(`${settings.BASE_API_URL}/restaurant`, (req, res) => {
             }
             if(results[0]){
                 let resDetails = {
+                    "restid": results[0].restid,
+                    "resimg": results[0].resimg,
                     "name": results[0].name,
                     "address": results[0].address,
                     "open_timings": results[0].open_timings,
                     "close_timings": results[0].close_timings,
-                    "items": results[0].items
+                    "items": results[0].items,
+                    "state": results[0].state
                 }
-                res.status(200).send(JSON.stringify(resDetails))        
+                console.log("****",resDetails)
+                res.status(200).send(resDetails)        
                 return
             }else{
                 res.status(404).end()
@@ -296,16 +323,21 @@ app.get(`${settings.BASE_API_URL}/get_all_restaurants`, (req, res) => {
     if (req.session.userid) {
         console.log("user id in get all : ", req.session.userid);
         let restaurantDetails = [
+            "restid",
+            "resimg",
             "name",
             "address",
             "open_timings",
             "close_timings",
-            "items"
+            "items",
+            "description",
+            "mode",
+            "dietary"
         ]
         console.log("params : ", req.query.state);
         if(req.query.state) {
             console.log("state not null")
-            restaurants.simple_select(restaurantDetails, {"ownerid" : req.session.userid}, (err, results, fields) => {
+            restaurants.simple_select(restaurantDetails, {"state" : req.query.state}, (err, results, fields) => {
                 if (err){
                     console.log(err);
                     res.status(500).end()
@@ -315,11 +347,16 @@ app.get(`${settings.BASE_API_URL}/get_all_restaurants`, (req, res) => {
                     let rDetails = [];
                     for (let res of results) {
                         let resDetails = {
+                            "restid": res.restid,
+                            "resimg":res.resimg,
                             "name": res.name,
                             "address": res.address,
                             "open_timings": res.open_timings,
                             "close_timings": res.close_timings,
-                            "items": res.items
+                            "items": res.items,
+                            "description": res.description,
+                            "mode": res.mode,
+                            "dietary": res.dietary
                         }
                         rDetails.push(resDetails)
                     }
@@ -344,11 +381,16 @@ app.get(`${settings.BASE_API_URL}/get_all_restaurants`, (req, res) => {
                     let rDetails = [];
                     for (let res of results) {
                         let resDetails = {
+                            "restid": res.restid,
+                            "resimg": res.resimg,
                             "name": res.name,
                             "address": res.address,
                             "open_timings": res.open_timings,
                             "close_timings": res.close_timings,
-                            "items": res.items
+                            "items": res.items,
+                            "description": res.description,
+                            "mode": res.mode,
+                            "dietary": res.dietary
                         }
                         rDetails.push(resDetails)
                     }
@@ -369,35 +411,14 @@ app.get(`${settings.BASE_API_URL}/get_all_restaurants`, (req, res) => {
     }
 })
 
-app.get(`${settings.BASE_API_URL}/get_delivery_restaurants`, (req, res) => {
+app.get(`${settings.BASE_API_URL}/get_restaurant`, (req, res) => {
     if (req.session.userid) {
-        
+        console.log(req.session.userid,"*****",req.query.restid)
     }
     else {
         res.status(401).end();
         return
     }
-})
-
-app.put(`${settings.BASE_API_URL}/restaurant`, (req, res) => {
-    if (req.session.userid){
-        console.log(req.session.userid);
-        let rest_data = req.body.data
-        //get rest id
-
-        rest_data["restid"] = restid
-        rest_data["ownerid"] = req.session.userid
-        models.restaurants.save(rest_data, (e, r, f) => {
-            if(e) {
-                res.send(500)
-                return
-            }
-            res.send(200)
-        })
-    }else{
-        res.status(401).redirect("/")
-    }
-
 })
 
 app.post('/api/upload_image', function(req, res) {
@@ -407,15 +428,11 @@ app.post('/api/upload_image', function(req, res) {
     if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).send('No files were uploaded.');
     }
-  
-    // The name of the input field (i.e. "dishImage") is used to retrieve the uploaded file
     dishImage= req.files.file;
     file_format = dishImage.name.split(".").length == 2 ? dishImage.name.split(".")[1] : ""
     let saving_filename = uuidv4() + "." + file_format
     uploadPath = settings.STATIC_PATH + "/images/" +  saving_filename;
     console.log(uploadPath)
-  
-    // Use the mv() method to place the file somewhere on your server
     dishImage.mv(uploadPath, function(err) {
       if (err){
           console.log(err)
