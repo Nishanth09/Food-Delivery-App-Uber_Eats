@@ -25,7 +25,8 @@ class Profile extends React.Component {
       },
       flag: false,
       country : "",
-      currentState : ""
+      currentState : "",
+      updateFlag : false
     }
   }
 
@@ -74,7 +75,7 @@ class Profile extends React.Component {
       country : this.state.country
     }
     await this.props.postUserDetailsRedux(data);
-    console.log("msg : ", this.props.msg)
+    this.setState({updateFlag : true});
   }
 
   render() {
@@ -92,6 +93,7 @@ class Profile extends React.Component {
     }
     return (
       <div>
+        {this.state.updateFlag && <Redirect to='/home' />}
         {redirectHome}
         <div className="container" style={{ marginTop: "20px"}}>
           <div className="row">

@@ -1,8 +1,26 @@
 import axios from 'axios';
 import {MANAGE_RESTAURANT, GET_RESTAURANT_DETAILS, ERROR} from '../types'
 
-export const manageRestaurantRedux = (data) => async dispatch => {
+export const postRestaurantRedux = (data) => async dispatch => {
     await axios.post('/api/restaurant', data)
+    .then((response) => {
+        console.log("action taking place", response);
+        dispatch({
+            type : MANAGE_RESTAURANT,
+            payload : response.data
+        })
+    })
+    .catch(error => {
+        console.log("error recieved from res req", error);
+        dispatch({
+            type: ERROR,
+            payload: error
+        })
+    });
+}
+
+export const putRestaurantRedux = (data) => async dispatch => {
+    await axios.put('/api/restaurant', data)
     .then((response) => {
         console.log("action taking place", response);
         dispatch({

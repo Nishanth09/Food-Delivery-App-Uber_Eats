@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import "../../App.css";
 import title_logo from '../../images/title_logo.png';
 import { connect } from 'react-redux';
-import { restaurantRedux, deliveryRedux } from '../../redux/reduxActions/restaurantAction';
+import { modeRedux } from '../../redux/reduxActions/restaurantAction';
 import PropTypes from 'prop-types';
 import CartPopUp from './CartPopUpComponent';
 
@@ -33,7 +33,16 @@ class AfterLoginNavbar extends React.Component {
         this.setState({menuFlag : null});
       }
       handleDelivery = (e) => {
-        this.props.deliveryRedux();
+        const data = {
+          "mode": "delivery"
+        }
+        this.props.modeRedux(data);
+      }
+      handlePickup = (e) => {
+        const data = {
+          "mode": "pickup"
+        }
+        this.props.modeRedux(data);
       }
     render() { 
       let cartCount = null;
@@ -118,13 +127,9 @@ class AfterLoginNavbar extends React.Component {
             </div>
             <div className="col-sm-3" style={{ marginTop:"5px"}}>
             <button onClick={this.handleDelivery} className="btn btn-light" style={{ outline:"None", width:"100px", borderRadius: '20px 20px 20px 20px', backgroundColor:"#D0CACA"}}>Delivery</button>
-             <button className="btn btn-light" style={{ outline:"None", width:"100px", borderRadius: '20px 20px 20px 20px'}}>Pick up</button>
+             <button onClick={this.handlePickup} className="btn btn-light" style={{ outline:"None", width:"100px", borderRadius: '20px 20px 20px 20px'}}>Pick up</button>
               </div>
-              <div className="col-md-2" style={{marginTop:"10px"}}>
-              <button className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px"}}>Location</button>
-            </div>
-            <div className="col-md-2" style={{marginTop:"10px"}}>
-            
+            <div className="col-md-4" style={{marginTop:"10px"}}>
                   <div className="input-group rounded">
                 <input type="search" className="form-control rounded" placeholder="What are you craving?" aria-label="Search"
                   aria-describedby="search-addon" />
@@ -148,15 +153,16 @@ class AfterLoginNavbar extends React.Component {
 }
 
 AfterLoginNavbar.propTypes = {
-  //cartRedux: PropTypes.func.isRequired,
-  deliveryRedux: PropTypes.func.isRequired,
-  cart: PropTypes.array.isRequired
+  //pickupRedux: PropTypes.func.isRequired,
+  modeRedux: PropTypes.func.isRequired,
+  restaurantDetails: PropTypes.array.isRequired,
 }
 
 const mapStateToProps = state =>{
   return({
-      cart: state.restaurant.cartItems
+      cart: state.restaurant.cartItems,
+      restaurantDetails : state.restaurant.restaurantDetails
   });
 }
 
-export default connect(mapStateToProps, {restaurantRedux, deliveryRedux})(AfterLoginNavbar);
+export default connect(mapStateToProps, { modeRedux })(AfterLoginNavbar);

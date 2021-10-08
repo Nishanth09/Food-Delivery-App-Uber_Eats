@@ -2,7 +2,7 @@ import {GET_RESTAURANT_DETAILS, MANAGE_RESTAURANT } from '../types'
 
 const initialState = {
     msg : "",
-    restaurantDetails : []
+    restaurantDetails : {}
 }; 
 
 export default function (state = initialState, action) {
@@ -14,6 +14,7 @@ export default function (state = initialState, action) {
                 msg : action.payload
             };
         case GET_RESTAURANT_DETAILS:
+            console.log("payload : ",action.payload)
             return {
                 ...state,
                 restaurantDetails : action.payload

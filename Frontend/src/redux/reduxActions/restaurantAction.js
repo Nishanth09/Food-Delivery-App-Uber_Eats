@@ -1,29 +1,32 @@
-import { CART, RESTAURANT, MENU, ADD_CART, RMV_CART, DELIVERY_RESTAURANTS,
-     ERROR } from "../types";
+import { CART, GET_ALL_RESTAURANT, RESTAURANT, MENU, ADD_CART, RMV_CART, MODE_RESTAURANTS,
+    DIETARY_RESTAURANTS, ERROR } from "../types";
 import axios from 'axios';
 
-// export const manageRestaurantRedux = (data) => async dispatch => {
-//     await axios.post('/api/restaurant', data)
-//     .then(response => {
-//         dispatch({
-//             type : MANAGE_RESTAURANT,
-//             payload : response.data
-//         })
-//     })
-//     .catch(error => {
-//         dispatch({
-//             type: ERROR,
-//             payload: error
-//         })
-//     });
-// }
-
-
-export const restaurantRedux = (data) => async dispatch => {
+export const getAllRestaurantsRedux = (data) => async dispatch => {
     await axios.get('/api/get_all_restaurants', {
         params:data
     })
     .then(response => {
+        dispatch({
+            type : GET_ALL_RESTAURANT,
+            payload : response.data
+        })  
+    })
+    .catch(error => {
+        dispatch({
+            type: ERROR,
+            payload: error
+        })
+    });
+}
+
+export const getRestaurantRedux = (data) => async dispatch => {
+    console.log(")))))")
+    await axios.get('/api/get_restaurant', {
+        params:data
+    })
+    .then(response => {
+        console.log("action", response.data)
         dispatch({
             type : RESTAURANT,
             payload : response.data
@@ -37,20 +40,18 @@ export const restaurantRedux = (data) => async dispatch => {
     });
 }
 
-export const deliveryRedux = () => async dispatch => {
-    await axios.get('/api/get_delivery_restaurants')
-    .then(response => {
-        dispatch({
-            type : DELIVERY_RESTAURANTS,
-            payload : response.data
-        })  
+export const modeRedux = (data) => async dispatch => {
+    dispatch({
+        type : MODE_RESTAURANTS,
+        payload : data
     })
-    .catch(error => {
-        dispatch({
-            type: ERROR,
-            payload: error
-        })
-    });
+}
+
+export const deitaryRedux = (data) => async dispatch => {
+    dispatch({
+        type : DIETARY_RESTAURANTS,
+        payload : data
+    })
 }
 
 export const menuRedux = () => async dispatch => {

@@ -1,4 +1,5 @@
-import { CART, MENU, RESTAURANT, ADD_CART, RMV_CART, DELIVERY_RESTAURANTS } from "../types";
+import { CART, MENU, GET_ALL_RESTAURANT, RESTAURANT, ADD_CART, RMV_CART, MODE_RESTAURANTS,
+    DIETARY_RESTAURANTS } from "../types";
 
 const initialState = {
     restaurantDetails : [],
@@ -8,15 +9,33 @@ const initialState = {
 
 export default function(state = initialState, action) {
     switch (action.type) {
-        case RESTAURANT:
+        case GET_ALL_RESTAURANT:
             return {
                 ...state,
                 restaurantDetails : action.payload
             };
-        case DELIVERY_RESTAURANTS:
+        case RESTAURANT:
+            console.log("redce", action.payload)
             return {
                 ...state,
-                restaurantDetails : action.payload
+                menuDetails : action.payload
+            }
+        case MODE_RESTAURANTS:
+            const resItems = state.restaurantDetails.filter(
+                restaurant => restaurant.mode === action.payload.mode 
+            )
+            return {
+                ...state,
+                restaurantDetails : resItems
+            }
+        case DIETARY_RESTAURANTS:
+            console.log("reducer d", action.payload)
+            const rItems = state.restaurantDetails.filter(
+                restaurant => restaurant.dietary === action.payload.dietary 
+            )
+            return {
+                ...state,
+                restaurantDetails : rItems
             }
         case MENU:
             return {

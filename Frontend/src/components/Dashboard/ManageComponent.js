@@ -3,7 +3,7 @@ import { Container, Row, Col, FormGroup, Label, Input, Button,
     Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { manageRestaurantRedux, getRestaurantDetailsRedux } from '../../redux/reduxActions/manageRestaurantAction';
+import { postRestaurantRedux, putRestaurantRedux, getRestaurantDetailsRedux } from '../../redux/reduxActions/manageRestaurantAction';
 import axios from 'axios';
 
 class ManageRestaurant extends React.Component {
@@ -28,16 +28,15 @@ class ManageRestaurant extends React.Component {
             index : null,
             isUpdate : false,
             mode : null,
-            dietary : null
+            dietary : null,
+            selectedState : null
         }
     }
     async componentDidMount() {
         await this.props.getRestaurantDetailsRedux()
-         console.log("dishes --- ",this.props.resDetails['items'])
-        if (this.props.resDetails['items']) {
-            this.setState({dishesList : this.props.resDetails['items']})   
-        } else {
-            this.setState({dishesList : []})
+        if (this.props.resDetails.items) {
+            let temp = this.props.resDetails.items
+            this.setState({dishesList : temp});
         }
     }
     handleToggle = () => {
@@ -69,8 +68,11 @@ class ManageRestaurant extends React.Component {
     }
     handleSave = async () => {
         const restaurantData = {
+            restid: this.props.resDetails.restid,
+            resimg : this.state.rImage,
             name : this.state.rName,
             address : this.state.address,
+            state : this.state.selectedState,   
             open_timings : this.state.open_timings,
             close_timings : this.state.close_timings,
             description : this.state.resDescription,
@@ -79,7 +81,25 @@ class ManageRestaurant extends React.Component {
             items : this.state.dishesList
         }
         console.log("res data", restaurantData);
-        await this.props.manageRestaurantRedux(restaurantData);
+        await this.props.postRestaurantRedux(restaurantData);
+        console.log(this.props.msg);
+    }
+
+    handleUpdate = async () => {
+        const restaurantData = {
+            restid: this.props.resDetails.restid,
+            resimg : this.state.rImage,
+            name : this.state.rName,
+            address : this.state.address,
+            state : this.state.selectedState,   
+            open_timings : this.state.open_timings,
+            close_timings : this.state.close_timings,
+            description : this.state.resDescription,
+            mode : this.state.mode,
+            dietary : this.state.dietary,
+            items : this.state.dishesList
+        }
+        await this.props.putRestaurantRedux(restaurantData);
         console.log(this.props.msg);
     }
     
@@ -106,7 +126,21 @@ class ManageRestaurant extends React.Component {
             console.log(error);
         })
     }
-
+    resimageFormSubmit = (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('file',e.target[0].files[0])
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+        axios.post("/api/upload_image", formData, config).then((response) => {
+            this.setState({rImage : response.data.file_path})
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
     render() {
         let displayDishes = null
         if (this.state.dishesList) {
@@ -159,46 +193,60 @@ class ManageRestaurant extends React.Component {
             <Container>
                 <Row style={{marginTop:"20px"}}>
                     <h1>Restaurant Management</h1>
+                    <img src={'/api/static/images/'+this.props.resDetails.resimg} alt="nothing" width={140} height={150} 
+                    style={{display:"block"}}></img>
                 </Row>
                 <Row style={{marginTop:"20px"}}>
                     <FormGroup>
-                        <Label for="rimage">Restaurant Image</Label>
+                    <Label for="rimage">Restaurant Image</Label>
+                    <form onSubmit={this.resimageFormSubmit}>
+                        <input type="file" name="rImage" />
+                        <input type='submit' value='Upload!' />
+                    </form>
+                        {/* <Label for="rimage">Restaurant Image</Label>
                         <Input type="text" onChange={(e) => {this.setState({rImage : e.target.value})}} name="rimage" id="rimage" 
-                        placeholder="Enter restaurant image" />
+                        placeholder="Enter restaurant image" /> */}
                     </FormGroup>
                 </Row>
                 <Row style={{marginTop:"20px"}}>
                     <FormGroup>
                         <Label for="rname">Restaurant Name</Label>
-                        <Input type="text" onChange={(e) => {this.setState({rName : e.target.value})}} name="rname" id="ranme" 
+                        <Input type="text" value={this.props.resDetails.name} onChange={(e) => {this.setState({rName : e.target.value})}} name="rname" id="ranme" 
                         placeholder="Enter restaurant name" />
                     </FormGroup>
                 </Row>
                 <Row style={{marginTop:"20px"}}>
                     <FormGroup>
                         <Label for="address">Restaurant Address</Label>
-                        <Input type="text" onChange={(e) => {this.setState({address : e.target.value})}} name="address" id="address" 
+                        <Input type="text" value={this.props.resDetails.address} onChange={(e) => {this.setState({address : e.target.value})}} name="address" id="address" 
                         placeholder="Enter address" />
                     </FormGroup>
                 </Row>
                 <Row style={{marginTop:"20px"}}>
                     <FormGroup>
+                        <Label for="state">State</Label>
+                        <Input type="text" value={this.props.resDetails.state} onChange={(e) => {this.setState({selectedState : e.target.value})}} name="state" id="state" 
+                        placeholder="Enter State" />
+                    </FormGroup>
+                </Row>
+                <Row style={{marginTop:"20px"}}>
+                    <FormGroup>
                         <Label for="opentimings">Opening timings</Label>
-                        <Input type="text" onChange={(e) => {this.setState({open_timings : e.target.value})}} name="opentimings" id="opentimings" 
+                        <Input type="text" value={this.props.resDetails.open_timings} onChange={(e) => {this.setState({open_timings : e.target.value})}} name="opentimings" id="opentimings" 
                         placeholder="like 6:30am" />
                     </FormGroup>
                 </Row>
                 <Row style={{marginTop:"20px"}}>
                     <FormGroup>
                         <Label for="closetimings">Closing timings</Label>
-                        <Input type="text" onChange={(e) => {this.setState({close_timings : e.target.value})}} name="closetimings" id="closetimings" 
+                        <Input type="text" value={this.props.resDetails.close_timings} onChange={(e) => {this.setState({close_timings : e.target.value})}} name="closetimings" id="closetimings" 
                         placeholder="like 4:30pm" />
                     </FormGroup>
                 </Row>
                 <Row style={{marginTop:"20px"}}>
                     <FormGroup>
                         <Label for="resDescription">Description</Label>
-                        <Input type="text" onChange={(e) => {this.setState({resDescription : e.target.value})}} name="resDescription" id="resDescription" 
+                        <Input type="text" value={this.props.resDetails.description} onChange={(e) => {this.setState({resDescription : e.target.value})}} name="resDescription" id="resDescription" 
                         placeholder="Restaurant Description" />
                     </FormGroup>
                 </Row>
@@ -242,7 +290,7 @@ class ManageRestaurant extends React.Component {
                     <Button onClick={this.handleAddDish} style={{backgroundColor:"#27AE60", width:"100px"}}>Add</Button>
                     </Col>
                     <Col sm={4}>
-                    <Button style={{backgroundColor:"#27AE60", width:"100px"}}>Update</Button>
+                    <Button onClick={this.handleUpdate} style={{backgroundColor:"#27AE60", width:"100px"}}>Update</Button>
                     </Col>
                 </Row>
                 <Row style={{marginTop:"30px"}}>
@@ -253,9 +301,10 @@ class ManageRestaurant extends React.Component {
 }
  
 ManageRestaurant.propTypes = {
-    manageRestaurantRedux: PropTypes.func.isRequired,
+    postRestaurantRedux: PropTypes.func.isRequired,
+    putRestaurantRedux: PropTypes.func.isRequired,
     getRestaurantDetailsRedux : PropTypes.func.isRequired,
-    resDetails : PropTypes.array.isRequired
+    resDetails : PropTypes.object.isRequired
 }
   
 const mapStateToProps = state =>{
@@ -264,4 +313,4 @@ const mapStateToProps = state =>{
     });
 }
     
-export default connect(mapStateToProps, {manageRestaurantRedux, getRestaurantDetailsRedux})(ManageRestaurant);
+export default connect(mapStateToProps, {postRestaurantRedux, putRestaurantRedux, getRestaurantDetailsRedux})(ManageRestaurant);

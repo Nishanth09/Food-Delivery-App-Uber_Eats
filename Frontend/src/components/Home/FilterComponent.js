@@ -7,6 +7,8 @@ import RadioGroup from '@mui/material/RadioGroup';
 import { Redirect } from 'react-router';
 import HomeBody from '../Home/BodyComponent';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { deitaryRedux } from '../../redux/reduxActions/restaurantAction';
 
 class Filters extends React.Component {
   constructor(props) {
@@ -19,24 +21,42 @@ class Filters extends React.Component {
     };
   };
 
-  // componentDidMount() {
-  //   // get restaurant details
-  // }
-     
-     toggleSortDropDown = (e) => {
-       this.setState((prev) => ({sortDropDownFlag : !prev.sortDropDownFlag}))
-     }
-     togglePriceDropDown = (e) => {
-       this.setState((prev) => ({priceDropDownFlag : !prev.priceDropDownFlag}))
-     }
-     toggleDeliveryDropDown = (e) => {
-       this.setState((prev) => ({deliveryDropDownFlag : !prev.deliveryDropDownFlag}))
-     }
-     toggleDietaryDropDown = (e) => {
-       this.setState((prev) => ({dietaryDropDownFlag : !prev.dietaryDropDownFlag}))
-     }
+  handleVegetarian = () => {
+    const data = {
+      "dietary": "vegetarian"
+    }
+    this.props.deitaryRedux(data);
+  }
 
-       render() { 
+  handleVegan = () => {
+    const data = {
+      "dietary": "vegan"
+    }
+    this.props.deitaryRedux(data);
+  }
+
+  handleNonVeg = () => {
+    const data = {
+      "dietary": "non veg"
+    }
+    this.props.deitaryRedux(data);
+  }
+     
+  toggleSortDropDown = (e) => {
+    this.setState((prev) => ({sortDropDownFlag : !prev.sortDropDownFlag}))
+  }
+  togglePriceDropDown = (e) => {
+    this.setState((prev) => ({priceDropDownFlag : !prev.priceDropDownFlag}))
+  }
+  toggleDeliveryDropDown = (e) => {
+    this.setState((prev) => ({deliveryDropDownFlag : !prev.deliveryDropDownFlag}))
+  }
+  toggleDietaryDropDown = (e) => {
+    this.setState((prev) => ({dietaryDropDownFlag : !prev.dietaryDropDownFlag}))
+  }
+
+  render() {
+
          let sortDropDownResult = null;
          let priceDropDownResult = null;
          let deliveryDropDownResult = null;
@@ -90,15 +110,15 @@ class Filters extends React.Component {
              <div style={{marginTop : "10px"}}>
                <div className="row">
                  <div className="col-sm-5">
-                 <button className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px"}}>Vegetarian</button>
+                 <button onClick={this.handleVegetarian} className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px"}}>Vegetarian</button>
                    </div>
                    <div className="col-sm-5 offset-sm-2">
-                   <button className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px"}}>Vegan</button>
+                   <button onClick={this.handleVegan} className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px"}}>Vegan</button>
                    </div>
                  </div>
                  <div className="row" style={{marginTop:"10px"}}>
                  <div className="col-sm-5">
-                 <button className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px"}}>Non Vegetarian</button>
+                 <button onClick={this.handleNonVeg} className="btn btn-light btn-outline-secondary" style={{borderRadius:"20px"}}>Non Vegetarian</button>
                    </div>
                  </div>
                </div>);
@@ -217,5 +237,16 @@ class Filters extends React.Component {
            );
        }
 }
- 
-export default connect()(Filters);
+
+Filters.propTypes = {
+  deitaryRedux: PropTypes.func.isRequired,
+  restaurantDetails: PropTypes.array.isRequired,
+}
+
+const mapStateToProps = state =>{
+  return({
+      restaurantDetails : state.restaurant.restaurantDetails
+  });
+}
+
+export default connect(mapStateToProps, {deitaryRedux})(Filters);
