@@ -4,6 +4,7 @@ const session = require('express-session')
 const settings = require('./settings')
 const users = require("./models/user_model")
 const restaurants = require("./models/restaurants_model")
+const orders = require("./models/orders_model")
 const session_store = require('./sessions')
 const models = require('./models/all_models')
 const fileUpload = require('express-fileupload');
@@ -288,7 +289,9 @@ app.get(`${settings.BASE_API_URL}/restaurant`, (req, res) => {
             "open_timings",
             "close_timings",
             "items",
-            "state"
+            "state",
+            "dietary",
+            "mode"
         ]
         restaurants.simple_select(restaurantDetails, {"ownerid": req.session.userid}, (err, results, fields) => {
             if (err){
@@ -305,7 +308,9 @@ app.get(`${settings.BASE_API_URL}/restaurant`, (req, res) => {
                     "open_timings": results[0].open_timings,
                     "close_timings": results[0].close_timings,
                     "items": results[0].items,
-                    "state": results[0].state
+                    "state": results[0].state,
+                    "mode": results[0].mode,
+                    "dietary": results[0].dietary
                 }
                 console.log("****",resDetails)
                 res.status(200).send(resDetails)        
@@ -414,6 +419,113 @@ app.get(`${settings.BASE_API_URL}/get_all_restaurants`, (req, res) => {
 app.get(`${settings.BASE_API_URL}/get_restaurant`, (req, res) => {
     if (req.session.userid) {
         console.log(req.session.userid,"*****",req.query.restid)
+        let restaurantDetails = [
+            "resimg",
+            "name",
+            "description",
+            "address",
+            "items",
+            "open_timings",
+            "close_timings"
+        ]
+        restaurants.simple_select(restaurantDetails, {"restid" : req.query.restid}, (err, results, fields) => {
+            if (err){
+                console.log(err);
+                res.status(500).end()
+                return
+            }
+            if(results[0]){
+                let rDetails = [];
+                for (let res of results) {
+                    let resDetails = {
+                        "restid": req.query.restid,
+                        "resimg":res.resimg,
+                        "name": res.name,
+                        "address": res.address,
+                        "open_timings": res.open_timings,
+                        "close_timings": res.close_timings,
+                        "items": res.items,
+                        "description": res.description
+                    }
+                    rDetails.push(resDetails)
+                }
+                console.log(rDetails);
+                
+                res.status(200).send(JSON.stringify(rDetails))        
+                return
+            } else {
+                res.status(404).end()
+                return
+            }
+        })
+    }
+    else {
+        res.status(401).end();
+        return
+    }
+})
+
+app.post(`${settings.BASE_API_URL}/order`, (req, res) => {
+    console.log(req.session.userid,"====", req.body);
+    if (req.session.userid){
+        let rest_data = req.body
+        //rest_data["restid"] = req.body.restid
+        rest_data["userid"] = req.session.userid
+        console.log("rest_data", rest_data)
+        models.orders.save(rest_data, (e, r, f) => {
+            if(e) {
+                console.log(e);
+                res.status(500).end()
+                return
+            }
+            res.status(200).send("order placed successfully")
+        })
+    }else{
+        res.status(401).redirect("/")
+    }
+})
+
+app.get(`${settings.BASE_API_URL}/get_orders`, (req, res) => {
+    if (req.session.userid) {
+        console.log(req.session.userid,"*****")
+        let orderDetails = [
+            "orderid",
+            "restid",
+            "order_status",
+            "order_items",
+            "price",
+            "delivery_address",
+            "order_time",
+        ]
+        orders.simple_select(orderDetails, {"userid" : req.session.userid}, (err, results, fields) => {
+            if (err){
+                console.log(err);
+                res.status(500).end()
+                return
+            }
+            if(results[0]){
+                let details = [];
+                for (let res of results) {
+                    let odrDetails = {
+                        "orderid": res.orderid,
+                        "restid": res.restid,
+                        "order_status":res.order_status,
+                        "order_items": res.order_items,
+                        "price": res.price,
+                        "delivery_address": res.delivery_address,
+                        "order_time": res.order_time,
+                    }
+                    details.push(odrDetails)
+                }
+                console.log(details);
+                
+                res.status(200).send(JSON.stringify(details))        
+                return
+            } else {
+                res.status(404).end()
+                return
+            }
+        })
     }
     else {
         res.status(401).end();
