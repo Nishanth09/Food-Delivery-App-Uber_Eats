@@ -11,8 +11,22 @@ class PopUp extends React.Component {
             qty : 1
         }
     }
-    handleCart = (dishinfo) => {
-        this.props.cartRedux(dishinfo);
+    componentDidMount() {
+        if (this.props.cart){
+            for (let item of this.props.cart) {
+                if (item.name === this.props.dishinfo.name) {
+                    this.setState({qty : item.qty})
+                }
+            }
+        }
+        console.log("props",this.props)
+    }
+    handleCart = async (dishinfo) => {
+        const data = {
+            dishDetails : dishinfo,
+            qty : this.state.qty
+        }
+        await this.props.cartRedux(data);
         this.props.onHide();
     }
     handleMinus = (dishinfo) => {
@@ -42,26 +56,11 @@ class PopUp extends React.Component {
             <Modal.Body className="show-grid">
               <Container>
                   <Row>
-                      <img src={this.props.dishInfo.dishImage} alt="nothing"></img>
+                      <img src={'/api/static/images/'+this.props.dishinfo.dishimage} alt="nothing"></img>
                     </Row>
                     <hr />
                 <Row>
-                    <h2>{this.props.dishInfo.dishName}</h2>
-                </Row>
-                <Row style={{marginTop:"20px", background:"#C8C6C6"}}>
-                    <h5>Choose your sides</h5>
-                    <label>Required. Choose 2</label>
-                </Row>
-                <Row style={{marginTop:"10px"}}>
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Rice" />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Marconi Salad" />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Steam Veggie" />
-                </Form.Group>
+                    <h2>{this.props.dishinfo.name}</h2>
                 </Row>
                 <Row style={{marginTop:"20px", background:"#C8C6C6"}}>
                     <h5>Special Instructions</h5>
@@ -75,16 +74,16 @@ class PopUp extends React.Component {
                     <hr />
                     <Row>
                         <Col sm={4}>
-                        <Button onClick={this.handleMinus.bind(this, this.props.dishInfo)} 
+                        <Button onClick={this.handleMinus.bind(this, this.props.dishinfo)} 
                         style={{background:"grey", borderRadius:"100%", color:"black", 
                         border: "none", width:"40px"}}>-</Button>
                         {this.state.qty}
-                        <Button onClick={this.handlePlus.bind(this, this.props.dishInfo)} 
+                        <Button onClick={this.handlePlus.bind(this, this.props.dishinfo)} 
                         style={{background:"grey", borderRadius:"100%", color:"black", 
                         border: "none", marginLeft:"40px", width:"40px"}}>+</Button>
                         </Col>
                         <Col sm={8}>
-                        <Button onClick={this.handleCart.bind(this, this.props.dishInfo)} 
+                        <Button onClick={this.handleCart.bind(this, this.props.dishinfo)} 
                         style={{background:"black", width:"100%", border:"none"}}>
                             Add {this.state.qty} to Cart</Button>
                         </Col>
@@ -100,7 +99,7 @@ PopUp.propTypes = {
     cartRedux: PropTypes.func.isRequired,
     plusCartRedux: PropTypes.func.isRequired,
     minusCartRedux: PropTypes.func.isRequired,
-    cart: PropTypes.array.isRequired
+    cart: PropTypes.array.isRequired,
 }
 
 const mapStateToProps = state =>{

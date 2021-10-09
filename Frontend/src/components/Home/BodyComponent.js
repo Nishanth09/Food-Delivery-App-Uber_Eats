@@ -10,7 +10,8 @@ class HomeBody extends React.Component {
         super(props);
         this.state = {
             restaurantDetails : [],
-            flag : false
+            flag : false,
+            restaurantId : null
         };
     }
      
@@ -22,13 +23,16 @@ class HomeBody extends React.Component {
         } 
         await this.props.getAllRestaurantsRedux(data)
     }
-    handleRestaurantPage = (restid) => {
-        console.log("clcikds", restid)
-        const data = {
-            "restid" : restid
-        }
-        this.props.getRestaurantRedux(data);
-        //this.setState({flag : true});
+    handleRestaurantPage = async (restid) => {
+        this.setState({restaurantId : restid, flag : true});
+        // console.log("clcikds", restid)
+        // const data = {
+        //     "restid" : restid
+        // }
+        // await this.props.getRestaurantRedux(data);
+        // if (this.props.selectedRestaurantDetails) {
+        //     this.setState({restaurantId : restid, flag : true});
+        // }
     }
 
     render() { 
@@ -36,7 +40,10 @@ class HomeBody extends React.Component {
         let redirectRestaurantPage = null; 
         let details = null;
         if (this.state.flag) {
-            redirectRestaurantPage = <Redirect to='/restaurantpage'/>
+            redirectRestaurantPage = <Redirect to={{
+                pathname: '/restaurantpage',
+                state: { id: this.state.restaurantId }
+            }}/>
         }
         if (this.props.restaurantDetails) {
             details = this.props.restaurantDetails.map((restaurant,index) => {
@@ -76,12 +83,14 @@ HomeBody.propTypes = {
     getRestaurantRedux : PropTypes.func.isRequired,
     userDetails: PropTypes.object.isRequired,
     getAllRestaurantsRedux: PropTypes.func.isRequired,
-    restaurantDetails: PropTypes.array.isRequired
+    restaurantDetails: PropTypes.array.isRequired,
+    selectedRestaurantDetails : PropTypes.array.isRequired
 }
   
 const mapStateToProps = state =>{
     return({
         restaurantDetails : state.restaurant.restaurantDetails,
+        selectedRestaurantDetails : state.restaurant.selectedRestaurantDetails,
         userDetails : state.user.userDetails
     });
 }

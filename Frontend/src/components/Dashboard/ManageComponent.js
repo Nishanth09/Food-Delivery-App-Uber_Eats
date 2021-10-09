@@ -37,6 +37,14 @@ class ManageRestaurant extends React.Component {
         if (this.props.resDetails.items) {
             let temp = this.props.resDetails.items
             this.setState({dishesList : temp});
+            this.setState({rImage : this.props.resDetails.resimg})
+            this.setState({rName : this.props.resDetails.name})
+            this.setState({address : this.props.resDetails.address})
+            this.setState({selectedState : this.props.resDetails.state})
+            this.setState({open_timings : this.props.resDetails.open_timings})
+            this.setState({close_timings : this.props.resDetails.close_timings})
+            this.setState({mode : this.props.resDetails.mode})
+            this.setState({dietary : this.props.resDetails.dietary})
         }
     }
     handleToggle = () => {
@@ -149,7 +157,9 @@ class ManageRestaurant extends React.Component {
             <Row key={i} style={{marginTop:"10px"}}>
                 <Col sm={4}>
                     <Label>Dish Image</Label>
-                    {/* <Input type="text" value={this.state.dishesList[i].image} onChange={(e) => {this.editDish(i, "image", e.target.value)}} name="dishimage" id="dishimage"/> */}
+                    <br />
+                    <img src={'/api/static/images/'+this.state.dishesList[i].dishimage} alt="nothing"
+                    width={100} height={100}></img>
                     <form onSubmit={(e) => {this.imageFormSubmit(e, i)}}>
                         <input type="file" name="dishImage" />
                         <input type='submit' value='Upload!' />
@@ -193,8 +203,8 @@ class ManageRestaurant extends React.Component {
             <Container>
                 <Row style={{marginTop:"20px"}}>
                     <h1>Restaurant Management</h1>
-                    <img src={'/api/static/images/'+this.props.resDetails.resimg} alt="nothing" width={140} height={150} 
-                    style={{display:"block"}}></img>
+                    <img src={'/api/static/images/'+this.state.rImage} alt="nothing"
+                    style={{display:"block", height:"350px"}}></img>
                 </Row>
                 <Row style={{marginTop:"20px"}}>
                     <FormGroup>
@@ -211,42 +221,42 @@ class ManageRestaurant extends React.Component {
                 <Row style={{marginTop:"20px"}}>
                     <FormGroup>
                         <Label for="rname">Restaurant Name</Label>
-                        <Input type="text" value={this.props.resDetails.name} onChange={(e) => {this.setState({rName : e.target.value})}} name="rname" id="ranme" 
+                        <Input type="text" value={this.state.rName} onChange={(e) => {this.setState({rName : e.target.value})}} name="rname" id="ranme" 
                         placeholder="Enter restaurant name" />
                     </FormGroup>
                 </Row>
                 <Row style={{marginTop:"20px"}}>
                     <FormGroup>
                         <Label for="address">Restaurant Address</Label>
-                        <Input type="text" value={this.props.resDetails.address} onChange={(e) => {this.setState({address : e.target.value})}} name="address" id="address" 
+                        <Input type="text" value={this.state.address} onChange={(e) => {this.setState({address : e.target.value})}} name="address" id="address" 
                         placeholder="Enter address" />
                     </FormGroup>
                 </Row>
                 <Row style={{marginTop:"20px"}}>
                     <FormGroup>
                         <Label for="state">State</Label>
-                        <Input type="text" value={this.props.resDetails.state} onChange={(e) => {this.setState({selectedState : e.target.value})}} name="state" id="state" 
+                        <Input type="text" value={this.state.selectedState} onChange={(e) => {this.setState({selectedState : e.target.value})}} name="state" id="state" 
                         placeholder="Enter State" />
                     </FormGroup>
                 </Row>
                 <Row style={{marginTop:"20px"}}>
                     <FormGroup>
                         <Label for="opentimings">Opening timings</Label>
-                        <Input type="text" value={this.props.resDetails.open_timings} onChange={(e) => {this.setState({open_timings : e.target.value})}} name="opentimings" id="opentimings" 
+                        <Input type="text" value={this.state.open_timings} onChange={(e) => {this.setState({open_timings : e.target.value})}} name="opentimings" id="opentimings" 
                         placeholder="like 6:30am" />
                     </FormGroup>
                 </Row>
                 <Row style={{marginTop:"20px"}}>
                     <FormGroup>
                         <Label for="closetimings">Closing timings</Label>
-                        <Input type="text" value={this.props.resDetails.close_timings} onChange={(e) => {this.setState({close_timings : e.target.value})}} name="closetimings" id="closetimings" 
+                        <Input type="text" value={this.state.close_timings} onChange={(e) => {this.setState({close_timings : e.target.value})}} name="closetimings" id="closetimings" 
                         placeholder="like 4:30pm" />
                     </FormGroup>
                 </Row>
                 <Row style={{marginTop:"20px"}}>
                     <FormGroup>
                         <Label for="resDescription">Description</Label>
-                        <Input type="text" value={this.props.resDetails.description} onChange={(e) => {this.setState({resDescription : e.target.value})}} name="resDescription" id="resDescription" 
+                        <Input type="text" value={this.state.description} onChange={(e) => {this.setState({resDescription : e.target.value})}} name="resDescription" id="resDescription" 
                         placeholder="Restaurant Description" />
                     </FormGroup>
                 </Row>

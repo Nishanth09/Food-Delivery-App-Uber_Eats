@@ -2,20 +2,27 @@ import React from 'react';
 import Navbar from '../Landing/NavComponent';
 import { Redirect } from 'react-router';
 import PopUp from './PopUpComponent';
+import {Modal, Button} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { menuRedux } from '../../redux/reduxActions/restaurantAction';
+import { getRestaurantRedux } from '../../redux/reduxActions/restaurantAction';
 class Restaurant extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             dishesDetails : [],
             flag : false,
-            openPopUp : []
+            openPopUp : [],
+            redFlag : false
         }
     }
     async componentDidMount() {
-        await this.props.menuRedux();
+        if (this.props.location.state) {
+            const data = {
+                "restid" : this.props.location.state.id
+            }
+            await this.props.getRestaurantRedux(data);
+        }
     }
    
     handleDish = (e) => {
@@ -26,45 +33,81 @@ class Restaurant extends React.Component {
         let temp = this.state.openPopUp;
         temp[index] = !temp[index];
         this.setState({openPopUp : temp});
+        if (this.props.resIdList) {
+            let resid = this.props.resIdList[0]
+            for (let i = 1; i < this.props.resIdList.length; i++) {
+                if (this.props.resIdList[i] !== resid) {
+                    this.setState({redFlag : true})
+                }
+            }
+        }
+    }
+    handleClose = () => {
+        this.setState({redFlag : !this.state.redFlag})
     }
 
     render() {
         let details = null; 
         let redirectDish = null;
+        let redirectHome = null;
+        if (!this.props.location.state) {
+            redirectHome = <Redirect to='/home' />
+        }
         if (this.state.flag) {
             redirectDish = <Redirect to='/home'/>;
         } 
-        if (this.props.menu.length !== 0) {
-            details = this.props.menu.map((dish, index) => {
+        let restaurantImage, restaurantName, restaurantAddress, restaurantDescription = null;
+        if (this.props.selectedRestaurantDetails[0]) {
+            restaurantImage = this.props.selectedRestaurantDetails[0].resimg
+            restaurantName = this.props.selectedRestaurantDetails[0].name
+            restaurantAddress = this.props.selectedRestaurantDetails[0].address
+            restaurantDescription = this.props.selectedRestaurantDetails[0].description
+            details = this.props.selectedRestaurantDetails[0].items.map((item, index) => {
                 return (
-                    <div className="col-sm-4" style={{marginTop:"30px"}} key={dish.id}>
+                    <div className="col-sm-4" style={{marginTop:"30px"}} key={item.id}>
                         <div className="row" onClick={this.handleCart.bind(this, index)}>
-                        <div className="col-sm-9" style={{border:"solid #D0CACA 1px"}}>
-                        <label><strong>{dish.dishName}</strong></label>
-                        <label style={{fontSize:"12px"}}>{dish.description}</label>
-                        <br />
-                        <label>{dish.price}</label>
+                            <div className="col-sm-6" style={{border:"solid #D0CACA 1px"}}>
+                                <div className="row">
+                                <label><strong>{item.name}</strong></label>
+                                </div>
+                                <div className="row">
+                                <label style={{fontSize:"12px"}}>{item.description}</label>
+                                </div>
+                            <label>{item.price}</label>
+                            </div>
+                            <div className="col-sm-3" style={{border:"solid #D0CACA 1px"}}>
+                            <img src={'/api/static/images/'+item.dishimage} alt="nothing" width={100} height={100} style={{display:"block", marginLeft:"-20px"}}></img>
+                            </div>
                         </div>
-                        <div className="col-sm-3">
-                        <img src={dish.dishImage} alt="nothing" width={70} height={100} style={{display:"block", marginLeft:"-20px"}}></img>
-                        </div>
-                        </div>
-                        {this.state.openPopUp[index] ? <PopUp show={this.state.openPopUp[index]} onHide={this.handleCart.bind(this, index)} dishInfo={dish}/> : null}
+                        {this.state.openPopUp[index] ? <PopUp show={this.state.openPopUp[index]} onHide={this.handleCart.bind(this, index)} dishinfo={item}/> : null}
                     </div>
                 )
             })
         }
         return (
             <React.Fragment>
+                {this.state.redFlag ? <Modal show={this.state.redFlag} onHide={this.handleClose}>
+                                            <Modal.Header closeButton>
+                                            <Modal.Title>Create new order?</Modal.Title>
+                                            </Modal.Header>
+                                            <Modal.Body>Your order contains items from another restaurant</Modal.Body>
+                                            <Modal.Footer>
+                                            <Button style={{background:"black", width:"100%", border:"none"}} onClick={this.handleClose}>
+                                                New Order
+                                            </Button>
+                                            </Modal.Footer>
+                                        </Modal> : null}
+                {redirectHome}
                 {redirectDish}
                 <Navbar showFlag="open"/>
         <div className="container">
             <div className="row" style={{marginTop:"20px"}}>
-            <img src="./restaurants/tirupathi_bhimas_cover.jpeg" alt="nothing" style={{display:"block", maxHeight:"200px", overflow:"hidden"}}></img>
+            <img src={'/api/static/images/'+restaurantImage} alt="nothing" style={{display:"block", height:"350px"}}></img>
                 </div>
                 <div className="row" style={{marginTop:"20px"}}>
-                <p>Of the 107 things on the menu at this midday go-to, the bisibelabath is one of the most ordered and the non-spicy bhimas thali and the spicy bhimas thali are two of the items most commonly ordered together. • $ • Indian • Vegetarian • Asian • Healthy</p>
-                <p>1208 S Abel St, Milpitas, CA 95035 • More</p>
+                {restaurantDescription}
+                <br />
+                {restaurantAddress}
                     </div>
                     <div className="row" style={{marginTop:"10px"}}>
                         <h5>Menu</h5>
@@ -73,7 +116,8 @@ class Restaurant extends React.Component {
                     <div className="row">
                         {details}
                     </div>
-                    -
+                    <div className="row" style={{marginTop:"40px"}}>
+                    </div>
         </div>
         </React.Fragment>
         );
@@ -81,16 +125,17 @@ class Restaurant extends React.Component {
 }
 
 Restaurant.propTypes = {
-    menuRedux: PropTypes.func.isRequired,
-    menu: PropTypes.array.isRequired,
-    restaurant: PropTypes.array.isRequired
+    getRestaurantRedux : PropTypes.func.isRequired,
+    //restaurant: PropTypes.array.isRequired,
+    selectedRestaurantDetails : PropTypes.array.isRequired,
+    resIdList: PropTypes.array.isRequired
 }
   
 const mapStateToProps = state =>{
     return({
-        menu: state.restaurant.menuDetails,
-        restaurant: state.restaurant.restaurantDetails
+        selectedRestaurantDetails: state.restaurant.selectedRestaurantDetails,
+        resIdList : state.restaurant.resIdList
     });
 }
  
-export default connect(mapStateToProps, { menuRedux })(Restaurant);
+export default connect(mapStateToProps, { getRestaurantRedux })(Restaurant);

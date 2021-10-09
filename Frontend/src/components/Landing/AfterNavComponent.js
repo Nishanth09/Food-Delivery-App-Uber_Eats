@@ -45,10 +45,6 @@ class AfterLoginNavbar extends React.Component {
         this.props.modeRedux(data);
       }
     render() { 
-      let cartCount = null;
-      for (let item of this.props.cart) {
-        cartCount += item.qty;
-      }
         return (
         <div className="container">
           <div className="row">
@@ -102,19 +98,22 @@ class AfterLoginNavbar extends React.Component {
                   <Avatar /> View Account
                 </MenuItem>
                 </Link>
+                <Link to = "/orders" style={{ textDecoration: "none", color: "black" }}>
                 <MenuItem>
                   Orders
-                </MenuItem> 
+                </MenuItem>
+                </Link>
+                <Link to = "/favorites" style={{ textDecoration: "none", color: "black" }}>
                 <MenuItem>
                   Favorites
                 </MenuItem>
-                <MenuItem>
-                  Wallet
-                </MenuItem>
+                <Divider />
+                </Link>
+                {/* <Link to = "/logout" style={{ textDecoration: "none", color: "black" }}>
                 <MenuItem>
                   Sign out
                 </MenuItem>
-                <Divider />
+                </Link> */}
               </Menu>
               </div>
             </div>
@@ -153,7 +152,6 @@ class AfterLoginNavbar extends React.Component {
 }
 
 AfterLoginNavbar.propTypes = {
-  //pickupRedux: PropTypes.func.isRequired,
   modeRedux: PropTypes.func.isRequired,
   restaurantDetails: PropTypes.array.isRequired,
 }

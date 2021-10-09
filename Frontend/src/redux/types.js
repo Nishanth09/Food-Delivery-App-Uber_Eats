@@ -35,3 +35,9 @@ export const CART = 'CART';
 export const ADD_CART = 'ADD_CART';
 
 export const RMV_CART = 'RMV_CART';
+
+export const CHECKOUT = 'CHECKOUT';
+
+export const PLACE_ORDER = 'PLACE_ORDER';
+
+export const GET_ORDERS = 'GET_ORDERS';

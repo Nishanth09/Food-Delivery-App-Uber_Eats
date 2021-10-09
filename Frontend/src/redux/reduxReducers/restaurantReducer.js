@@ -1,10 +1,12 @@
 import { CART, MENU, GET_ALL_RESTAURANT, RESTAURANT, ADD_CART, RMV_CART, MODE_RESTAURANTS,
-    DIETARY_RESTAURANTS } from "../types";
+    DIETARY_RESTAURANTS, CHECKOUT } from "../types";
 
 const initialState = {
     restaurantDetails : [],
-    menuDetails : [],
-    cartItems : []
+    selectedRestaurantDetails : [],
+    cartItems : [],
+    totalAmount : "",
+    resIdList : []
 }
 
 export default function(state = initialState, action) {
@@ -15,10 +17,9 @@ export default function(state = initialState, action) {
                 restaurantDetails : action.payload
             };
         case RESTAURANT:
-            console.log("redce", action.payload)
             return {
                 ...state,
-                menuDetails : action.payload
+                selectedRestaurantDetails : action.payload
             }
         case MODE_RESTAURANTS:
             const resItems = state.restaurantDetails.filter(
@@ -29,7 +30,6 @@ export default function(state = initialState, action) {
                 restaurantDetails : resItems
             }
         case DIETARY_RESTAURANTS:
-            console.log("reducer d", action.payload)
             const rItems = state.restaurantDetails.filter(
                 restaurant => restaurant.dietary === action.payload.dietary 
             )
@@ -43,26 +43,28 @@ export default function(state = initialState, action) {
                 menuDetails : action.payload
             }
         case CART:
-            const item = state.menuDetails.find(
-                (foodItem) => foodItem.id === action.payload.id
+            const item = state.selectedRestaurantDetails[0].items.find(
+                (foodItem) => foodItem.name === action.payload.dishDetails.name
             );
             const inCart = state.cartItems.find((item) =>
-            item.id === action.payload.id ? true : false
+            item.name === action.payload.dishDetails.name ? true : false
             );
+            // const isResId = state.resIdList.find(id => 
+            //     id === state.selectedRestaurantDetails[0].restid)
             return {
                 ...state,
                 cartItems : inCart
                 ? state.cartItems.map((item) =>
-                    item.id === action.payload.id
-                      ? { ...item, qty: item.qty + 1 }
+                    item.name === action.payload.dishDetails.name ? { ...item, qty: item.qty + 1 }
                       : item
-                  ) : [...state.cartItems, {...item, qty : 1}]
+                  ) : [...state.cartItems, {...item, qty : action.payload.qty}],
+                resIdList : [...state.resIdList, state.selectedRestaurantDetails[0].restid]
             };
         case ADD_CART:
             return {
                 ...state,
                 cartItems : state.cartItems.map((item) =>
-                item.id === action.payload.id
+                item.name === action.payload.name
                   ? { ...item, qty: item.qty + 1 }
                   : item
               )
@@ -71,11 +73,22 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 cartItems : state.cartItems.map((item) =>
-                item.id === action.payload.id
+                item.name === action.payload.name
                   ? { ...item, qty: item.qty - 1 }
                   : item
               )
             };
+        case CHECKOUT:
+            console.log(action.payload,"+++++++")
+            let totalAmt = 0
+            for (let i = 0; i < (action.payload.price).length; i++) {
+                totalAmt += (parseFloat(action.payload.price[i].split('$')[1]) * parseFloat(action.payload.qty[i]))
+            }
+            console.log(":::",totalAmt)
+            return {
+                ...state,
+                totalAmount : totalAmt.toFixed(2)
+            }
         default:
             return state;
     }

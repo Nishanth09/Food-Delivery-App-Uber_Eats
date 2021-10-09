@@ -6,6 +6,7 @@ import registerReducer from './registerReducer';
 import restaurantReducer from './restaurantReducer';
 import userDetailsReducer from './userDetailsReducer';
 import { LOGOUT_CUSTOMER } from '../types';
+import ordersReducer from './ordersReducer';
 
 const appReducer = combineReducers({
     login : loginReducer,
@@ -13,7 +14,8 @@ const appReducer = combineReducers({
     logout : logoutReducer,
     restaurant : restaurantReducer,
     user : userDetailsReducer,
-    manageRestaurant : manageRestaurantReducer
+    manageRestaurant : manageRestaurantReducer,
+    order : ordersReducer
   });
   
   const rootReducer = (state, action) => {

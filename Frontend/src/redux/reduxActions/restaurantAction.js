@@ -1,5 +1,5 @@
 import { CART, GET_ALL_RESTAURANT, RESTAURANT, MENU, ADD_CART, RMV_CART, MODE_RESTAURANTS,
-    DIETARY_RESTAURANTS, ERROR } from "../types";
+    DIETARY_RESTAURANTS, CHECKOUT, ERROR } from "../types";
 import axios from 'axios';
 
 export const getAllRestaurantsRedux = (data) => async dispatch => {
@@ -21,12 +21,10 @@ export const getAllRestaurantsRedux = (data) => async dispatch => {
 }
 
 export const getRestaurantRedux = (data) => async dispatch => {
-    console.log(")))))")
     await axios.get('/api/get_restaurant', {
         params:data
     })
     .then(response => {
-        console.log("action", response.data)
         dispatch({
             type : RESTAURANT,
             payload : response.data
@@ -71,7 +69,6 @@ export const menuRedux = () => async dispatch => {
 }
 
 export const cartRedux = (data) => (dispatch) => {
-    console.log("action cart");
     dispatch({
         type : CART,
         payload : data
@@ -79,7 +76,6 @@ export const cartRedux = (data) => (dispatch) => {
 }
 
 export const minusCartRedux = (data) => (dispatch) => {
-    console.log("action cart");
     dispatch({
         type : RMV_CART,
         payload : data
@@ -87,9 +83,15 @@ export const minusCartRedux = (data) => (dispatch) => {
 }
 
 export const plusCartRedux = (data) => (dispatch) => {
-    console.log("action cart");
     dispatch({
         type : ADD_CART,
+        payload : data
+    })
+}
+
+export const checkoutRedux = (data) => (dispatch) => {
+    dispatch({
+        type : CHECKOUT,
         payload : data
     })
 }

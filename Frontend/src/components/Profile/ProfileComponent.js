@@ -107,7 +107,7 @@ class Profile extends React.Component {
             <div className="row" style={{marginTop:"30px"}}>
               <div className="col-sm-4 offset-sm-4">
               <div className="row">
-              <h2>Hello, Nishanth</h2>
+              <h2>Hello, {this.props.userDetails.username}</h2>
                 <label>Update your profile picture</label>
               </div>
               <div className="row">
