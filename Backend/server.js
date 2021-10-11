@@ -9,12 +9,15 @@ const session_store = require('./sessions')
 const models = require('./models/all_models')
 const fileUpload = require('express-fileupload');
 const { v4: uuidv4 } = require("uuid")
+const path = require('path');
+
 
 
 //const cors = require('cors');
 const port = 3001
 app.use(express.json()) // for parsing application/json
 app.use('/api/static',express.static(settings.STATIC_PATH))
+app.use('/static', express.static(settings.STATIC_BUID_PATH))
 app.use(fileUpload())
 app.use(
     session(
@@ -37,6 +40,14 @@ app.use((req,res,next) => {
     }
     next()
 })
+
+let routes = ["/", "/login","/restaurantLogin","/signup","/restaurantSignup","/profile","/orders","/favorites","/restaurantpage","/checkout","/dashboard", "/home"]
+
+for(route of routes){
+    app.get(route, function (req, res) {
+        res.sendFile(path.join(__dirname, 'build', 'index.html'));
+      });
+}
 
 
 app.post(`${settings.BASE_API_URL}/login`, (req,res) => {
@@ -149,6 +160,7 @@ app.get(`${settings.BASE_API_URL}/user_details`, (req, res) => {
     if (req.session.userid){
         let user_fields = [
             "username",
+            "userimage",
             "nickname",
             "mobile",
             "email",
@@ -169,6 +181,7 @@ app.get(`${settings.BASE_API_URL}/user_details`, (req, res) => {
             if(results[0]){
                 let user_obj = {
                     "userid": req.session.userid,
+                    "userimage": results[0].userimage,
                     "username": results[0].username,
                     "nickname": results[0].nickname,
                     "mobile": results[0].mobile,
@@ -194,19 +207,25 @@ app.get(`${settings.BASE_API_URL}/user_details`, (req, res) => {
 
 app.post(`${settings.BASE_API_URL}/user_details`, (req, res) => {
     if (req.session.userid) {
-        let userid = req.body.userid
+        let userid = req.session.userid
+        let userimage = req.body.userimage
         let nickname = req.body.nickname
         let mobile = req.body.mobile
+        let email = req.body.email
+        let dob = req.body.dob
         let street = req.body.street
+        let state = req.body.state
         let city = req.body.city
         let country = req.body.country
-        let state = req.body.state
         let fav_restaurant = req.body.fav_restaurant
         let zip = req.body.zip
         users.save({
             "userid" : userid,
+            "userimage" : userimage,
             "nickname" : nickname,
             "mobile" : mobile,
+            "email" : email,
+            "dob" : dob,
             "street" : street,
             "city" : city,
             "country" : country,
@@ -339,10 +358,10 @@ app.get(`${settings.BASE_API_URL}/get_all_restaurants`, (req, res) => {
             "mode",
             "dietary"
         ]
-        console.log("params : ", req.query.state);
-        if(req.query.state) {
-            console.log("state not null")
-            restaurants.simple_select(restaurantDetails, {"state" : req.query.state}, (err, results, fields) => {
+        console.log("params : ", req.query.city);
+        if(req.query.city) {
+            console.log("city not null")
+            restaurants.simple_select(restaurantDetails, {"state" : req.query.city}, (err, results, fields) => {
                 if (err){
                     console.log(err);
                     res.status(500).end()
@@ -375,7 +394,7 @@ app.get(`${settings.BASE_API_URL}/get_all_restaurants`, (req, res) => {
                 }
             })
         } else {
-            console.log("state null")
+            console.log("city null")
             restaurants.simple_select(restaurantDetails, {}, (err, results, fields) => {
                 if (err){
                     console.log(err);
@@ -485,6 +504,76 @@ app.post(`${settings.BASE_API_URL}/order`, (req, res) => {
     }
 })
 
+app.post(`${settings.BASE_API_URL}/favorites`, (req, res) => {
+    console.log(req.session.userid,"====", req.body);
+    if (req.session.userid){
+        let rest_data = req.body
+        //rest_data["restid"] = req.body.restid
+        rest_data["userid"] = req.session.userid
+        console.log("rest_data", rest_data)
+        users.save(rest_data, (e, r, f) => {
+            if(e) {
+                console.log(e);
+                res.status(500).end()
+                return
+            }
+            res.status(200).send("added to favorites")
+        })
+    }else{
+        res.status(401).redirect("/")
+    }
+})
+
+// app.get(`${settings.BASE_API_URL}/get_favorites`, (req, res) => {
+//     if (req.session.userid) {
+//         console.log(req.session.userid,"*****")
+//         let restaurantDetails = [
+//             "resimg",
+//             "name",
+//             "description",
+//             "address",
+//             "items",
+//             "open_timings",
+//             "close_timings"
+//         ]
+//         restaurants.simple_select(restaurantDetails, {"restid" : req.query.restid}, (err, results, fields) => {
+//             if (err){
+//                 console.log(err);
+//                 res.status(500).end()
+//                 return
+//             }
+//             if(results[0]){
+//                 let rDetails = [];
+//                 for (let res of results) {
+//                     let resDetails = {
+//                         "restid": req.query.restid,
+//                         "resimg":res.resimg,
+//                         "name": res.name,
+//                         "address": res.address,
+//                         "open_timings": res.open_timings,
+//                         "close_timings": res.close_timings,
+//                         "items": res.items,
+//                         "description": res.description
+//                     }
+//                     rDetails.push(resDetails)
+//                 }
+//                 console.log(rDetails);
+                
+//                 res.status(200).send(JSON.stringify(rDetails))        
+//                 return
+//             } else {
+//                 res.status(404).end()
+//                 return
+//             }
+//         })
+//     }
+//     else {
+//         res.status(401).end();
+//         return
+//     }
+// })
+
+
 app.get(`${settings.BASE_API_URL}/get_orders`, (req, res) => {
     if (req.session.userid) {
         console.log(req.session.userid,"*****")
@@ -530,6 +619,60 @@ app.get(`${settings.BASE_API_URL}/get_orders`, (req, res) => {
     else {
         res.status(401).end();
         return
+    }
+})
+
+app.get(`${settings.BASE_API_URL}/get_customer_orders`, (req, res) => {
+    if (req.session.userid) {
+        console.log(req.session.userid,"*****")
+
+        models.restaurants.simple_select(["restid"], {"ownerid": req.session.userid}, 
+        (restq_e, restq_r, restq_f) => {
+            if (restq_e) {
+                console.log(restq_e)
+                res.status(500).end()
+                return
+            }
+            let restid = null
+            if(restq_r[0]){
+                restid = restq_r[0].restid
+            }
+            let raw_join_query = `select o.orderid, o.userid, o.order_status, o.order_items, o.delivery_address, o.price, u.username, u.nickname, u.mobile, u.email from orders as o INNER JOIN users as u on o.userid=u.userid where o.restid='${restid}'`
+            models.base.raw_query_select(raw_join_query, (rq_e, rq_r, rq_f) => {
+                if (rq_e) {
+                    console.log(rq_e)
+                    res.status(500).end()
+                }
+                let all_orders = []
+                if(rq_r[0]){
+                    for(let order of rq_r){
+                        all_orders.push(order)
+                    }
+                }
+                res.send(all_orders)
+            })
+        })
+    }
+    else {
+        res.status(401).end();
+        return
+    }
+})
+
+app.post(`${settings.BASE_API_URL}/order_update`, (req, res) => {
+    console.log(req.session.userid,"====", req.body);
+    if (req.session.userid){
+        let order_data = req.body
+        orders.save(order_data, (e, r, f) => {
+            if(e) {
+                console.log(e);
+                res.status(500).end()
+                return
+            }
+            res.status(200).send("order updated successfully")
+        })
+    }else{
+        res.status(401).redirect("/")
     }
 })
 
