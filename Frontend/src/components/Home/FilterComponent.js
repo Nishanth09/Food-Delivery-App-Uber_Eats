@@ -10,6 +10,18 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { deitaryRedux } from '../../redux/reduxActions/restaurantAction';
 
+import deals from "../../images/deals.png";
+import grocery from "../../images/grocery.png";
+import convenience from "../../images/convenience.png";
+import alcohol from "../../images/alcohol.png";
+import pharmacy from "../../images/pharmacy.jpg";
+import flowers from "../../images/flowers.jpg";
+import top_eats from "../../images/grocery.png";
+import pizza from "../../images/pizza.png";
+import chinese from "../../images/chinese.png";
+import sushi from "../../images/sushi.png";
+import burger from "../../images/burger.png";
+import indian from "../../images/indian.png";
 class Filters extends React.Component {
   constructor(props) {
     super(props);
@@ -23,7 +35,7 @@ class Filters extends React.Component {
 
   handleVegetarian = () => {
     const data = {
-      "dietary": "vegetarian"
+      "dietary": "veg"
     }
     this.props.deitaryRedux(data);
   }
@@ -130,73 +142,73 @@ class Filters extends React.Component {
                <div className="row" style={{marginTop : "50px"}}>
                <div className="col-sm-1">
                  <Link to ="/landingpage">
-                   <img src={"./filters/deals.png"} alt="nothing" width={75} height={75}></img>
+                   <img src={deals} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginLeft:"15px"}}>Deals</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/grocery.png"} alt="nothing" width={75} height={75}></img>
+                 <img src={grocery} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginLeft:"5px"}}>Grocery</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/convenience.png"} alt="nothing" width={75} height={75}></img>
+                 <img src={convenience} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginRight:"15px"}}>Convenience</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/alcohol.png"} alt="nothing" width={75} height={75}></img>
+                 <img src={alcohol} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginLeft:"20px"}}>Alcohol</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/pharmacy.jpg"} alt="nothing" width={75} height={75}></img>
+                 <img src={pharmacy} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginRight:"10px", marginLeft:"5px"}}>Pharmacy</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/flowers.jpg"} alt="nothing" width={75} height={75}></img>
+                 <img src={flowers} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginLeft:"15px"}}>Flowers</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/top_eats.png"} alt="nothing" width={75} height={75}></img>
+                 <img src={top_eats} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginLeft:"25px"}}>Top eats</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/pizza.png"} alt="nothing" width={75} height={75}></img>
+                 <img src={pizza} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginLeft:"20px"}}>Pizza</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/chinese.png"} alt="nothing" width={75} height={75}></img>
+                 <img src={chinese} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginLeft:"15px"}}>Chinese</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/sushi.png"} alt="nothing" width={75} height={75}></img>
+                 <img src={sushi} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginLeft:"20px"}}>Sushi</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/burger.png"} alt="nothing" width={75} height={75}></img>
+                 <img src={burger} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginLeft:"15px"}}>Burgers</label>
                  </div>
                  <div className="col-sm-1">
                  <Link to ="/landingpage">
-                 <img src={"./filters/indian.png"} alt="nothing" width={75} height={75}></img>
+                 <img src={indian} alt="nothing" width={75} height={75}></img>
                  </Link>
                  <label style={{marginLeft:"15px"}}>Indian</label>
                  </div>

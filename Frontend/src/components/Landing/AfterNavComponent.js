@@ -14,13 +14,16 @@ import { connect } from 'react-redux';
 import { modeRedux } from '../../redux/reduxActions/restaurantAction';
 import PropTypes from 'prop-types';
 import CartPopUp from './CartPopUpComponent';
+import { getAllRestaurantsRedux } from '../../redux/reduxActions/restaurantAction';
+import dehaze_icon from "../../images/dehaze_icon.webp";
 
 class AfterLoginNavbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       menuFlag : null,
-      cartFlag : 0
+      cartFlag : 0,
+      searchItem : null
     }
   }
       onHandleClick = (e) => {
@@ -40,9 +43,16 @@ class AfterLoginNavbar extends React.Component {
       }
       handlePickup = (e) => {
         const data = {
-          "mode": "pickup"
+          "mode": "pick up"
         }
         this.props.modeRedux(data);
+      }
+      handleSearch = async () => {
+        console.log("data = ", this.state.searchItem)
+        const data = {
+          "city" : this.state.searchItem
+        }
+        await this.props.getAllRestaurantsRedux(data)
       }
     render() { 
         return (
@@ -52,7 +62,7 @@ class AfterLoginNavbar extends React.Component {
             <div className="col order-first" style={{marginTop:"10px"}}>
             <IconButton onClick={this.onHandleClick} size="small" sx={{ ml: 2 }}>
             <img
-                  src={"./dehaze_icon.webp"}
+                  src={dehaze_icon}
                   alt="nothing"
                   width={30}
                   height={30}
@@ -118,11 +128,11 @@ class AfterLoginNavbar extends React.Component {
               </div>
             </div>
             <div className="col-sm-2">
-                    <Link to="/">
+                  <Link to="/">
                   <button className="btn btn-login">
                  <img src = {title_logo} width={120} height={20} alt="Nothing" style={{marginRight:"20px", paddingRight:"20px"}}></img>
                     </button>
-                     </Link>
+                  </Link>
             </div>
             <div className="col-sm-3" style={{ marginTop:"5px"}}>
             <button onClick={this.handleDelivery} className="btn btn-light" style={{ outline:"None", width:"100px", borderRadius: '20px 20px 20px 20px', backgroundColor:"#D0CACA"}}>Delivery</button>
@@ -130,10 +140,11 @@ class AfterLoginNavbar extends React.Component {
               </div>
             <div className="col-md-4" style={{marginTop:"10px"}}>
                   <div className="input-group rounded">
-                <input type="search" className="form-control rounded" placeholder="What are you craving?" aria-label="Search"
+                <input type="search" className="form-control rounded"
+                 onChange={(e) => {this.setState({searchItem : e.target.value})}} placeholder="What are you craving?" aria-label="Search"
                   aria-describedby="search-addon" />
                 <span className="input-group-text border-0" id="search-addon">
-                  <i className="fas fa-search"></i>
+                  <i className="fas fa-search" onClick={this.handleSearch}></i>
                 </span>
               </div>
             </div>
@@ -153,6 +164,7 @@ class AfterLoginNavbar extends React.Component {
 
 AfterLoginNavbar.propTypes = {
   modeRedux: PropTypes.func.isRequired,
+  getAllRestaurantsRedux: PropTypes.func.isRequired,
   restaurantDetails: PropTypes.array.isRequired,
 }
 
@@ -163,4 +175,4 @@ const mapStateToProps = state =>{
   });
 }
 
-export default connect(mapStateToProps, { modeRedux })(AfterLoginNavbar);
+export default connect(mapStateToProps, { modeRedux, getAllRestaurantsRedux })(AfterLoginNavbar);

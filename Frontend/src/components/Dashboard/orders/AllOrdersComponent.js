@@ -1,202 +1,207 @@
 import React from 'react';
-import { Container, Row, Col, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Button, ButtonGroup } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Container, Row, Col, Label, Button, ButtonGroup, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { getCustomerOrdersRedux } from '../../../redux/reduxActions/ordersAction';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 
 class AllOrders extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            deliveryDropdownOpen : [false, false, false],
-            pickupDropdownOpen : [false, false, false],
-            orderStatus : [null, null, null]
+            dropdownOpen : [],
+            orderStatus : [],
+            orderDetails : [],
+            popUp : []
         }
     }
-    handlePickupToggle = (index) => {
-        let temp = this.state.pickupDropdownOpen;
-        temp[index] = !temp[index];
-        this.setState({pickupDropdownOpen : temp});
-        //this.setState({pickupDropdownOpen : !this.state.pickupDropdownOpen});
+
+    async componentDidMount() {
+        await this.props.getCustomerOrdersRedux();
+        if (this.props.orderDetails) {
+            this.setState({orderDetails : this.props.orderDetails})
+        }
     }
-    handleDeliveryToggle = (index) => {
-        let temp = this.state.deliveryDropdownOpen;
+
+    handleToggle = (index) => {
+        let temp = this.state.dropdownOpen;
         temp[index] = !temp[index];
-        this.setState({deliveryDropdownOpen : temp});
-        //this.setState({pickupDropdownOpen : !this.state.pickupDropdownOpen});
+        this.setState({dropdownOpen : temp});
     }
+    
     handleOrderReceived = (index) => {
-        let temp = this.state.pickupDropdownOpen;
+        let temp = this.state.dropdownOpen;
         let tempStatus = this.state.orderStatus;
         tempStatus[index] = "Order Received";
         temp[index] = !temp[index];
-        this.setState({orderStatus:tempStatus, pickupDropdownOpen : temp});
+        this.setState({orderStatus:tempStatus, dropdownOpen : temp});
     }
+
     handlePrepareOrder = (index) => {
-        let temp = this.state.pickupDropdownOpen;
+        let temp = this.state.dropdownOpen;
         let tempStatus = this.state.orderStatus;
         tempStatus[index] = "Preparing order";
         temp[index] = !temp[index];
-        this.setState({orderStatus :tempStatus, pickupDropdownOpen : temp});
+        this.setState({orderStatus :tempStatus, dropdownOpen : temp});
     }
-    handlePickupReady = (index) => {
-        let temp = this.state.pickupDropdownOpen;
+
+    handleReady = (index) => {
+        let temp = this.state.dropdownOpen;
         let tempStatus = this.state.orderStatus;
-        tempStatus[index] = "Pick up ready";
+        tempStatus[index] = "Order ready";
         temp[index] = !temp[index];
-        this.setState({orderStatus: tempStatus, pickupDropdownOpen : temp});
+        this.setState({orderStatus: tempStatus, dropdownOpen : temp});
     }
-    handlePicked = (index) => {
-        let temp = this.state.pickupDropdownOpen;
+
+    handleDelivered = (index) => {
+        let temp = this.state.dropdownOpen;
         let tempStatus = this.state.orderStatus;
-        tempStatus[index] = "Picked";
+        tempStatus[index] = "Order delivered";
         temp[index] = !temp[index];
-        this.setState({orderStatus: tempStatus, pickupDropdownOpen : temp});
+        this.setState({orderStatus: tempStatus, dropdownOpen : temp});
     }
-    render() { 
-        let pickupDropDown = [null,null,null];
-        let deliveryDropDown = [null,null,null];
-        if (this.state.pickupDropdownOpen[0]) {
-            pickupDropDown[0] = (
-                <div>
-                    <ButtonGroup vertical>
-                    <Button style={{border:"none", background:"grey"}}
-                    onClick={this.handleOrderReceived.bind(this, 0)}>Order Received</Button>
-                    <Button style={{border:"none", background:"grey"}}
-                    onClick={this.handlePrepareOrder.bind(this, 0)}>Preparing Order</Button>
-                    <Button style={{border:"none", background:"grey"}}
-                    onClick={this.handlePickupReady.bind(this, 0)}>Pick up ready</Button>
-                    <Button style={{border:"none", background:"grey"}}
-                    onClick={this.handlePicked.bind(this, 0)}>Picked up</Button>
-                    </ButtonGroup>
-                </div>
-            );
-            deliveryDropDown[0] = (
-                <div>
-                    <ButtonGroup vertical>
-                    <Button style={{border:"none", background:"grey"}}
-                    onClick={() => {this.setState({orderStatus:"Order Received", pickupDropdownOpen : !this.state.pickupDropdownOpen})}}>Order Received</Button>
-                    <Button style={{border:"none", background:"grey"}}
-                    onClick={() => {this.setState({orderStatus:"Preparing Order", pickupDropdownOpen : !this.state.pickupDropdownOpen})}}>Preparing Order</Button>
-                    <Button style={{border:"none", background:"grey"}}
-                    onClick={() => {this.setState({orderStatus:"On the way", pickupDropdownOpen : !this.state.pickupDropdownOpen})}}>On the way</Button>
-                    <Button style={{border:"none", background:"grey"}}
-                    onClick={() => {this.setState({orderStatus:"Delivered", pickupDropdownOpen : !this.state.pickupDropdownOpen})}}>Delivered</Button>
-                    </ButtonGroup>
-                </div>
-            );
+
+    handleCustomerProfile = (index) => {
+        let temp = this.state.popUp
+        temp[index] = !temp[index]
+        this.setState({popUp : temp})
+    }
+    
+    render() {
+        let displayDropDown = []
+        for (let i = 0; i < this.state.dropdownOpen.length; i++) {
+            displayDropDown[i] = null
         }
-        if (this.state.pickupDropdownOpen[1]) {
-            pickupDropDown[1] = (
-                <div>
-                    <ButtonGroup vertical>
-                    <Button style={{border:"none", background:"grey"}}
-                    onClick={this.handleOrderReceived.bind(this, 1)}>Order Received</Button>
-                    <Button style={{border:"none", background:"grey"}}
-                    onClick={this.handlePrepareOrder.bind(this, 1)}>Preparing Order</Button>
-                    <Button style={{border:"none", background:"grey"}}
-                    onClick={this.handlePickupReady.bind(this, 1)}>Pick up ready</Button>
-                    <Button style={{border:"none", background:"grey"}}
-                    onClick={this.handlePicked.bind(this, 1)}>Picked up</Button>
-                    </ButtonGroup>
-                </div>
-            );
-            deliveryDropDown[0] = (
-                <div>
-                    <ButtonGroup vertical>
-                    <Button style={{border:"none", background:"grey"}}
-                    onClick={() => {this.setState({orderStatus:"Order Received", pickupDropdownOpen : !this.state.pickupDropdownOpen})}}>Order Received</Button>
-                    <Button style={{border:"none", background:"grey"}}
-                    onClick={() => {this.setState({orderStatus:"Preparing Order", pickupDropdownOpen : !this.state.pickupDropdownOpen})}}>Preparing Order</Button>
-                    <Button style={{border:"none", background:"grey"}}
-                    onClick={() => {this.setState({orderStatus:"On the way", pickupDropdownOpen : !this.state.pickupDropdownOpen})}}>On the way</Button>
-                    <Button style={{border:"none", background:"grey"}}
-                    onClick={() => {this.setState({orderStatus:"Delivered", pickupDropdownOpen : !this.state.pickupDropdownOpen})}}>Delivered</Button>
-                    </ButtonGroup>
-                </div>
-            );
+        for (let i = 0; i < this.state.dropdownOpen.length; i++) {
+            if (this.state.dropdownOpen[i]) {
+                displayDropDown[i] = (
+                    <div>
+                        <ButtonGroup vertical>
+                        <Button style={{border:"none", background:"grey"}}
+                        onClick={this.handleOrderReceived.bind(this, i)}>Order Received</Button>
+                        <Button style={{border:"none", background:"grey"}}
+                        onClick={this.handlePrepareOrder.bind(this, i)}>Preparing Order</Button>
+                        <Button style={{border:"none", background:"grey"}}
+                        onClick={this.handleReady.bind(this, i)}>Order ready</Button>
+                        <Button style={{border:"none", background:"grey"}}
+                        onClick={this.handleDelivered.bind(this, i)}>Delivered</Button>
+                        </ButtonGroup>
+                    </div>
+                );
+            }
         }
-        return (
-            <Container style={{backgroundColor:"#F2F3F4"}}>
-                <Row style={{marginTop:"50px", border:"solid grey 1px"}}>
-                    <Row>
-                    <Col sm={8} style={{ height:"80px"}}>
-                        <p style={{marginTop:"20px", marginRight:"200px"}}>Pick Up Order is placed by <Link to='/dashboard/orders/all/orderstatus'><strong>Customer 1</strong></Link></p>
-                    </Col>
-                    <Col sm={4} style={{marginTop:"10px"}}>
-                        <Button className="btn dropdown-toggle" onClick={this.handlePickupToggle.bind(this, 0)}>
-                            Update Delivery Status
-                        </Button>
-                        {pickupDropDown[0]}
-                    </Col>
-                    </Row>
-                    <Row style={{textAlign:"center"}}>
-                        Current Status : {this.state.orderStatus[0]}
-                    </Row>
-                </Row>
-                <Row style={{marginTop:"50px", border:"solid grey 1px"}}>
-                    <Row>
-                    <Col sm={8} style={{ height:"80px"}}>
-                        <p style={{marginTop:"20px", marginRight:"200px"}}>Pick up Order is placed by <Link to='/dashboard/orders/all/orderstatus'><strong>Customer 2</strong></Link></p>
-                    </Col>
-                    <Col sm={4} style={{marginTop:"10px"}}>
-                        <Button className="btn dropdown-toggle" onClick={this.handlePickupToggle.bind(this, 1)}>
+        let displayOrders = null
+        displayOrders = this.state.orderDetails.map((order, index) => 
+            <Row style={{marginTop:"50px", border:"solid grey 1px", borderRadius:"20px", padding:"10px"}}>
+                <Row>
+                <Col sm={8} style={{ height:"80px"}}>
+                    <p style={{marginTop:"20px", marginRight:"200px"}}>
+                        Order is placed by&nbsp;
+                        <a onClick={this.handleCustomerProfile.bind(this, index)}>
+                            <strong style={{color:"black", textDecoration:"underline"}}>{order.username}</strong></a></p>
+                            {this.state.popUp[index] ? <Modal isOpen={this.state.popUp[index]} toggle={this.handleCustomerProfile.bind(this, index)}>
+                                                <ModalHeader toggle={this.handleCustomerProfile.bind(this, index)}>Customer Profile</ModalHeader>
+                                                <ModalBody>
+                                                <Container>
+                                                    <Row style={{marginTop:"20px"}}>
+                                                        <Col sm={6}>
+                                                        <Label style={{fontWeight:"600"}}>Customer Name</Label>
+                                                        </Col>
+                                                        <Col sm={6}>
+                                                        <Label>{order.username}</Label>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row style={{marginTop:"20px"}}>
+                                                    <Col sm={6}>
+                                                        <Label style={{fontWeight:"600"}}>Customer Nickname</Label>
+                                                        </Col>
+                                                        <Col sm={6}>
+                                                        <Label>{order.nickname}</Label>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row style={{marginTop:"20px"}}>
+                                                    <Col sm={6}>
+                                                        <Label style={{fontWeight:"600"}}>Customer Contact</Label>
+                                                        </Col>
+                                                        <Col sm={6}>
+                                                        <Label>{order.mobile}</Label>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row style={{marginTop:"20px"}}>
+                                                    <Col sm={6}>
+                                                        <Label style={{fontWeight:"600"}}>Customer Email</Label>
+                                                        </Col>
+                                                        <Col sm={6}>
+                                                        <Label>{order.email}</Label>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row style={{marginTop:"20px"}}>
+                                                    <Col sm={6}>
+                                                        <Label style={{fontWeight:"600"}}>Delivery Address</Label>
+                                                        </Col>
+                                                        <Col sm={6}>
+                                                        <Label>{order.delivery_address}</Label>
+                                                        </Col>
+                                                    </Row>
+                                                </Container>
+                                                </ModalBody>
+                                                <ModalFooter>
+                                                <Button style={{backgroundColor:"black", color:"white"}} onClick={this.handleCustomerProfile.bind(this, index)}>Okay</Button>
+                                                </ModalFooter>
+                                            </Modal> : null}
+                </Col>
+                <Col sm={4}>
+                    
+                </Col>
+                {/* <Col sm={4} style={{marginTop:"10px"}}>
+                    <Button className="btn dropdown-toggle" onClick={this.handleToggle.bind(this, index)}>
                         Update Delivery Status
-                        </Button>
-                        {pickupDropDown[1]}
-                    </Col>
-                    </Row>
-                    <Row style={{textAlign:"center"}}>
-                        Current Status : {this.state.orderStatus[1]}
-                    </Row>
+                    </Button>
+                    {displayDropDown[index]}
+                </Col> */}
                 </Row>
-                {/* <Row style={{marginTop:"50px", border:"solid grey 1px"}}>
+                <hr />
+                <Row>
                     <Row>
-                    <Col sm={8} style={{ height:"80px"}}>
-                        <p style={{marginTop:"20px", marginRight:"200px"}}>Delivery Order is placed by <Link to='/dashboard/orders/all/orderstatus'><strong>Customer 2</strong></Link></p>
-                    </Col>
-                    <Col sm={4} style={{marginTop:"10px"}}>
-                        <Dropdown isOpen={this.state.pickupDropdownOpen} toggle={this.handleToggle}>
-                            <DropdownToggle caret>
-                                Delivery Status
-                            </DropdownToggle>
-                            <DropdownMenu>
-                                <DropdownItem onClick={() => {this.setState({orderStatus : "Order Received"})}}>Order Received</DropdownItem>
-                                <DropdownItem onClick={() => {this.setState({orderStatus : "Preparing Order"})}}>Preparing Order</DropdownItem>
-                                <DropdownItem onClick={() => {this.setState({orderStatus : "On the Way"})}}>On the Way</DropdownItem>
-                                <DropdownItem onClick={() => {this.setState({orderStatus : "Delivered"})}}>Delivered</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
-                    </Col>
+                        <Col sm={6}>
+                        <Label style={{fontWeight:"500"}}>Order items</Label>
+                        </Col>
+                        <Col sm={6}>
+                        <Label style={{fontWeight:"500"}}>Price</Label>
+                        </Col>
                     </Row>
-                    <Row style={{textAlign:"center"}}>
-                        Current Status : {this.state.orderStatus}
-                    </Row>
+                    {order.order_items.map(item => 
+                        <Row style={{marginTop:"10px"}}>
+                            <Col sm={6} style={{textAlign:"left"}}>
+                            {item.name}
+                            </Col>
+                            <Col sm={6}>
+                            {item.price}
+                            </Col>
+                        </Row>
+                        )} 
                 </Row>
-                <Row style={{marginTop:"50px", border:"solid grey 1px"}}>
-                    <Row>
-                    <Col sm={8} style={{ height:"80px"}}>
-                        <p style={{marginTop:"20px", marginRight:"200px"}}>Delivery Order is placed by <Link to='/dashboard/orders/all/orderstatus'><strong>Customer 3</strong></Link></p>
-                    </Col>
-                    <Col sm={4} style={{marginTop:"10px"}}>
-                        <Dropdown isOpen={this.state.dropdownOpen} toggle={this.handleToggle}>
-                            <DropdownToggle caret>
-                                Delivery Status
-                            </DropdownToggle>
-                            <DropdownMenu>
-                                <DropdownItem onClick={() => {this.setState({orderStatus : "Order Received"})}}>Order Received</DropdownItem>
-                                <DropdownItem onClick={() => {this.setState({orderStatus : "Preparing Order"})}}>Preparing Order</DropdownItem>
-                                <DropdownItem onClick={() => {this.setState({orderStatus : "On the Way"})}}>On the Way</DropdownItem>
-                                <DropdownItem onClick={() => {this.setState({orderStatus : "Delivered"})}}>Delivered</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
-                    </Col>
-                    </Row>
-                    <Row style={{textAlign:"center"}}>
-                        Current Status : {this.state.orderStatus}
-                    </Row>
-                </Row> */}
+            </Row>
+        )
+    
+        return (
+            <Container>
+                {displayOrders}
+                <Row style={{marginTop:"40px"}}>
+                </Row>
                 </Container>
         );
     }
 }
- 
-export default AllOrders;
+
+AllOrders.propTypes = {
+    getCustomerOrdersRedux: PropTypes.func.isRequired,
+    orderDetails: PropTypes.array.isRequired
+}
+  
+const mapStateToProps = state =>{
+    return({
+      orderDetails: state.order.orderDetails
+    });
+}
+    
+export default connect(mapStateToProps, { getCustomerOrdersRedux })(AllOrders);

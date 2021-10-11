@@ -3,6 +3,7 @@ import {Modal, Container, Row, Col, Button, Form} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { cartRedux, minusCartRedux, plusCartRedux } from '../../redux/reduxActions/restaurantAction';
 import PropTypes from 'prop-types';
+import { Label } from 'reactstrap';
 
 class PopUp extends React.Component {
     constructor(props) {
@@ -74,13 +75,21 @@ class PopUp extends React.Component {
                     <hr />
                     <Row>
                         <Col sm={4}>
-                        <Button onClick={this.handleMinus.bind(this, this.props.dishinfo)} 
-                        style={{background:"grey", borderRadius:"100%", color:"black", 
-                        border: "none", width:"40px"}}>-</Button>
-                        {this.state.qty}
-                        <Button onClick={this.handlePlus.bind(this, this.props.dishinfo)} 
-                        style={{background:"grey", borderRadius:"100%", color:"black", 
-                        border: "none", marginLeft:"40px", width:"40px"}}>+</Button>
+                            <Row>
+                                <Col sm={4}>
+                                <Button onClick={this.handleMinus.bind(this, this.props.dishinfo)} 
+                                style={{background:"grey", borderRadius:"100%", color:"black", 
+                                border: "none", width:"40px"}}>-</Button>
+                                </Col>
+                                <Col sm={4}>
+                                    <Label style={{paddingTop:"10px", paddingLeft:"10px", fontSize:"20px"}}>{this.state.qty}</Label>
+                                </Col>
+                                <Col sm={4}>
+                                <Button onClick={this.handlePlus.bind(this, this.props.dishinfo)} 
+                                style={{background:"grey", borderRadius:"100%", color:"black", 
+                                border: "none", width:"40px"}}>+</Button>
+                                </Col>
+                            </Row>
                         </Col>
                         <Col sm={8}>
                         <Button onClick={this.handleCart.bind(this, this.props.dishinfo)} 

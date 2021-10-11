@@ -35,13 +35,13 @@ class RestaurantLogin extends React.Component {
     render() {
         let renderDashboard = null;
         if (JSON.parse(localStorage.getItem("userData"))) {
-            renderDashboard = <Redirect to = '/dashboard'/>;
+            renderDashboard = <Redirect to = '/dashboard/manage'/>;
         }
         let displayError = null;
         if (this.state.flag) {
             if (this.props.userDetails.username && this.props.userDetails.email && this.props.userDetails.account_type === "O") {
             localStorage.setItem("userData", JSON.stringify(this.props.userDetails));
-            renderDashboard = <Redirect to = '/dashboard'/>;
+            renderDashboard = <Redirect to = '/dashboard/manage'/>;
             // renderHome = <Redirect to={{
             //   pathname: '/home',
             //   state: this.props.user

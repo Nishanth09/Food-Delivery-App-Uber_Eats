@@ -1,10 +1,12 @@
 import React from 'react';
 import { Container, Row, Col, FormGroup, Label, Input, Button, 
-    Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+    Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from "react-router-dom";
 import { postRestaurantRedux, putRestaurantRedux, getRestaurantDetailsRedux } from '../../redux/reduxActions/manageRestaurantAction';
 import axios from 'axios';
+import {logoutRestaurantRedux} from '../../redux/reduxActions/logoutAction';
 
 class ManageRestaurant extends React.Component {
     constructor(props) {
@@ -29,7 +31,10 @@ class ManageRestaurant extends React.Component {
             isUpdate : false,
             mode : null,
             dietary : null,
-            selectedState : null
+            selectedState : null,
+            flag: false,
+            saveFlag : false,
+            updateFlag : false
         }
     }
     async componentDidMount() {
@@ -91,6 +96,7 @@ class ManageRestaurant extends React.Component {
         console.log("res data", restaurantData);
         await this.props.postRestaurantRedux(restaurantData);
         console.log(this.props.msg);
+        this.setState({saveFlag : true})
     }
 
     handleUpdate = async () => {
@@ -109,6 +115,7 @@ class ManageRestaurant extends React.Component {
         }
         await this.props.putRestaurantRedux(restaurantData);
         console.log(this.props.msg);
+        this.setState({updateFlag : true})
     }
     
     editDish = (index, field, value) => {
@@ -149,7 +156,26 @@ class ManageRestaurant extends React.Component {
             console.log(error);
         })
     }
+
+    handleLogout = async (e) => {
+        window.localStorage.clear();
+        await this.props.logoutRestaurantRedux();
+        this.setState({flag : true});
+    };
+
+    handleToggleSave = () => {
+        this.setState({saveFlag : !this.state.saveFlag})
+    }
+
+    handleToggleUpdate =() => {
+        this.setState({updateFlag : !this.state.updateFlag})
+    }
+
     render() {
+        let redirectLandingPage = null;
+        if (this.state.flag) {
+            redirectLandingPage = <Redirect to="/" />
+        }
         let displayDishes = null
         if (this.state.dishesList) {
             displayDishes = this.state.dishesList.map((dish, i) =>
@@ -201,9 +227,17 @@ class ManageRestaurant extends React.Component {
         }
         return (
             <Container>
+                {redirectLandingPage}
                 <Row style={{marginTop:"20px"}}>
-                    <h1>Restaurant Management</h1>
-                    <img src={'/api/static/images/'+this.state.rImage} alt="nothing"
+                    <Col sm={9}>
+                    <h1>Manage your orders here</h1>
+                    </Col>
+                    <Col sm={3} style={{marginTop:"10px"}}>
+                    <Button onClick={this.handleLogout} className="btn btn-secondary" style={{width:"100px"}}>logout</Button>
+                    </Col>
+                </Row>
+                <Row style={{marginTop:"20px"}}>
+                <img src={'/api/static/images/'+this.state.rImage} alt="nothing"
                     style={{display:"block", height:"350px"}}></img>
                 </Row>
                 <Row style={{marginTop:"20px"}}>
@@ -234,7 +268,7 @@ class ManageRestaurant extends React.Component {
                 </Row>
                 <Row style={{marginTop:"20px"}}>
                     <FormGroup>
-                        <Label for="state">State</Label>
+                        <Label for="state">Location</Label>
                         <Input type="text" value={this.state.selectedState} onChange={(e) => {this.setState({selectedState : e.target.value})}} name="state" id="state" 
                         placeholder="Enter State" />
                     </FormGroup>
@@ -295,12 +329,30 @@ class ManageRestaurant extends React.Component {
                 <Row style={{marginTop:"30px"}}>
                     <Col sm={4}>
                     <Button onClick={this.handleSave} style={{backgroundColor:"black", width:"100px"}}>Save</Button>
+                    {this.state.saveFlag ? <Modal isOpen={this.state.saveFlag} toggle={this.handleToggleSave}>
+                                                <ModalHeader toggle={this.handleToggle}></ModalHeader>
+                                                <ModalBody>
+                                                Saved successfully
+                                                </ModalBody>
+                                                <ModalFooter>
+                                                <Button style={{backgroundColor:"black", color:"white"}} onClick={this.handleToggleSave}>Okay</Button>
+                                                </ModalFooter>
+                                            </Modal> : null}
                     </Col>
                     <Col sm={4}>
                     <Button onClick={this.handleAddDish} style={{backgroundColor:"#27AE60", width:"100px"}}>Add</Button>
                     </Col>
                     <Col sm={4}>
                     <Button onClick={this.handleUpdate} style={{backgroundColor:"#27AE60", width:"100px"}}>Update</Button>
+                    {this.state.updateFlag ? <Modal isOpen={this.state.updateFlag} toggle={this.handleToggleUpdate}>
+                                                <ModalHeader toggle={this.handleToggle}></ModalHeader>
+                                                <ModalBody>
+                                                Updated successfully
+                                                </ModalBody>
+                                                <ModalFooter>
+                                                <Button style={{backgroundColor:"black", color:"white"}} onClick={this.handleToggleUpdate}>Okay</Button>
+                                                </ModalFooter>
+                                            </Modal> : null}
                     </Col>
                 </Row>
                 <Row style={{marginTop:"30px"}}>
@@ -313,6 +365,7 @@ class ManageRestaurant extends React.Component {
 ManageRestaurant.propTypes = {
     postRestaurantRedux: PropTypes.func.isRequired,
     putRestaurantRedux: PropTypes.func.isRequired,
+    logoutRestaurantRedux: PropTypes.func.isRequired,
     getRestaurantDetailsRedux : PropTypes.func.isRequired,
     resDetails : PropTypes.object.isRequired
 }
@@ -323,4 +376,4 @@ const mapStateToProps = state =>{
     });
 }
     
-export default connect(mapStateToProps, {postRestaurantRedux, putRestaurantRedux, getRestaurantDetailsRedux})(ManageRestaurant);
+export default connect(mapStateToProps, {postRestaurantRedux, putRestaurantRedux, getRestaurantDetailsRedux, logoutRestaurantRedux})(ManageRestaurant);

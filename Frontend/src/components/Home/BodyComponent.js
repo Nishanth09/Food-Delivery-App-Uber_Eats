@@ -1,9 +1,9 @@
 import React from 'react';
-import axios from 'axios';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getAllRestaurantsRedux, getRestaurantRedux } from '../../redux/reduxActions/restaurantAction';
+import { getAllRestaurantsRedux, getRestaurantRedux, favRedux } from '../../redux/reduxActions/restaurantAction';
 import { getUserDetailsRedux } from '../../redux/reduxActions/userDetailsAction';
 class HomeBody extends React.Component {
     constructor(props) {
@@ -11,7 +11,9 @@ class HomeBody extends React.Component {
         this.state = {
             restaurantDetails : [],
             flag : false,
-            restaurantId : null
+            restaurantId : null,
+            favPopUp : [],
+            homeFlag : false
         };
     }
      
@@ -19,26 +21,47 @@ class HomeBody extends React.Component {
         await this.props.getUserDetailsRedux()
         console.log(this.props.userDetails)
         const data = {
-            "state" : this.props.userDetails.state
+            "city" : this.props.userDetails.city
         } 
         await this.props.getAllRestaurantsRedux(data)
     }
-    handleRestaurantPage = async (restid) => {
-        this.setState({restaurantId : restid, flag : true});
-        // console.log("clcikds", restid)
-        // const data = {
-        //     "restid" : restid
-        // }
-        // await this.props.getRestaurantRedux(data);
-        // if (this.props.selectedRestaurantDetails) {
-        //     this.setState({restaurantId : restid, flag : true});
-        // }
+
+    handleFavorites = async (name, index) => {
+        let f_name = null
+        f_name = this.props.userDetails.fav_restaurant + ',' + name;
+        console.log("---,,,", f_name) 
+        const data = {
+            fav_restaurant : f_name
+        }
+        await this.props.favRedux(data);
+        let temp = this.state.favPopUp;
+        temp[index] = !temp[index];
+        this.setState({favPopUp : temp});
     }
 
-    render() { 
-        //console.log(this.props.restaurantDetails);
+    handleToggle = (index) => {
+        let temp = this.state.favPopUp;
+        temp[index] = !temp[index];
+        this.setState({favPopUp : temp});
+    }
+
+    handleRestaurantPage = async (restid) => {
+        this.setState({restaurantId : restid, flag : true});
+    }
+
+    handleClose = (index) => {
+        let temp = this.state.favPopUp;
+        temp[index] = !temp[index];
+        this.setState({favPopUp : temp, homeFlag : true})
+    }
+
+    render() {
         let redirectRestaurantPage = null; 
         let details = null;
+        let redirectHome = null;
+        if (this.state.homeFlag) {
+            redirectHome = <Redirect to='/home'/>
+        }
         if (this.state.flag) {
             redirectRestaurantPage = <Redirect to={{
                 pathname: '/restaurantpage',
@@ -53,9 +76,18 @@ class HomeBody extends React.Component {
                 <button style={{border:"solid black 2px"}} onClick={() => this.handleRestaurantPage(restaurant.restid)}>
                     <img src={'/api/static/images/'+restaurant.resimg} alt="nothing" width={140} height={150} 
                     style={{display:"block"}}></img></button>
-                <a href="/profile"><i className="far fa-heart" 
+                <a onClick={this.handleFavorites.bind(this, restaurant.name, index)}><i className="far fa-heart" 
                 style={{position:"absolute", top:"0", left:"4", marginLeft:"130px", 
                 color:"black", marginTop:"5px"}}></i></a>
+                {this.state.favPopUp[index] ? <Modal isOpen={this.state.favPopUp[index]} toggle={this.handleToggle.bind(this, index)}>
+                                                <ModalHeader toggle={this.handleToggle.bind(this, index)}>Favorites</ModalHeader>
+                                                <ModalBody>
+                                                Restaurant added to your favorites
+                                                </ModalBody>
+                                                <ModalFooter>
+                                                <Button style={{backgroundColor:"black", color:"white"}} onClick={this.handleClose.bind(this, index)}>Okay</Button>
+                                                </ModalFooter>
+                                            </Modal> : null}
                 <label style={{width:"160px"}}><strong>{restaurant.name}</strong></label>
               </div>
                 </div>
@@ -64,6 +96,7 @@ class HomeBody extends React.Component {
         }
         return (
             <div className="col-sm-9">
+                {redirectHome}
                 {redirectRestaurantPage}
                 <link href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" 
                 rel="stylesheet"/>
@@ -81,6 +114,7 @@ class HomeBody extends React.Component {
 HomeBody.propTypes = {
     getUserDetailsRedux : PropTypes.func.isRequired,
     getRestaurantRedux : PropTypes.func.isRequired,
+    favRedux : PropTypes.func.isRequired,
     userDetails: PropTypes.object.isRequired,
     getAllRestaurantsRedux: PropTypes.func.isRequired,
     restaurantDetails: PropTypes.array.isRequired,
@@ -95,4 +129,4 @@ const mapStateToProps = state =>{
     });
 }
  
-export default connect(mapStateToProps, { getUserDetailsRedux, getAllRestaurantsRedux, getRestaurantRedux })(HomeBody);
+export default connect(mapStateToProps, { getUserDetailsRedux, getAllRestaurantsRedux, getRestaurantRedux, favRedux })(HomeBody);

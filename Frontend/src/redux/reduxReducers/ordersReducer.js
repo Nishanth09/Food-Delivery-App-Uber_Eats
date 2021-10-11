@@ -1,4 +1,4 @@
-import { PLACE_ORDER, GET_ORDERS } from '../types'
+import { PLACE_ORDER, GET_ORDERS, GET_CUSTOMER_ORDERS, UPDATE_ORDER } from '../types'
 
 const initialState = {
     msg : "",
@@ -13,6 +13,16 @@ export default function (state = initialState, action) {
                 msg : action.payload
             };
         case GET_ORDERS:
+            return {
+                ...state,
+                orderDetails : action.payload
+            }
+        case UPDATE_ORDER:
+            return {
+                ...state,
+                msg : action.payload
+            }
+        case GET_CUSTOMER_ORDERS:
             return {
                 ...state,
                 orderDetails : action.payload

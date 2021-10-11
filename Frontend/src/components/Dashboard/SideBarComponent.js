@@ -14,15 +14,15 @@ class SideBar extends React.Component {
                     to="/dashboard"><img alt="" style={{height:'20px',width:'100'}} src={title_logo}/>
                     </Link>
                     </div>
-                    <div style={{marginTop:"20px"}}>
+                    {/* <div style={{marginTop:"20px"}}>
                     <Link 
                     style={{ textDecoration:'none', border:'none', color:'black'}}
                     to="/dashboard/profile">Profile</Link>
-                    </div>
+                    </div> */}
                     <div style={{marginTop:"10px"}}>
                     <Link 
                     style={{ textDecoration:'none', border:'none', color:'black'}}
-                    to="/dashboard/manage">Manage</Link>
+                    to="/dashboard/manage">Profile</Link>
                     </div>
                     {/* <div style={{marginTop:"10px"}}>
                     <Link 
@@ -32,7 +32,7 @@ class SideBar extends React.Component {
                     <div style={{marginTop:"10px"}}>
                     <Link 
                     style={{ textDecoration:'none', border:'none', color:'black'}}
-                    to="/dashboard/orders">Orders</Link>
+                    to="/dashboard/orders/all">Orders</Link>
                     </div>
                 </div>
             </div>

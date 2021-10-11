@@ -40,10 +40,13 @@ class CustomerOrders extends React.Component {
             }
             for (let order of this.props.orderDetails) {
                 for(let i = 0; i < order.order_items.length; i++) {
-                    totalAmt[i] += ((parseFloat(order.order_items[i].price.split('$')[1])) * parseFloat(order.order_items[i].qty))
+                    totalAmt[i] = ((parseFloat(order.order_items[i].price.split('$')[1])) * parseFloat(order.order_items[i].qty))
                 }
             }
-            console.log(totalAmt)
+            let finalAmt = 0
+            for (let i = 0; i < totalAmt.length; i++) {
+                finalAmt += parseFloat(totalAmt[i])
+            }
             displayOrders = this.props.orderDetails.map((order, index) =>
                 <Row style={{marginTop:"30px"}}>
                     <Row style={{marginTop:"10px"}}>
@@ -51,7 +54,7 @@ class CustomerOrders extends React.Component {
                         </Label>
                     </Row>
                     <Row>
-                        <p>order status : {order.order_status} order time : {order.order_time}
+                        <p>order status :<strong>{order.order_status}</strong> order time : {order.order_time}&nbsp;&nbsp;
                          <a onClick={this.handleReceipt.bind(this, index)} 
                          style={{fontWeight:"600", color:"black", textDecoration:"underline"}}>
                              view receipt</a></p>
@@ -69,7 +72,7 @@ class CustomerOrders extends React.Component {
                                 <h2>Total</h2>
                             </Col>
                             <Col sm={{size : 3, offset : 3}}>
-                                <h2>{'$'+ totalAmt[index].toFixed(2)}</h2>
+                                <h2>{'$'+ finalAmt.toFixed(2)}</h2>
                             </Col>
                             </Row>
                                 {order.order_items.map(item =>

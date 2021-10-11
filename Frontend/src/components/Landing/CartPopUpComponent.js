@@ -27,8 +27,12 @@ class CartPopUp extends React.Component {
         this.props.checkoutRedux(data)
         this.setState({checkoutFlag : true});
     }
-    render() { 
-        let totalAmount = null
+    render() {
+        let rname = null;
+        if (this.props.selectedRestaurantDetails[0]) {
+            rname = this.props.selectedRestaurantDetails[0].name
+        }
+        let totalAmount = 0
         for (let i = 0; i < (this.props.cart).length; i++) {
             totalAmount += (parseFloat(this.props.cart[i].price.split('$')[1]) * parseFloat(this.props.cart[i].qty))
         }
@@ -55,7 +59,7 @@ class CartPopUp extends React.Component {
             <div>
                 {checkoutRedirect}
             <Modal isOpen={this.props.isOpen} toggle={this.props.toggle} >
-                <ModalHeader toggle={this.props.toggle}>{this.props.selectedRestaurantDetails[0].name}</ModalHeader>
+                <ModalHeader toggle={this.props.toggle}>{rname}</ModalHeader>
                 <ModalBody>
                 <Container>
                 <Row>

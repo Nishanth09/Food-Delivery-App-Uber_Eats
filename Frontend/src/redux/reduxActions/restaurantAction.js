@@ -1,5 +1,5 @@
 import { CART, GET_ALL_RESTAURANT, RESTAURANT, MENU, ADD_CART, RMV_CART, MODE_RESTAURANTS,
-    DIETARY_RESTAURANTS, CHECKOUT, ERROR } from "../types";
+    DIETARY_RESTAURANTS, CHECKOUT, FAVORITES, GET_FAVORITES, ERROR } from "../types";
 import axios from 'axios';
 
 export const getAllRestaurantsRedux = (data) => async dispatch => {
@@ -38,6 +38,22 @@ export const getRestaurantRedux = (data) => async dispatch => {
     });
 }
 
+export const favRedux = (data) => async dispatch => {
+    await axios.post('/api/favorites', data)
+    .then((response) => {
+        dispatch({
+            type : FAVORITES,
+            payload : response.data
+        })
+    })
+    .catch(error => {
+        dispatch({
+            type: ERROR,
+            payload: error
+        })
+    })
+}
+
 export const modeRedux = (data) => async dispatch => {
     dispatch({
         type : MODE_RESTAURANTS,
@@ -49,22 +65,6 @@ export const deitaryRedux = (data) => async dispatch => {
     dispatch({
         type : DIETARY_RESTAURANTS,
         payload : data
-    })
-}
-
-export const menuRedux = () => async dispatch => {
-    await axios.get('http://localhost:3001/getDishes')
-    .then(response => {
-        dispatch({
-            type : MENU,
-            payload : response.data
-        })
-    })
-    .catch(error => {
-        dispatch({
-            type: ERROR,
-            payload: error
-        })
     })
 }
 

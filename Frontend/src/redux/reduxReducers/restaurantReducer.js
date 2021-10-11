@@ -1,12 +1,14 @@
 import { CART, MENU, GET_ALL_RESTAURANT, RESTAURANT, ADD_CART, RMV_CART, MODE_RESTAURANTS,
-    DIETARY_RESTAURANTS, CHECKOUT } from "../types";
+    DIETARY_RESTAURANTS, FAVORITES, GET_FAVORITES, CHECKOUT } from "../types";
 
 const initialState = {
     restaurantDetails : [],
     selectedRestaurantDetails : [],
     cartItems : [],
     totalAmount : "",
-    resIdList : []
+    resIdList : [],
+    msg : ""
+    //favoriteRestaurants : []
 }
 
 export default function(state = initialState, action) {
@@ -21,6 +23,16 @@ export default function(state = initialState, action) {
                 ...state,
                 selectedRestaurantDetails : action.payload
             }
+        case FAVORITES:
+            return {
+                ...state,
+                msg : action.payload
+            }
+        // case GET_FAVORITES:
+        //     return {
+        //         ...state,
+        //         favoriteRestaurants : action.payload
+        //     }
         case MODE_RESTAURANTS:
             const resItems = state.restaurantDetails.filter(
                 restaurant => restaurant.mode === action.payload.mode 

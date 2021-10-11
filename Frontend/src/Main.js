@@ -20,6 +20,7 @@ import CancelledOrers from './components/Dashboard/orders/CancelledOrdersCompone
 import Checkout from './components/Checkout/CheckoutComponent';
 import ManageRestaurant from './components/Dashboard/ManageComponent';
 import CustomerOrders from './components/Profile/OrdersComponent';
+import Favorites from './components/Profile/FavoritesComponent';
 
 class Main extends React.Component {
     render() { 
@@ -32,6 +33,7 @@ class Main extends React.Component {
             <Route path = "/restaurantSignup" component = {RestaurantRegister}/>
             <Route path = "/profile" component = {Profile}/>
             <Route path = "/orders" component = {CustomerOrders}/>
+            <Route path = "/favorites" component = {Favorites}/>
             <Route path = "/restaurantpage" component = {Restaurant}/>
             <Route path = "/home" component = {Home}/>
             <Route path = "/checkout" component = {Checkout}/>

@@ -32,7 +32,7 @@ function BeforeLoginNavbar() {
             </Col>
             <Col sm={2}>
               <Link className="btn btn-light" 
-              style={{ textDecoration:'None', marginRight: '30px', marginTop:'10px' , 
+              style={{ textDecoration:'None', marginRight: '30px', marginTop:'10px', paddingTop:"11px", 
               backgroundColor:'#E5E7E9', borderColor:'grey', 
               borderRadius: '30px', width:"100px", border:'none', color:'black', fontWeight:"500"}}
                to="/login">Sign In</Link>

@@ -8,30 +8,38 @@ import {getUserDetailsRedux, postUserDetailsRedux} from '../../redux/reduxAction
 import { Button } from "reactstrap";
 import { CountryDropdown } from 'react-country-region-selector';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 class Profile extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.state = { 
       userinfo: {
-        name: "",
-        nickname: "",
-        email: "",
-        mobile: "",
-        fav_restaurant: "",
-        dob: "",
-        city: "",
-        street: "",
-        zip: ""
+        userid : null,
+        userimage : null,
+        username: null,
+        nickname: null,
+        email: null,
+        mobile: null,
+        fav_restaurant: null,
+        dob: null,
+        city: null,
+        state: null,
+        street: null,
+        zip: null,
+        country: null
       },
       flag: false,
-      country : "",
-      currentState : "",
       updateFlag : false
     }
   }
 
   selectCountry (val) {
-      this.setState({ country: val });
+    this.setState({
+      userinfo: {
+        ...this.state.userinfo,
+        country: val
+      },
+    });
   }
   
   handleChange = (e) => {
@@ -43,12 +51,17 @@ class Profile extends React.Component {
     });
   };
 
-// async componentDidMount() {
-//     await this.props.getUserDetailsRedux();
-//     this.setState({
-//       userinfo: this.state.userinfo
-//     });
-// }
+async componentDidMount() {
+  // this.setState({
+  //   userinfo: {
+  //     ...this.state.userinfo,
+  //     nickname: this.props.userDetails.nickname,
+  //   },
+  // });
+  this.setState({
+    userinfo : this.props.userDetails
+  })
+}
 
   handleLogout = async (e) => {
     console.log("logout clicked")
@@ -58,36 +71,65 @@ class Profile extends React.Component {
   };
 
   handleState = (e) => {
-    this.setState({currentState : e.target.value})
+    this.setState({
+      userinfo: {
+        ...this.state.userinfo,
+        state: e.target.value
+      },
+    });
   }
 
   handleUpdate = async (e) => {
     e.preventDefault();
     const data = {
-      userid : this.props.userDetails.userid,
+      username : this.state.userinfo.username,
+      userimage : this.state.userinfo.userimage,
       nickname : this.state.userinfo.nickname,
       mobile : this.state.userinfo.mobile,
+      email : this.state.userinfo.email,
+      dob : this.state.userinfo.dob,
       fav_restaurant : this.state.userinfo.fav_restaurant,
       city : this.state.userinfo.city,
-      state : this.state.currentState, 
+      state : this.state.userinfo.state, 
       street : this.state.userinfo.street,
       zip : this.state.userinfo.zip,
-      country : this.state.country
+      country : this.state.userinfo.country
     }
     await this.props.postUserDetailsRedux(data);
     this.setState({updateFlag : true});
   }
+  handleImage = (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('file',e.target[0].files[0])
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+        axios.post("/api/upload_image", formData, config).then((response) => {
+          this.setState({
+            userinfo: {
+              ...this.state.userinfo,
+              userimage: response.data.file_path,
+            },
+          });
+        }).catch((error) => {
+            console.log(error);
+        })
+  }
 
   render() {
-    console.log(this.props.msg);
-    const { country } = this.state;
+    console.log("----,,,,", this.state.userinfo)
+    //console.log(this.state.userinfo.userimage,"-----");
+    //const { country } = this.state;
     let redirectHome = null;
     if (this.state.flag) {
       redirectHome = <Redirect to="/" />
     }
     let picture = "";
-    if (this.state.userinfo.profilePic !== "") {
-      picture = this.state.userinfo.UserProfilePic;
+    if (this.state.userinfo.userimage !== "") {
+      picture = this.state.userinfo.userimage;
     } else {
       picture = "../../userIcon.jpg";
     }
@@ -107,24 +149,17 @@ class Profile extends React.Component {
             <div className="row" style={{marginTop:"30px"}}>
               <div className="col-sm-4 offset-sm-4">
               <div className="row">
-              <h2>Hello, {this.props.userDetails.username}</h2>
+              <h2>Hello, {this.state.userinfo.username}</h2>
                 <label>Update your profile picture</label>
               </div>
               <div className="row">
-              <img src={picture} alt="nothing" style={{width:"100px", height:"100px"}}></img>
+              <img src={'/api/static/images/'+this.state.userinfo.userimage} alt="no picture found" style={{width:"100px", height:"100px"}}></img>
                 </div>
                 <div className="row">
-                <input
-                  className="btn"
-                  style={{
-                    marginLeft: "-10px",
-                    width: 250,
-                    textAlign: "left",
-                  }}
-                  type="file"
-                  name="image"
-                  onChange={this.handleFileUpload}
-                />
+                <form onSubmit={this.handleImage}>
+                        <input type="file" name="userimage" />
+                        <input type='submit' value='Upload!' />
+                    </form>
                 </div>
                 </div>
                 
@@ -134,45 +169,45 @@ class Profile extends React.Component {
               <div className="row"> 
                     <div className="col col-sm-3">
                     <label>Name</label>
-                    <input onChange={this.handleChange} value={this.props.userDetails.username} name="name" type="text" className="form-control" id="name" />
+                    <input onChange={this.handleChange} value={this.state.userinfo.username} name="name" type="text" className="form-control" id="name" />
                     </div>
 
                     <div className="col col-sm-3">
                     <label>Nick name</label>
-                    <input onChange={this.handleChange} name="nickname" type="text" className="form-control" id="nickname" />
+                    <input onChange={this.handleChange} value={this.state.userinfo.nickname} name="nickname" type="text" className="form-control" id="nickname" />
                     </div>
                 </div>
                 <div className="row"> 
                 <div className="col col-sm-3">
                         <label>Email</label>
-                        <input onChange={this.handleChange} value={this.props.userDetails.email} name="email" type="email" className="form-control" id="email" />
+                        <input onChange={this.handleChange} value={this.state.userinfo.email} name="email" type="email" className="form-control" id="email" />
                         </div>
 
                     <div className="col col-sm-3">
                         <label>Contact</label>
-                        <input onChange={this.handleChange} name="mobile" type="text" className="form-control" id="contact" placeholder="+1(123)4567890" />
+                        <input onChange={this.handleChange} value={this.state.userinfo.mobile} name="mobile" type="text" className="form-control" id="contact" placeholder="+1(123)4567890" />
                     </div>
                 </div>
                 <div className="row">
                         <div className="col col-sm-3">
                             <label>Favorites</label>
-                            <input onChange={this.handleChange} name="fav_restaurant" type="text" className="form-control" id="favorites" />
+                            <input onChange={this.handleChange}  value={this.state.userinfo.fav_restaurant} name="fav_restaurant" type="text" className="form-control" id="favorites" />
                         </div>
 
                         <div className="col col-sm-3">
                             <label>Date of birth</label>
-                            <input onChange={this.handleChange} value={this.props.userDetails.dob} name="dob" type="text" className="form-control" id="dob" placeholder="mm-dd-yyyy" />
+                            <input onChange={this.handleChange} value={this.state.userinfo.dob} name="dob" type="text" className="form-control" id="dob" placeholder="mm-dd-yyyy" />
                         </div>
                     </div>
                     <div className="row">
                         <div className="col col-sm-3">
                         <label>City</label>
-                        <input onChange={this.handleChange} name="city" type="text" className="form-control" id="inputCity" />
+                        <input onChange={this.handleChange} value={this.state.userinfo.city} name="city" type="text" className="form-control" id="inputCity" />
                         </div>
 
                         <div className="col col-sm-3">
                         <label>State</label>
-                        <select onChange={this.handleState} value={this.state.currentState} id="inputState" className="form-control">
+                        <select onChange={this.handleState} value={this.state.userinfo.state} id="inputState" className="form-control">
                             <option>Alaska</option>
                             <option>Arizona</option>
                             <option>Arkansas</option>
@@ -228,18 +263,18 @@ class Profile extends React.Component {
                     <div className="row">
                     <div className="col col-sm-3">
                         <label>Address</label>
-                        <input onChange={this.handleChange} name="street" type="text" className="form-control" id="address" />
+                        <input onChange={this.handleChange} value={this.state.userinfo.street} name="street" type="text" className="form-control" id="address" />
                         </div>
 
                     <div className="col col-sm-3">
                         <label>Zip</label>
-                        <input onChange={this.handleChange} name="zip" type="text" className="form-control" id="inputZip" />
+                        <input onChange={this.handleChange} value={this.state.userinfo.zip} name="zip" type="text" className="form-control" id="inputZip" />
                         </div>
                     </div>
                     <div className="row" style={{marginTop:"20px"}}>
                     <div className="col col-sm-6">
                     <CountryDropdown
-                      value={country}
+                      value={this.state.userinfo.country}
                       onChange={(val) => this.selectCountry(val)} />  
                     </div>
                     </div>
