@@ -28,6 +28,7 @@ onHandleSubmit = async (e) => {
       password: this.state.password,
       dob: this.state.dob
     };
+    console.log("signup ", data)
     await this.props.registerCustomerRedux(data);
     this.setState({flag:true});
 }

@@ -5,7 +5,7 @@ import manageRestaurantReducer from './manageRestaurantReducer';
 import registerReducer from './registerReducer';
 import restaurantReducer from './restaurantReducer';
 import userDetailsReducer from './userDetailsReducer';
-import { LOGOUT_CUSTOMER, LOGOUT_RESTAURANT, PLACE_ORDER } from '../types';
+import { CLEAR_ORDER, LOGOUT_CUSTOMER, LOGOUT_RESTAURANT, PLACE_ORDER } from '../types';
 import ordersReducer from './ordersReducer';
 
 const appReducer = combineReducers({
@@ -19,7 +19,7 @@ const appReducer = combineReducers({
   });
   
   const rootReducer = (state, action) => {
-    if (action.type === LOGOUT_CUSTOMER || action.type === PLACE_ORDER || action.type === LOGOUT_RESTAURANT) {
+    if (action.type === LOGOUT_CUSTOMER || action.type === PLACE_ORDER || action.type === LOGOUT_RESTAURANT || action.type === CLEAR_ORDER) {
       state = undefined;
     }
     return appReducer(state, action);

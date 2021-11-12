@@ -2,6 +2,7 @@ import axios from 'axios';
 import {GET_USER_DETAILS, POST_USER_DETAILS, ERROR} from '../types'
 
 export const getUserDetailsRedux = () => async dispatch => {
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token')
     await axios.get('/api/users/user-details')
     .then((response) => {
         dispatch({
@@ -18,7 +19,8 @@ export const getUserDetailsRedux = () => async dispatch => {
 }
 
 export const postUserDetailsRedux = (data) => async dispatch => {
-    await axios.post('/api/users/user-details', data)
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token')
+    await axios.put('/api/users/user-details', data)
     .then((response) => {
         dispatch({
             type : POST_USER_DETAILS,

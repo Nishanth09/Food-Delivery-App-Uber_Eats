@@ -1,5 +1,5 @@
 import { CART, GET_ALL_RESTAURANT, RESTAURANT, MENU, ADD_CART, RMV_CART, MODE_RESTAURANTS,
-    DIETARY_RESTAURANTS, CHECKOUT, FAVORITES, GET_FAVORITES, ERROR } from "../types";
+    DIETARY_RESTAURANTS, CHECKOUT, FAVORITES, CLEAR_ORDER, ERROR } from "../types";
 import axios from 'axios';
 
 export const getAllRestaurantsRedux = (data) => async dispatch => {
@@ -86,6 +86,13 @@ export const plusCartRedux = (data) => (dispatch) => {
     dispatch({
         type : ADD_CART,
         payload : data
+    })
+}
+
+export const clearOrderRedux = () => (dispatch) => {
+    dispatch({
+        type : CLEAR_ORDER,
+        payload : "order cleared"
     })
 }
 

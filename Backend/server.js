@@ -30,7 +30,7 @@ app.use(
             "store": session_store.store
         }
     )
-)
+) 
 
 app.use((req,res,next) => {
     console.log(`${req.method} rquest for ${req.url}`)
@@ -679,7 +679,7 @@ app.post(`${settings.BASE_API_URL}/order_update`, (req, res) => {
 app.post('/api/upload_image', function(req, res) {
     let dishImage;
     let uploadPath;
-    console.log(req.files)
+    console.log(req.files,"----")
     if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).send('No files were uploaded.');
     }
@@ -693,7 +693,6 @@ app.post('/api/upload_image', function(req, res) {
           console.log(err)
         return res.status(500).send(err);
       }
-  
       res.send({"file_path": saving_filename});
     });
   });

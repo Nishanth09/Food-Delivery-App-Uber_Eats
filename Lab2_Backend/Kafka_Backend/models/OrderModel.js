@@ -21,7 +21,7 @@ const orderSchema = mongoose.Schema({
             qty: {
                 type: Number
             },
-            name: {
+            dishName: {
                 type: String
             },
             price: {
@@ -34,6 +34,9 @@ const orderSchema = mongoose.Schema({
                 type: String
             },
             description: {
+                type: String
+            },
+            instructions: {
                 type: String
             },
             ingredients: {

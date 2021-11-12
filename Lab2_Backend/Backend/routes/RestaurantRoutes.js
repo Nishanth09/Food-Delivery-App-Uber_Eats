@@ -11,7 +11,7 @@ auth()
  
 router.post('/add-restaurant', checkAuth, postRestaurant)
 router.get('/fetch-restaurant', checkAuth, getRestaurant)
-router.get('/all-restaurants', getAllRestaurant)
+router.get('/all-restaurants', checkAuth, getAllRestaurant)
 router.get('/selected-restaurant', checkAuth, getSelectedRestaurant)
 router.put('/update-restaurant', checkAuth, updateRestaurant)
 

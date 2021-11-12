@@ -1,5 +1,4 @@
 import React from 'react';
-import Navbar from '../Landing/NavComponent';
 import { Container, Row, Col, Label } from 'reactstrap';
 import { getOrdersRedux } from '../../redux/reduxActions/ordersAction';
 import { connect } from 'react-redux';
@@ -11,18 +10,29 @@ class CustomerOrders extends React.Component {
         super(props)
         this.state = {
             popUpFlag : [],
-            restaurantname : null
+            restaurantname : null,
+            orderDetails : []
         }
     }
 
     async componentDidMount() {
         await this.props.getOrdersRedux()
-        if(this.props.restaurantDetails) {
+        if(this.props.restaurantDetails && this.props.orderDetails) {
             for(let restaurant of this.props.restaurantDetails) {
                 if (restaurant.restid == this.props.orderDetails[0].restid ) {
                     this.setState({restaurantname : restaurant.name})
                 }
             }
+            let temp = []
+            for (let order of this.props.orderDetails) {
+                if (order.order_status === "placed") {
+                    temp.push(order)
+                }
+            }
+            this.setState({orderDetails : temp})
+        }
+        else {
+            this.setState({orderDetails : []})
         }
     }
 
@@ -31,23 +41,12 @@ class CustomerOrders extends React.Component {
         temp[index] = !temp[index];
         this.setState({popUpFlag : temp});  
     }
+
     render() {
-        let totalAmt = [];
+        console.log("res name :", this.state.restaurantname)
         let displayOrders = null
-        if (this.props.orderDetails) {
-            for (let j = 0; j < this.props.orderDetails.length; j++) {
-                totalAmt[j] = 0
-            }
-            for (let order of this.props.orderDetails) {
-                for(let i = 0; i < order.order_items.length; i++) {
-                    totalAmt[i] = ((parseFloat(order.order_items[i].price.split('$')[1])) * parseFloat(order.order_items[i].qty))
-                }
-            }
-            let finalAmt = 0
-            for (let i = 0; i < totalAmt.length; i++) {
-                finalAmt += parseFloat(totalAmt[i])
-            }
-            displayOrders = this.props.orderDetails.map((order, index) =>
+        if (this.state.orderDetails.length !== 0) {
+            displayOrders = this.state.orderDetails.map((order, index) =>
                 <Row style={{marginTop:"30px"}}>
                     <Row style={{marginTop:"10px"}}>
                         <Label style={{fontWeight:"600", fontSize:"20px"}}>{this.state.restaurantname}
@@ -72,7 +71,7 @@ class CustomerOrders extends React.Component {
                                 <h2>Total</h2>
                             </Col>
                             <Col sm={{size : 3, offset : 3}}>
-                                <h2>{'$'+ finalAmt.toFixed(2)}</h2>
+                                <h2>{'$'+ order.price.toFixed(2)}</h2>
                             </Col>
                             </Row>
                                 {order.order_items.map(item =>
@@ -113,11 +112,7 @@ class CustomerOrders extends React.Component {
         } 
         return (
         <React.Fragment>
-            <Navbar showFlag="open"/>
             <Container>
-                <Row style={{marginTop:"30px"}}>
-                    <h2>Past Orders</h2>
-                </Row>
                 {displayOrders}
                 <Row>
                 </Row>

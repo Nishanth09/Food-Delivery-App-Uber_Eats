@@ -5,6 +5,7 @@ const app = express()
 const userRouter = require('./routes/UserRoutes')
 const restaurantRouter = require('./routes/RestaurantRoutes')
 const orderRouter = require('./routes/OrderRoutes')
+const imageRouter = require('./routes/ImageRouter')
 const connectDB = require('./config/db')
 const MongoStore = require('connect-mongo')
 const passport = require('passport')
@@ -21,6 +22,7 @@ app.use(session({
     mongoUrl: 'mongodb+srv://nishanth_09:'+ process.env.MONGO_ATLAS_PW +'@ubereats.d660n.mongodb.net/uberEats?retryWrites=true&w=majority',
     ttl: 14 * 24 * 60 * 60 })
 }))
+
 app.use(express.json())
 app.use((req,res,next) => {
   console.log(`${req.method} rquest for ${req.url}`)
@@ -32,6 +34,8 @@ app.use(passport.initialize())
 app.use('/api/users', userRouter)
 app.use('/api/restaurant', restaurantRouter)
 app.use('/api/order', orderRouter)
+app.use('/api', imageRouter)
+
 
 app.listen(3001,console.log("Server Started.."))
  

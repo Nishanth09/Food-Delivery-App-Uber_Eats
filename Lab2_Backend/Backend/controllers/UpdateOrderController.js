@@ -12,6 +12,7 @@ const updateOrder = (req, res) => {
           } else if (results == "500") {
             res.status(500).send("Database error")
           } else if (results === "404") {
+            console.log("sff")
             res.status(404).send("Resource not found")
           } else {
             console.log(results)

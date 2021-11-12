@@ -10,21 +10,28 @@ class OrdersHome extends React.Component {
                 <Navbar showFlag="open"/>
                 <Row style={{marginTop:"30px"}}>
                     <Col>
-                    <div onClick={() => {this.setState({all : true})}} style={{borderRadius:"30px", 
+                    <div style={{borderRadius:"30px", 
+                    backgroundColor:"#ECF0F1", border:"solid black 1px", paddingTop:"9px", height:"50px", textAlign:"center", color:"black"}}>
+                    <Link style={{ textDecoration:'none', border:'none', color:'black'}}
+                        to="/orders/all">All Orders</Link>
+                        </div>
+                    </Col>
+                    <Col>
+                    <div style={{borderRadius:"30px", 
                     backgroundColor:"#ECF0F1", border:"solid black 1px", paddingTop:"9px", height:"50px", textAlign:"center", color:"black"}}>
                     <Link style={{ textDecoration:'none', border:'none', color:'black'}}
                         to="/orders/placed">New Orders</Link>
                         </div>
                     </Col>
                     <Col>
-                    <div onClick={() => {this.setState({new : true})}} style={{borderRadius:"30px", 
+                    <div style={{borderRadius:"30px", 
                     backgroundColor:"#ECF0F1", border:"solid black 1px", paddingTop:"9px", height:"50px", textAlign:"center", color:"black"}}>
                     <Link style={{ textDecoration:'none', border:'none', color:'black'}}
                         to="/orders/delivered">Delivered Orders</Link>
                         </div>
                     </Col>
                     <Col>
-                    <div onClick={() => {this.setState({delivered : true})}} style={{borderRadius:"30px", border:"solid black 1px", paddingTop:"9px", backgroundColor:"#ECF0F1", 
+                    <div style={{borderRadius:"30px", border:"solid black 1px", paddingTop:"9px", backgroundColor:"#ECF0F1", 
                     height:"50px", textAlign:"center", color:"black"}}>
                         <Link style={{ textDecoration:'none', border:'none', color:'black'}}
                         to="/orders/preparing">Preparing Orders</Link>

@@ -9,7 +9,8 @@ class PopUp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            qty : 1
+            qty : 1,
+            instructions : null
         }
     }
     componentDidMount() {
@@ -18,15 +19,17 @@ class PopUp extends React.Component {
                 if (item.name === this.props.dishinfo.name) {
                     this.setState({qty : item.qty})
                 }
-            }
+            } 
         }
         console.log("props",this.props)
     }
     handleCart = async (dishinfo) => {
+        console.log("inst ", this.state.instructions)
         const data = {
-            dishDetails : dishinfo,
-            qty : this.state.qty
+            dishDetails : {...dishinfo, instructions: this.state.instructions},
+            qty : this.state.qty,
         }
+        console.log(data,"------===")
         await this.props.cartRedux(data);
         this.props.onHide();
     }
@@ -68,8 +71,8 @@ class PopUp extends React.Component {
                 </Row>
                 <Row>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                    <Form.Label>Add a note (extra sauce, no onions, etc.)</Form.Label>
-                    <Form.Control as="textarea" rows={3} />
+                    <Form.Label >Add a note (extra sauce, no onions, etc.)</Form.Label>
+                    <Form.Control as="textarea" rows={3} onChange={(e) => {this.setState({instructions : e.target.value})}} />
                 </Form.Group>
                     </Row>
                     <hr />

@@ -40,6 +40,8 @@ export const ADD_CART = 'ADD_CART';
 
 export const RMV_CART = 'RMV_CART';
 
+export const CLEAR_ORDER = 'CLEAR_ORDER';
+
 export const CHECKOUT = 'CHECKOUT';
 
 export const PLACE_ORDER = 'PLACE_ORDER';

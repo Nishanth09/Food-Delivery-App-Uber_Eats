@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Row, Col, Label, Button, ButtonGroup, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+import { getCustomerOrdersRedux } from '../../../redux/reduxActions/ordersAction';
 
 class DeliveredOrders extends React.Component {
     constructor(props) {
@@ -14,7 +15,8 @@ class DeliveredOrders extends React.Component {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        await this.props.getCustomerOrdersRedux();
         if (this.props.orderDetails) {
             let orDetails = []
             for (let order of this.props.orderDetails) {
@@ -35,7 +37,7 @@ class DeliveredOrders extends React.Component {
     handleOrderReceived = (index) => {
         let temp = this.state.dropdownOpen;
         let tempStatus = this.state.orderStatus;
-        tempStatus[index] = "Order Received";
+        tempStatus[index] = "received";
         temp[index] = !temp[index];
         this.setState({orderStatus:tempStatus, dropdownOpen : temp});
     }
@@ -43,7 +45,7 @@ class DeliveredOrders extends React.Component {
     handlePrepareOrder = (index) => {
         let temp = this.state.dropdownOpen;
         let tempStatus = this.state.orderStatus;
-        tempStatus[index] = "Preparing order";
+        tempStatus[index] = "order";
         temp[index] = !temp[index];
         this.setState({orderStatus :tempStatus, dropdownOpen : temp});
     }
@@ -51,7 +53,7 @@ class DeliveredOrders extends React.Component {
     handleReady = (index) => {
         let temp = this.state.dropdownOpen;
         let tempStatus = this.state.orderStatus;
-        tempStatus[index] = "Order ready";
+        tempStatus[index] = "ready";
         temp[index] = !temp[index];
         this.setState({orderStatus: tempStatus, dropdownOpen : temp});
     }
@@ -59,7 +61,7 @@ class DeliveredOrders extends React.Component {
     handleDelivered = (index) => {
         let temp = this.state.dropdownOpen;
         let tempStatus = this.state.orderStatus;
-        tempStatus[index] = "Order delivered";
+        tempStatus[index] = "delivered";
         temp[index] = !temp[index];
         this.setState({orderStatus: tempStatus, dropdownOpen : temp});
     }
@@ -156,17 +158,33 @@ class DeliveredOrders extends React.Component {
                 </Row>
                 <hr />
                 <Row style={{textAlign:"center"}}>
-                    <Label style={{fontWeight:"500", textAlign:"left"}}>Order items</Label>
+                    <Row>
+                    <Col sm={6}>
+                    <Label style={{fontWeight:"500"}}>Order items</Label>
+                    </Col>
+                    <Col sm={6}>
+                    <Label style={{fontWeight:"500"}}>Price</Label>
+                    </Col>      
+                    </Row>
                     {order.order_items.map(item => 
                         <Row style={{marginTop:"10px"}}>
-                            <Col sm={6} style={{textAlign:"left"}}>
-                            {item.name}
+                            <Col sm={6}>
+                            {item.dishName}
                             </Col>
                             <Col sm={6}>
                             {item.price}
                             </Col>
                         </Row>
-                        )} 
+                        )}
+                        <hr />
+                        <Row>
+                    <Col sm={6}>
+                    <Label style={{fontWeight:"500"}}>Total Price</Label>
+                    </Col>
+                    <Col sm={6}>
+                    <Label style={{fontWeight:"500"}}>${order.price}</Label>
+                    </Col>      
+                    </Row>
                 </Row>
             </Row>
         )
@@ -182,6 +200,7 @@ class DeliveredOrders extends React.Component {
 }
 
 DeliveredOrders.propTypes = {
+    getCustomerOrdersRedux: PropTypes.func.isRequired,
     orderDetails: PropTypes.array.isRequired
 }
   
@@ -191,4 +210,4 @@ const mapStateToProps = state =>{
     });
 }
     
-export default connect(mapStateToProps)(DeliveredOrders);
+export default connect(mapStateToProps, { getCustomerOrdersRedux })(DeliveredOrders);

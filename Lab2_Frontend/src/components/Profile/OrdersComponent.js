@@ -14,12 +14,12 @@ class CustomerOrders extends React.Component {
             orderDetails : []
         }
     }
-
+ 
     async componentDidMount() {
         await this.props.getOrdersRedux()
         if(this.props.restaurantDetails && this.props.orderDetails) {
             for(let restaurant of this.props.restaurantDetails) {
-                if (restaurant.restid == this.props.orderDetails[0].restid ) {
+                if (restaurant._id == this.props.orderDetails[0].restid ) {
                     this.setState({restaurantname : restaurant.name})
                 }
             }
@@ -71,7 +71,7 @@ class CustomerOrders extends React.Component {
                                 <h2>Total</h2>
                             </Col>
                             <Col sm={{size : 3, offset : 3}}>
-                                <h2>{'$'+ order.price.toFixed(2)}</h2>
+                                <h2>{order.price}</h2>
                             </Col>
                             </Row>
                                 {order.order_items.map(item =>
@@ -85,15 +85,6 @@ class CustomerOrders extends React.Component {
                                 <Col>
                                     <Row>
                                         <Label>Quantity : {item.qty}</Label>
-                                    </Row>
-                                    <Row>
-                                        <Label>Category : {item.category}</Label>
-                                    </Row>
-                                    <Row>
-                                        <Label>Description : {item.description}</Label>
-                                    </Row>
-                                    <Row>
-                                        <Label>Ingredients : {item.ingredients}</Label>
                                     </Row>
                                 </Col>
                                 <hr />

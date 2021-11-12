@@ -21,17 +21,17 @@ class HomeBody extends React.Component {
         await this.props.getUserDetailsRedux()
         console.log(this.props.userDetails)
         const data = {
-            "city" : this.props.userDetails.city
+            "location" : this.props.userDetails.city
         } 
         await this.props.getAllRestaurantsRedux(data)
     }
 
     handleFavorites = async (name, index) => {
-        let f_name = null
-        f_name = this.props.userDetails.fav_restaurant + ',' + name;
-        console.log("---,,,", f_name) 
+        // let f_name = null
+        // f_name = this.props.userDetails.fav_restaurant + ',' + name;
+        // console.log("---,,,", f_name) 
         const data = {
-            fav_restaurant : f_name
+            fav_restaurant : name
         }
         await this.props.favRedux(data);
         let temp = this.state.favPopUp;
@@ -45,8 +45,8 @@ class HomeBody extends React.Component {
         this.setState({favPopUp : temp});
     }
 
-    handleRestaurantPage = async (restid) => {
-        this.setState({restaurantId : restid, flag : true});
+    handleRestaurantPage = async (_id) => {
+        this.setState({restaurantId : _id, flag : true});
     }
 
     handleClose = (index) => {
@@ -77,7 +77,7 @@ class HomeBody extends React.Component {
                 return (
                 <div className="col-sm-3" style={{marginTop:"30px"}} key={index}>
                 <div className="container" style={{position:"relative"  , height:"175px"}}>
-                <button style={{border:"solid black 2px"}} onClick={() => this.handleRestaurantPage(restaurant.restid)}>
+                <button style={{border:"solid black 2px"}} onClick={() => this.handleRestaurantPage(restaurant._id)}>
                     <img src={'/api/static/images/'+restaurant.resimg} alt="nothing" width={140} height={150} 
                     style={{display:"block"}}></img></button>
                 <a onClick={this.handleFavorites.bind(this, restaurant.name, index)}><i className="far fa-heart" 

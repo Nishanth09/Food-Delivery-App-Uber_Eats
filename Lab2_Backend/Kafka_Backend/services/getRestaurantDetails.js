@@ -3,7 +3,7 @@ const Restaurant = require('../models/RestaurantModel')
 async function handle_request (msg, callback) {
     try {
         const { userId } = msg
-        const restaurantResult = await Restaurant.find({
+        const restaurantResult = await Restaurant.findOne({
             ownerid : userId
         })
         if (restaurantResult) {

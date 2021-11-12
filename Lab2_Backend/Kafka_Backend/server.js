@@ -30,7 +30,6 @@ function handleTopicRequest(topic_name,fname) {
         let data = JSON.parse(message.value)
         
         fname.handle_request(data.data, function(err,res){
-            console.log('after handle'+ res + err)
             let payloads = [
                     { 
                         topic: data.replyTo,
@@ -51,18 +50,18 @@ function handleTopicRequest(topic_name,fname) {
 }
 
 handleTopicRequest("signup-user", signupUser)
-//handleTopicRequest("signup-owner", signupOwner)
+handleTopicRequest("signup-owner", signupOwner)
 handleTopicRequest("login", login)
-// handleTopicRequest("post-restaurant", postRestaurantDetails)
-// handleTopicRequest("get-restaurant", getRestaurantDetails)
+handleTopicRequest("post-restaurant", postRestaurantDetails)
+handleTopicRequest("get-restaurant", getRestaurantDetails)
 handleTopicRequest("get-all-restaurants", getAllRestaurantDetails)
-// handleTopicRequest("get-selected-restaurant", getSelectedRestaurant)
-// handleTopicRequest("post-order", postOrder)
-// handleTopicRequest("update-order", updateOrder)
-// handleTopicRequest("get-orders", getOrders)
-// handleTopicRequest("get-customer-orders", getCustomerOrders)
-// handleTopicRequest("update-restaurant", updateRestaurantDetails)
-// handleTopicRequest("update-user", updateUserDetails)
-// handleTopicRequest("favorites", favoriteRestaurants)
-// handleTopicRequest("get-favorites", getFavoriteRestaurants)
+handleTopicRequest("get-selected-restaurant", getSelectedRestaurant)
+handleTopicRequest("post-order", postOrder)
+handleTopicRequest("update-order", updateOrder)
+handleTopicRequest("get-orders", getOrders)
+handleTopicRequest("get-customer-orders", getCustomerOrders)
+handleTopicRequest("update-restaurant", updateRestaurantDetails)
+handleTopicRequest("update-user", updateUserDetails)
+handleTopicRequest("favorites", favoriteRestaurants)
+handleTopicRequest("get-favorites", getFavoriteRestaurants)
 handleTopicRequest("user-details", getUserDetails)

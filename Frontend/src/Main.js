@@ -21,6 +21,9 @@ import Checkout from './components/Checkout/CheckoutComponent';
 import ManageRestaurant from './components/Dashboard/ManageComponent';
 import CustomerOrders from './components/Profile/OrdersComponent';
 import Favorites from './components/Profile/FavoritesComponent';
+import OrdersHome from './components/Profile/OrdersHomeComponent';
+import CustomerDelivered from './components/Profile/DeliveredComponent';
+import CustomerPreparing from './components/Profile/PreparingComponent';
 
 class Main extends React.Component {
     render() { 
@@ -32,11 +35,14 @@ class Main extends React.Component {
             <Route path = "/signup" component = {Register}/>
             <Route path = "/restaurantSignup" component = {RestaurantRegister}/>
             <Route path = "/profile" component = {Profile}/>
-            <Route path = "/orders" component = {CustomerOrders}/>
             <Route path = "/favorites" component = {Favorites}/>
             <Route path = "/restaurantpage" component = {Restaurant}/>
             <Route path = "/home" component = {Home}/>
             <Route path = "/checkout" component = {Checkout}/>
+            <Route path = "/orders" component = {OrdersHome}/>
+            <Route path = "/orders/placed" component = {CustomerOrders}/>
+            <Route path = "/orders/delivered" component = {CustomerDelivered}/>
+            <Route path = "/orders/preparing" component = {CustomerPreparing}/>
             <Row>
             <Col sm={3}>
               <Route path="/dashboard" component={SideBar}></Route>

@@ -6,7 +6,7 @@ export const loginCustomerRedux = (data) => async dispatch => {
     .then((response) => {
         dispatch({
             type : LOGIN_CUSTOMER,
-            payload : response.data
+            payload : response.data 
         })
     })
     .catch(error => {

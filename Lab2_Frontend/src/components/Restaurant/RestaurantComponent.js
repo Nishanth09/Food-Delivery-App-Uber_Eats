@@ -24,8 +24,9 @@ class Restaurant extends React.Component {
             const data = {
                 "restid" : this.props.location.state.id
             }
+            console.log("_id",data)
             await this.props.getRestaurantRedux(data);
-            let temp = this.props.restaurantDetails
+            let temp = this.props.selectedRestaurantDetails
             this.setState({restaurantSelected : temp})
         }
     } 
@@ -86,7 +87,7 @@ class Restaurant extends React.Component {
                         <div className="row" onClick={this.handleCart.bind(this, index)}>
                             <div className="col-sm-6" style={{border:"solid #D0CACA 1px"}}>
                                 <div className="row">
-                                <label><strong>{item.name}</strong></label>
+                                <label><strong>{item.dishName}</strong></label>
                                 </div>
                                 <div className="row">
                                 <label style={{fontSize:"12px"}}>{item.description}</label>
@@ -124,6 +125,7 @@ class Restaurant extends React.Component {
             <img src={'/api/static/images/'+restaurantImage} alt="nothing" style={{display:"block", height:"350px"}}></img>
                 </div>
                 <div className="row" style={{marginTop:"20px"}}>
+                {restaurantName}
                 {restaurantDescription}
                 <br />
                 {restaurantAddress}

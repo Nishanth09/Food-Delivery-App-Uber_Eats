@@ -48,7 +48,7 @@ class AfterLoginNavbar extends React.Component {
 
   handlePickup = (e) => {
     const data = {
-      "mode": "pick up"
+      "mode": "pickup"
     }
     this.props.modeRedux(data);
     }
@@ -119,7 +119,7 @@ class AfterLoginNavbar extends React.Component {
                   <Avatar /> View Account
                 </MenuItem>
                 </Link>
-                <Link to = "/orders/placed" style={{ textDecoration: "none", color: "black" }}>
+                <Link to = "/orders/all" style={{ textDecoration: "none", color: "black" }}>
                 <MenuItem>
                   Orders
                 </MenuItem>

@@ -107,7 +107,7 @@ async componentDidMount() {
                 'content-type': 'multipart/form-data'
             }
         }
-        axios.post("/api/upload_image", formData, config).then((response) => {
+        axios.post("/api/upload-image", formData, config).then((response) => {
           this.setState({
             userinfo: {
               ...this.state.userinfo,
@@ -132,6 +132,10 @@ async componentDidMount() {
       picture = this.state.userinfo.userimage;
     } else {
       picture = "../../userIcon.jpg";
+    }
+    let birthDate = null;
+    if (this.state.userinfo.dob) {
+      birthDate = this.state.userinfo.dob.split('T')[0];
     }
     return (
       <div>
@@ -159,7 +163,7 @@ async componentDidMount() {
                 <form onSubmit={this.handleImage}>
                         <input type="file" name="userimage" />
                         <input type='submit' value='Upload!' />
-                    </form>
+                </form>
                 </div>
                 </div>
                 
@@ -196,7 +200,7 @@ async componentDidMount() {
 
                         <div className="col col-sm-3">
                             <label>Date of birth</label>
-                            <input onChange={this.handleChange} value={this.state.userinfo.dob} name="dob" type="text" className="form-control" id="dob" placeholder="mm-dd-yyyy" />
+                            <input onChange={this.handleChange} value={birthDate} name="dob" type="text" className="form-control" id="dob" placeholder="mm-dd-yyyy" />
                         </div>
                     </div>
                     <div className="row">

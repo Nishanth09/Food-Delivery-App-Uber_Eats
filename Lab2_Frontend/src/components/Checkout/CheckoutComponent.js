@@ -23,13 +23,14 @@ class Checkout extends React.Component {
         let timestamp = date + ' ' + time
         if (this.props.selectedRestaurantDetails[0]) {
             const data = {
-                restid : this.props.selectedRestaurantDetails[0].restid,
+                restid : this.props.selectedRestaurantDetails[0]._id,
                 order_status : "placed",
                 order_items : this.props.cart,
                 price : this.props.amount,
                 order_time : timestamp,
                 delivery_address : this.state.address
             }
+            console.log(data,"place order")
             this.props.placeOrderRedux(data)
             this.setState({toggleFlag : true})
         }

@@ -18,10 +18,19 @@ const restaurantSchema = mongoose.Schema({
                 type: String,
                 required: true
             },
+            description: {
+                type: String
+            },
+            ingredients: {
+                type: String
+            },
             price: {
                 type: String,
                 required: true
-            }
+            },
+            category: {
+                type: String
+            },
         }
     ],
     description: {

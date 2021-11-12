@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import login_logo from '../../images/login_logo.png';
 import { Link } from 'react-router-dom';
-import jwt_decode from "jwt-decode"
+import jwt_decode from "jwt-decode";
 
 class Login extends React.Component {
     constructor(props) {
@@ -48,15 +48,11 @@ class Login extends React.Component {
         if (this.props.userDetails.username && this.props.userDetails.email && this.props.userDetails.account_type === "C") {
           let decoded = jwt_decode(this.props.userDetails.JWT)
           console.log("decoded : ", decoded)
+          let token = "JWT " + this.props.userDetails.JWT
           localStorage.setItem("username", decoded.username)
           localStorage.setItem("userid", decoded._id)
-          localStorage.setItem("token", this.props.userDetails.JWT)
-          //localStorage.setItem("userData", JSON.stringify(this.props.userDetails));
-          renderHome = <Redirect to = '/home'/>;
-          // renderHome = <Redirect to={{
-          //   pathname: '/home',
-          //   state: this.props.user
-          // }}/>;
+          localStorage.setItem("token", token)
+          renderHome = <Redirect to = '/home'/>
         } else {
           displayError = "Couldn't find an account. Please enter valid credentials"
         }

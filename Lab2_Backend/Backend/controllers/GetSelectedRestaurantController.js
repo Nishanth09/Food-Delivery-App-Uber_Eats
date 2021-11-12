@@ -13,6 +13,7 @@ const getSelectedRestaurant = async (req, res) => {
         } else if (results == "404"){
           res.status(404).send("Resource not found")
         } else {
+          console.log(results)
           res.status(200).send(results)
         }
     })

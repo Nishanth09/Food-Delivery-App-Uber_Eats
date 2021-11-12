@@ -2,6 +2,7 @@ import axios from 'axios';
 import {PLACE_ORDER, GET_ORDERS, GET_CUSTOMER_ORDERS, UPDATE_ORDER, ERROR} from '../types'
 
 export const placeOrderRedux = (data) => async dispatch => {
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token')
     await axios.post('/api/order/add-order', data)
     .then((response) => {
         dispatch({
@@ -18,7 +19,8 @@ export const placeOrderRedux = (data) => async dispatch => {
 }
 
 export const updateOrderRedux = (data) => async dispatch => {
-    await axios.post('/api/order/update-order', data)
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token')
+    await axios.put('/api/order/update-order', data)
     .then((response) => {
         dispatch({
             type : UPDATE_ORDER,
@@ -34,6 +36,7 @@ export const updateOrderRedux = (data) => async dispatch => {
 }
 
 export const getOrdersRedux = () => async dispatch => {
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token')
     await axios.get('/api/order/fetch-orders')
     .then((response) => {
         dispatch({
@@ -50,6 +53,7 @@ export const getOrdersRedux = () => async dispatch => {
 }
 
 export const getCustomerOrdersRedux = () => async dispatch => {
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token')
     await axios.get('/api/order/customer-orders')
     .then((response) => {
         dispatch({

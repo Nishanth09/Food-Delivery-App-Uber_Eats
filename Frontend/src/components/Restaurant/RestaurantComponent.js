@@ -5,7 +5,7 @@ import PopUp from './PopUpComponent';
 import {Modal, Button} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getRestaurantRedux } from '../../redux/reduxActions/restaurantAction';
+import { getRestaurantRedux, clearOrderRedux } from '../../redux/reduxActions/restaurantAction';
 class Restaurant extends React.Component {
     constructor(props) {
         super(props);
@@ -13,17 +13,22 @@ class Restaurant extends React.Component {
             dishesDetails : [],
             flag : false,
             openPopUp : [],
-            redFlag : false
+            redFlag : false,
+            clearOrderStatus : false,
+            restaurantSelected : []
         }
     }
+
     async componentDidMount() {
         if (this.props.location.state) {
             const data = {
                 "restid" : this.props.location.state.id
             }
             await this.props.getRestaurantRedux(data);
+            let temp = this.props.selectedRestaurantDetails
+            this.setState({restaurantSelected : temp})
         }
-    }
+    } 
    
     handleDish = (e) => {
         this.setState({flag : true});
@@ -42,27 +47,36 @@ class Restaurant extends React.Component {
             }
         }
     }
-    handleClose = () => {
+
+    handleNewOrder = () => {
+        this.setState({clearOrderStatus : true})
+    }
+
+    handleClose = async () => {
+        await this.props.clearOrderRedux()
+        this.setState({restaurantSelected : []})
+        this.setState({clearOrderStatus : true})
         this.setState({redFlag : !this.state.redFlag})
     }
 
     render() {
+        console.log(":----:", this.state.restaurantSelected)
         let details = null; 
         let redirectDish = null;
         let redirectHome = null;
         if (!this.props.location.state) {
             redirectHome = <Redirect to='/home' />
         }
-        if (this.state.flag) {
+        if (this.state.flag || this.state.clearOrderStatus) {
             redirectDish = <Redirect to='/home'/>;
         } 
         let restaurantImage, restaurantName, restaurantAddress, restaurantDescription = null;
-        if (this.props.selectedRestaurantDetails[0]) {
-            restaurantImage = this.props.selectedRestaurantDetails[0].resimg
-            restaurantName = this.props.selectedRestaurantDetails[0].name
-            restaurantAddress = this.props.selectedRestaurantDetails[0].address
-            restaurantDescription = this.props.selectedRestaurantDetails[0].description
-            details = this.props.selectedRestaurantDetails[0].items.map((item, index) => {
+        if (this.state.restaurantSelected.length !== 0) {
+            restaurantImage = this.state.restaurantSelected[0].resimg
+            restaurantName = this.state.restaurantSelected[0].name
+            restaurantAddress = this.state.restaurantSelected[0].address
+            restaurantDescription = this.state.restaurantSelected[0].description
+            details = this.state.restaurantSelected[0].items.map((item, index) => {
                 return (
                     <div className="col-sm-4" style={{marginTop:"30px"}} key={item.id}>
                         <div className="row" onClick={this.handleCart.bind(this, index)}>
@@ -126,7 +140,7 @@ class Restaurant extends React.Component {
 
 Restaurant.propTypes = {
     getRestaurantRedux : PropTypes.func.isRequired,
-    //restaurant: PropTypes.array.isRequired,
+    restaurantDetails: PropTypes.array.isRequired,
     selectedRestaurantDetails : PropTypes.array.isRequired,
     resIdList: PropTypes.array.isRequired
 }
@@ -134,8 +148,9 @@ Restaurant.propTypes = {
 const mapStateToProps = state =>{
     return({
         selectedRestaurantDetails: state.restaurant.selectedRestaurantDetails,
+        restaurantDetails : state.restaurant.restaurantDetails,
         resIdList : state.restaurant.resIdList
     });
 }
  
-export default connect(mapStateToProps, { getRestaurantRedux })(Restaurant);
+export default connect(mapStateToProps, { getRestaurantRedux, clearOrderRedux })(Restaurant);

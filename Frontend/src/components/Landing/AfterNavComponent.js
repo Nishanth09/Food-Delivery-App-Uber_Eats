@@ -23,38 +23,49 @@ class AfterLoginNavbar extends React.Component {
     this.state = {
       menuFlag : null,
       cartFlag : 0,
-      searchItem : null
+      searchItem : null,
+      cart : null
     }
   }
-      onHandleClick = (e) => {
-        this.setState({menuFlag : e.currentTarget});
-      }
-      handleCart = () => {
-        this.setState({cartFlag: !this.state.cartFlag});
-      }
-      onHandleClose = (e) => {
-        this.setState({menuFlag : null});
-      }
-      handleDelivery = (e) => {
-        const data = {
-          "mode": "delivery"
-        }
-        this.props.modeRedux(data);
-      }
-      handlePickup = (e) => {
-        const data = {
-          "mode": "pick up"
-        }
-        this.props.modeRedux(data);
-      }
-      handleSearch = async () => {
-        console.log("data = ", this.state.searchItem)
-        const data = {
-          "city" : this.state.searchItem
-        }
-        await this.props.getAllRestaurantsRedux(data)
-      }
-    render() { 
+  onHandleClick = (e) => {
+    this.setState({menuFlag : e.currentTarget});
+  }
+
+  handleCart = () => {
+    this.setState({cartFlag: !this.state.cartFlag});
+  }
+
+  onHandleClose = (e) => {
+    this.setState({menuFlag : null});
+  }
+
+  handleDelivery = (e) => {
+    const data = {
+      "mode": "delivery"
+    }
+    this.props.modeRedux(data);
+  }
+
+  handlePickup = (e) => {
+    const data = {
+      "mode": "pick up"
+    }
+    this.props.modeRedux(data);
+    }
+
+  handleSearch = async () => {
+    console.log("data = ", this.state.searchItem)
+    const data = {
+      "city" : this.state.searchItem
+    }
+    await this.props.getAllRestaurantsRedux(data)
+  }
+
+  render() {
+    let cartLen = 0
+    if (this.props.cart) {
+      cartLen = this.props.cart.length
+    }
         return (
         <div className="container">
           <div className="row">
@@ -108,7 +119,7 @@ class AfterLoginNavbar extends React.Component {
                   <Avatar /> View Account
                 </MenuItem>
                 </Link>
-                <Link to = "/orders" style={{ textDecoration: "none", color: "black" }}>
+                <Link to = "/orders/placed" style={{ textDecoration: "none", color: "black" }}>
                 <MenuItem>
                   Orders
                 </MenuItem>
@@ -151,7 +162,7 @@ class AfterLoginNavbar extends React.Component {
             <div className="col-md-2" style={{marginTop:"10px"}}>
             <button type = "button" onClick={this.handleCart} className="btn btn-dark" style={{marginLeft:"-15px"}}>
                 <Badge badgeContent={0} color="secondary">
-        <ShoppingCartIcon />Cart {this.props.cart.length}
+        <ShoppingCartIcon />Cart {cartLen}
         </Badge>
         </button> 
                 {this.state.cartFlag ? <CartPopUp isOpen = {this.state.cartFlag} toggle = {this.handleCart}/> : null}

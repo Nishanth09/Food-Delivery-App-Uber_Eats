@@ -3,6 +3,7 @@ const kafka = require('../kafka/client')
 const updateRestaurant = (req, res) => {
     let message = req.body
     message.userId = req.session.userId
+    console.log(message,";;;;;")
     kafka.make_request('update-restaurant', message, function (err, results) {
         if (err) {
             res.json({

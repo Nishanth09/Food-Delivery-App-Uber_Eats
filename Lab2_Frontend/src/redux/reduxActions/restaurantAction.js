@@ -1,8 +1,9 @@
 import { CART, GET_ALL_RESTAURANT, RESTAURANT, MENU, ADD_CART, RMV_CART, MODE_RESTAURANTS,
-    DIETARY_RESTAURANTS, CHECKOUT, FAVORITES, CLEAR_ORDER, ERROR } from "../types";
+    DIETARY_RESTAURANTS, CHECKOUT, FAVORITES, GET_FAVORITES, CLEAR_ORDER, ERROR } from "../types";
 import axios from 'axios';
 
 export const getAllRestaurantsRedux = (data) => async dispatch => {
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token')
     await axios.get('/api/restaurant/all-restaurants', {
         params:data
     })
@@ -21,6 +22,7 @@ export const getAllRestaurantsRedux = (data) => async dispatch => {
 }
 
 export const getRestaurantRedux = (data) => async dispatch => {
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token')
     await axios.get('/api/restaurant/selected-restaurant', {
         params:data
     })
@@ -39,10 +41,28 @@ export const getRestaurantRedux = (data) => async dispatch => {
 }
 
 export const favRedux = (data) => async dispatch => {
-    await axios.post('/api/users/favorites', data)
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token')
+    await axios.put('/api/users/favorites', data)
     .then((response) => {
         dispatch({
             type : FAVORITES,
+            payload : response.data
+        })
+    })
+    .catch(error => {
+        dispatch({
+            type: ERROR,
+            payload: error
+        })
+    })
+}
+
+export const getFavRedux = (data) => async dispatch => {
+    axios.defaults.headers.common['authorization'] = localStorage.getItem('token')
+    await axios.get('/api/users/favorites', data)
+    .then((response) => {
+        dispatch({
+            type : GET_FAVORITES,
             payload : response.data
         })
     })
@@ -68,7 +88,21 @@ export const deitaryRedux = (data) => async dispatch => {
     })
 }
 
-export const cartRedux = (data) => (dispatch) => {
+export const cartRedux = (data) => async (dispatch) => {
+    // axios.defaults.headers.common['authorization'] = localStorage.getItem('token')
+    // await axios.put('/api/order/customer-update', data)
+    // .then((response) => {
+    //     dispatch({
+    //         type : CART,
+    //         payload : response.data
+    //     })
+    // })
+    // .catch(error => {
+    //     dispatch({
+    //         type: ERROR,
+    //         payload: error
+    //     })
+    // })
     dispatch({
         type : CART,
         payload : data

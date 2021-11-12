@@ -70,7 +70,7 @@ class CustomerPreparing extends React.Component {
                                 <h2>Total</h2>
                             </Col>
                             <Col sm={{size : 3, offset : 3}}>
-                                <h2>{'$'+ order.price.toFixed(2)}</h2>
+                                <h2>{order.price}</h2>
                             </Col>
                             </Row>
                                 {order.order_items.map(item =>

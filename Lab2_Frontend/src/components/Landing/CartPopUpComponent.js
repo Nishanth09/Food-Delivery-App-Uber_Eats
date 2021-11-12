@@ -45,7 +45,7 @@ class CartPopUp extends React.Component {
         checkoutItems = this.props.cart.map(item => 
                 <Row style={{marginTop:"10px"}}>
                     <Col sm={4}>
-                        {item.name}
+                        {item.dishName}
                     </Col>
                     <Col sm={4}>
                         {item.qty}

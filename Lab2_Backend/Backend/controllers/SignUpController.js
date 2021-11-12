@@ -12,6 +12,8 @@ const createUser = async (req, res) => {
       res.status(409).send("User already exits")
     } else if (results == "500") {
       res.status(500).send("Database error")
+    } else if (results == "404") {
+      res.status(404).send("Resource not found")
     } else {
       res.status(200).send("User created")
     }
@@ -30,6 +32,8 @@ const createOwner = async (req, res) => {
       res.status(409).send("Owner already exits")
     } else if (results == "500") {
       res.status(500).send("Database error")
+    } else if (results == "404") {
+      res.status(404).send("Resource not found")
     } else {
       res.status(200).send("Owner created")
     }
