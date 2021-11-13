@@ -1,4 +1,4 @@
-import { CART, GET_ALL_RESTAURANT, RESTAURANT, MENU, ADD_CART, RMV_CART, MODE_RESTAURANTS,
+import { CART, GET_ALL_RESTAURANT, RESTAURANT, MENU, ADD_CART, QTY_CART, RMV_CART, MODE_RESTAURANTS,
     DIETARY_RESTAURANTS, CHECKOUT, FAVORITES, GET_FAVORITES, CLEAR_ORDER, ERROR } from "../types";
 import axios from 'axios';
 
@@ -89,22 +89,15 @@ export const deitaryRedux = (data) => async dispatch => {
 }
 
 export const cartRedux = (data) => async (dispatch) => {
-    // axios.defaults.headers.common['authorization'] = localStorage.getItem('token')
-    // await axios.put('/api/order/customer-update', data)
-    // .then((response) => {
-    //     dispatch({
-    //         type : CART,
-    //         payload : response.data
-    //     })
-    // })
-    // .catch(error => {
-    //     dispatch({
-    //         type: ERROR,
-    //         payload: error
-    //     })
-    // })
     dispatch({
         type : CART,
+        payload : data
+    })
+}
+
+export const qtyRedux = (data) => async (dispatch) => {
+    dispatch({
+        type : QTY_CART,
         payload : data
     })
 }

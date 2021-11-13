@@ -168,7 +168,7 @@ class AfterLoginNavbar extends React.Component {
                 {this.state.cartFlag ? <CartPopUp isOpen = {this.state.cartFlag} toggle = {this.handleCart}/> : null}
             </div>
           </div>
-        </div>
+        </div> 
             );
     }
 }

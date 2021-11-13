@@ -32,7 +32,7 @@ class PopUp extends React.Component {
         console.log(data,"------===")
         await this.props.cartRedux(data);
         this.props.onHide();
-    }
+    } 
     handleMinus = (dishinfo) => {
         this.setState((state, props) => {
             return {
@@ -47,6 +47,7 @@ class PopUp extends React.Component {
               qty: state.qty + 1,
             };
           });
+          console.log("plus", dishinfo)
         this.props.plusCartRedux(dishinfo);
     }
     render() { 

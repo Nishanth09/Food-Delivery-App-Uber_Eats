@@ -103,7 +103,7 @@ class Restaurant extends React.Component {
                 )
             })
         }
-        return (
+        return ( 
             <React.Fragment>
                 {redirectVar}
                 {this.state.redFlag ? <Modal show={this.state.redFlag} onHide={this.handleClose}>

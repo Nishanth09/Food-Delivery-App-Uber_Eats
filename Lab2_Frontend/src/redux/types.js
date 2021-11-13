@@ -36,6 +36,8 @@ export const MENU = 'MENU';
 
 export const CART = 'CART';
 
+export const QTY_CART = 'QTY_CART';
+
 export const ADD_CART = 'ADD_CART';
 
 export const RMV_CART = 'RMV_CART';
