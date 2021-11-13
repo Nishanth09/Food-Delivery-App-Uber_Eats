@@ -35,9 +35,11 @@ export const updateOrderRedux = (data) => async dispatch => {
     })
 }
 
-export const getOrdersRedux = () => async dispatch => {
+export const getOrdersRedux = (data) => async dispatch => {
     axios.defaults.headers.common['authorization'] = localStorage.getItem('token')
-    await axios.get('/api/order/fetch-orders')
+    await axios.get('/api/order/fetch-orders', {
+        params:data
+    })
     .then((response) => {
         dispatch({
             type : GET_ORDERS,

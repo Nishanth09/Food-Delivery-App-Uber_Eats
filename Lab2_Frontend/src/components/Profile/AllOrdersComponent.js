@@ -6,6 +6,8 @@ import { getUserDetailsRedux } from '../../redux/reduxActions/userDetailsAction'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {Modal} from 'react-bootstrap';
+import Pagination from '@mui/material/Pagination';
+
 
 class AllCustomerOrders extends React.Component {
     constructor(props) {
@@ -13,8 +15,10 @@ class AllCustomerOrders extends React.Component {
         this.state = {
             popUpFlag : [],
             cancelFlag : false,
-            restaurantname : null,
-            orderDetails : []
+            restaurantname : [],
+            orderDetails : [],
+            page : 1,
+            limit : 10
         }
     }
  
@@ -25,17 +29,48 @@ class AllCustomerOrders extends React.Component {
             "location" : this.props.userDetails.city
         }
         await this.props.getAllRestaurantsRedux(data)
-        await this.props.getOrdersRedux()
+        const pageData = {
+            "page": this.state.page,
+            "limit": this.state.limit
+        };
+        console.log("page data", pageData);
+        await this.props.getOrdersRedux(pageData)
         if(this.props.restaurantDetails && this.props.orderDetails) {
-            for(let restaurant of this.props.restaurantDetails) {
-                if (restaurant._id == this.props.orderDetails[0].restid ) {
-                    this.setState({restaurantname : restaurant.name})
+            let resList = []
+            for (let order of this.props.orderDetails) {
+                for (let restaurant of this.props.restaurantDetails) {
+                    if (restaurant._id == order.restid ) {
+                        resList.push(restaurant.name)
+                    }
                 }
             }
-            this.setState({orderDetails : this.props.orderDetails})
+            this.setState({orderDetails : this.props.orderDetails, restaurantname : resList})
         }
         else {
             this.setState({orderDetails : []})
+        }
+    }
+
+    async componentDidUpdate (prevProps,prevState) {
+        if (this.state.page !== prevState.page || this.state.limit !== prevState.limit) {
+            const pageData = {
+                "page": this.state.page,
+                "limit": this.state.limit
+            };
+            console.log("page data", pageData);
+            await this.props.getOrdersRedux(pageData)
+            if(this.props.restaurantDetails && this.props.orderDetails) {
+                let resList = []
+                for (let order of this.props.orderDetails) {
+                    for (let restaurant of this.props.restaurantDetails) {
+                        if (restaurant._id === order.restid ) {
+                            resList.push(restaurant.name)
+                        }
+                    }
+                }
+                console.log("res list:", resList)
+                this.setState({orderDetails : this.props.orderDetails, restaurantname : resList})
+            }
         }
     }
 
@@ -58,6 +93,15 @@ class AllCustomerOrders extends React.Component {
         this.setState({cancelFlag : !this.state.cancelFlag});
     }
 
+    handleLimit = (e) => {
+        console.log(e.target.value)
+        this.setState({limit: e.target.value})
+    }
+
+    handlePage = (e, value) => {
+        this.setState({page: value});
+    }
+
     render() {
         console.log("res name :", this.state.restaurantname)
         let displayOrders = null
@@ -65,7 +109,7 @@ class AllCustomerOrders extends React.Component {
             displayOrders = this.state.orderDetails.map((order, index) =>
                 <Row style={{marginTop:"30px"}}>
                     <Row style={{marginTop:"10px"}}>
-                        <Label style={{fontWeight:"600", fontSize:"20px"}}>{this.state.restaurantname}
+                        <Label style={{fontWeight:"600", fontSize:"20px"}}>{this.state.restaurantname[index]}
                         </Label>
                     </Row>
                     <Row>
@@ -151,7 +195,23 @@ class AllCustomerOrders extends React.Component {
             <Container>
                 {displayOrders}
                 <Row>
+                    <Col sm={3}>
+                        <Label>Rows per page</Label>&nbsp;&nbsp;
+                    <select onChange={this.handleLimit}>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                    </select>
+                    </Col>
+                    <Col sm={9}>
+                        <Pagination count={10} page={this.state.page} onChange={this.handlePage} />
+                    </Col>
                 </Row>
+                <Row style={{marginTop:"50px"}}>
+                    </Row>
             </Container>
         </React.Fragment>
         );
