@@ -1,23 +1,39 @@
 const express = require('express')
 const router = express.Router()
-const multer = require('multer')
-const multerGoogleStorage = require('multer-google-storage')
+const { v4: uuidv4 } = require("uuid")
+var AWS = require('aws-sdk');
+var fs =  require('fs');
+var s3 = new AWS.S3();
 
-let uploadHandler = multer({
-    storage: multerGoogleStorage.storageEngine({
-        autoRetry: true,
-        bucket: 'uber_eats_images',
-        projectId: 'uber-eats-331202',
-        keyFilename: './uber-eats-331202-fee2f3fda5af.json',
-        filename: (req, file, cb) => {
-            cb(null, `${Date.now()}_${file.originalname}`)
+let bucket_name = "test-cmpe-273"
+
+router.post('/upload-image', async (req, res) => {
+    console.log(req.files.file)
+
+    let dishImage;
+    console.log(req.files,"----")
+    if (!req.files || Object.keys(req.files).length === 0) {
+      return res.status(400).send('No files were uploaded.');
+    }
+    dishImage= req.files.file;
+    file_format = dishImage.name.split(".").length == 2 ? dishImage.name.split(".")[1] : ""
+    let saving_filename = uuidv4() + "." + file_format
+    params = {Bucket: bucket_name, Key: saving_filename, Body: dishImage.data };
+
+	s3.putObject(params, function(err, body) {
+
+        if (err) {
+
+            console.log(err);
+            return res.status(500).send(err);
+
+        } else {
+
+            console.log("Successfully uploaded data to myBucket/myKey");
+            res.send({"file_path": saving_filename});
         }
-    })
-})
 
-router.post('/upload-image', uploadHandler.any(), (req, res) => {
-    console.log(req.files)
-    res.send("Ok")
+     });    
 })
 
 

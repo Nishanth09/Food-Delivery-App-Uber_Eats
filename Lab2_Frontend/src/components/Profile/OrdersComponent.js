@@ -10,17 +10,24 @@ class CustomerOrders extends React.Component {
         super(props)
         this.state = {
             popUpFlag : [],
-            restaurantname : null,
+            restaurantname : [],
             orderDetails : []
         }
     }
  
     async componentDidMount() {
-        await this.props.getOrdersRedux()
+        const pageData = {
+            "page": 1,
+            "limit": 20
+        };
+        await this.props.getOrdersRedux(pageData)
         if(this.props.restaurantDetails && this.props.orderDetails) {
-            for(let restaurant of this.props.restaurantDetails) {
-                if (restaurant._id == this.props.orderDetails[0].restid ) {
-                    this.setState({restaurantname : restaurant.name})
+            let resList = []
+            for (let order of this.props.orderDetails) {
+                for (let restaurant of this.props.restaurantDetails) {
+                    if (restaurant._id == order.restid ) {
+                        resList.push(restaurant.name)
+                    }
                 }
             }
             let temp = []
@@ -29,7 +36,7 @@ class CustomerOrders extends React.Component {
                     temp.push(order)
                 }
             }
-            this.setState({orderDetails : temp})
+            this.setState({orderDetails : temp, restaurantname : resList})
         }
         else {
             this.setState({orderDetails : []})
@@ -49,7 +56,7 @@ class CustomerOrders extends React.Component {
             displayOrders = this.state.orderDetails.map((order, index) =>
                 <Row style={{marginTop:"30px"}}>
                     <Row style={{marginTop:"10px"}}>
-                        <Label style={{fontWeight:"600", fontSize:"20px"}}>{this.state.restaurantname}
+                        <Label style={{fontWeight:"600", fontSize:"20px"}}>{this.state.restaurantname[index]}
                         </Label>
                     </Row>
                     <Row>

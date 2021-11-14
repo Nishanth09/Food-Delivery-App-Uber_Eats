@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import {Modal, Button} from 'react-bootstrap';
 
 
-class CustomerDelivered extends React.Component {
+class CancelOrder extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -33,7 +33,7 @@ class CustomerDelivered extends React.Component {
             }
             let temp = []
             for (let order of this.props.orderDetails) {
-                if (order.order_status === "delivered") {
+                if (order.order_status === "cancelled") {
                     temp.push(order)
                 }
             }
@@ -51,6 +51,7 @@ class CustomerDelivered extends React.Component {
     }
 
     render() {
+        console.log("---",this.state.orderDetails)
         let displayOrders = null
         if (this.state.orderDetails.length !== 0) {
             displayOrders = this.state.orderDetails.map((order, index) =>
@@ -129,7 +130,7 @@ class CustomerDelivered extends React.Component {
     }
 }
 
-CustomerDelivered.propTypes = {
+CancelOrder.propTypes = {
     orderDetails: PropTypes.array.isRequired,
     restaurantDetails : PropTypes.array.isRequired,
     getOrdersRedux: PropTypes.func.isRequired
@@ -142,4 +143,4 @@ const mapStateToProps = state =>{
     });
 }
   
-export default connect(mapStateToProps, { getOrdersRedux })(CustomerDelivered);
+export default connect(mapStateToProps, { getOrdersRedux })(CancelOrder);

@@ -13,7 +13,6 @@ async function handle_request (msg, callback) {
                 callback(null, "404")
             }
         } else {
-            console.log("here---")
             const restaurantResult = await Restaurant.find({})
             if (restaurantResult) {
                 callback(null, restaurantResult)

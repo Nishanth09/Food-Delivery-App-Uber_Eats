@@ -9,6 +9,7 @@ const imageRouter = require('./routes/ImageRouter')
 const connectDB = require('./config/db')
 const MongoStore = require('connect-mongo')
 const passport = require('passport')
+const fileUpload = require('express-fileupload');
 
 connectDB()
 
@@ -31,10 +32,12 @@ app.use((req,res,next) => {
   next()
 })
 app.use(passport.initialize())
+app.use(fileUpload())
 app.use('/api/users', userRouter)
 app.use('/api/restaurant', restaurantRouter)
 app.use('/api/order', orderRouter)
 app.use('/api', imageRouter)
+
 
 
 app.listen(3001,console.log("Server Started.."))

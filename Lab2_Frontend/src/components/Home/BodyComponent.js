@@ -19,10 +19,10 @@ class HomeBody extends React.Component {
      
     async componentDidMount() {
         await this.props.getUserDetailsRedux()
-        console.log(this.props.userDetails)
         const data = {
-            "location" : this.props.userDetails.city
-        } 
+            "location" : this.props.location
+        }
+        console.log("get all",data)
         await this.props.getAllRestaurantsRedux(data)
     }
 
@@ -78,7 +78,7 @@ class HomeBody extends React.Component {
                 <div className="col-sm-3" style={{marginTop:"30px"}} key={index}>
                 <div className="container" style={{position:"relative"  , height:"175px"}}>
                 <button style={{border:"solid black 2px"}} onClick={() => this.handleRestaurantPage(restaurant._id)}>
-                    <img src={'/api/static/images/'+restaurant.resimg} alt="nothing" width={140} height={150} 
+                    <img src={'https://test-cmpe-273.s3.amazonaws.com/'+restaurant.resimg} alt="nothing" width={140} height={150} 
                     style={{display:"block"}}></img></button>
                 <a onClick={this.handleFavorites.bind(this, restaurant.name, index)}><i className="far fa-heart" 
                 style={{position:"absolute", top:"0", left:"4", marginLeft:"130px", 
@@ -123,12 +123,14 @@ HomeBody.propTypes = {
     userDetails: PropTypes.object.isRequired,
     getAllRestaurantsRedux: PropTypes.func.isRequired,
     restaurantDetails: PropTypes.array.isRequired,
+    location: PropTypes.string.isRequired,
     selectedRestaurantDetails : PropTypes.array.isRequired
 }
   
 const mapStateToProps = state =>{
     return({
         restaurantDetails : state.restaurant.restaurantDetails,
+        location : state.restaurant.location,
         selectedRestaurantDetails : state.restaurant.selectedRestaurantDetails,
         userDetails : state.user.userDetails
     });

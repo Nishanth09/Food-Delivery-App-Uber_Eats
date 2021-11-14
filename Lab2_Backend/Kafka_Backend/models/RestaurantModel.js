@@ -14,6 +14,9 @@ const restaurantSchema = mongoose.Schema({
     },
     items: [
         {
+            dishimage: {
+                type: String
+            },
             dishName: {
                 type: String,
                 required: true

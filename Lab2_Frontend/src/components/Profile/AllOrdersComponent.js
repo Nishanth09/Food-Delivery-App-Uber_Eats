@@ -18,7 +18,8 @@ class AllCustomerOrders extends React.Component {
             restaurantname : [],
             orderDetails : [],
             page : 1,
-            limit : 10
+            limit : 10,
+            ordersLength : 0
         }
     }
  
@@ -26,9 +27,18 @@ class AllCustomerOrders extends React.Component {
         await this.props.getUserDetailsRedux()
         console.log(this.props.userDetails)
         const data = {
-            "location" : this.props.userDetails.city
+            "location" : ''
         }
+        console.log("loc", data)
         await this.props.getAllRestaurantsRedux(data)
+        const pD = {
+            "page": 0,
+            "limit": 0
+        };
+        await this.props.getOrdersRedux(pD)
+        if(this.props.orderDetails) {
+            this.setState({ordersLength : this.props.orderDetails.length})
+        }
         const pageData = {
             "page": this.state.page,
             "limit": this.state.limit
@@ -103,6 +113,8 @@ class AllCustomerOrders extends React.Component {
     }
 
     render() {
+        console.log(":o len", this.state.ordersLength)
+        let boundary = Math.round(this.state.ordersLength/(this.state.limit));
         console.log("res name :", this.state.restaurantname)
         let displayOrders = null
         if (this.state.orderDetails.length !== 0) {
@@ -114,7 +126,7 @@ class AllCustomerOrders extends React.Component {
                     </Row>
                     <Row>
                         <Col sm = {8}>
-                        <p>order status :<strong>{order.order_status}</strong> order time : {order.order_time}&nbsp;&nbsp;
+                        <p>order status :<strong>{order.order_status}</strong> order time : {order.order_time.split('T')[0] + '  ' + order.order_time.split('T')[1]}&nbsp;&nbsp;
                          <a onClick={this.handleReceipt.bind(this, index)} 
                          style={{fontWeight:"600", color:"black", textDecoration:"underline"}}>
                              view receipt</a></p>
@@ -207,7 +219,7 @@ class AllCustomerOrders extends React.Component {
                     </select>
                     </Col>
                     <Col sm={9}>
-                        <Pagination count={10} page={this.state.page} onChange={this.handlePage} />
+                        <Pagination count={boundary} page={this.state.page} onChange={this.handlePage} />
                     </Col>
                 </Row>
                 <Row style={{marginTop:"50px"}}>

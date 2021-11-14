@@ -100,13 +100,15 @@ async componentDidMount() {
   }
   handleImage = (e) => {
         e.preventDefault();
+        console.log(e)
         const formData = new FormData();
         formData.append('file',e.target[0].files[0])
+        console.log(e.target[0].files[0])
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
             }
-        }
+        } 
         axios.post("/api/upload-image", formData, config).then((response) => {
           this.setState({
             userinfo: {
@@ -157,7 +159,7 @@ async componentDidMount() {
                 <label>Update your profile picture</label>
               </div>
               <div className="row">
-              <img src={'/api/static/images/'+this.state.userinfo.userimage} alt="no picture found" style={{width:"100px", height:"100px"}}></img>
+              <img src={'https://test-cmpe-273.s3.amazonaws.com/'+this.state.userinfo.userimage} alt="no picture found" style={{width:"100px", height:"100px"}}></img>
                 </div>
                 <div className="row">
                 <form onSubmit={this.handleImage}>

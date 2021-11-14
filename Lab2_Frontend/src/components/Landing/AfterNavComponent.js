@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 import { modeRedux } from '../../redux/reduxActions/restaurantAction';
 import PropTypes from 'prop-types';
 import CartPopUp from './CartPopUpComponent';
-import { getAllRestaurantsRedux } from '../../redux/reduxActions/restaurantAction';
+import { getAllRestaurantsRedux, locationRedux } from '../../redux/reduxActions/restaurantAction';
 import dehaze_icon from "../../images/dehaze_icon.webp";
 
 class AfterLoginNavbar extends React.Component {
@@ -27,6 +27,16 @@ class AfterLoginNavbar extends React.Component {
       cart : null
     }
   }
+
+  async componentDidUpdate (prevProps,prevState) {
+    if (this.state.searchItem !== prevState.searchItem) {
+      const data = {
+        "location" : this.state.searchItem
+      }
+      await this.props.getAllRestaurantsRedux(data)
+    }
+}
+
   onHandleClick = (e) => {
     this.setState({menuFlag : e.currentTarget});
   }
@@ -48,17 +58,16 @@ class AfterLoginNavbar extends React.Component {
 
   handlePickup = (e) => {
     const data = {
-      "mode": "pickup"
+      "mode": "pick up"
     }
     this.props.modeRedux(data);
     }
 
   handleSearch = async () => {
-    console.log("data = ", this.state.searchItem)
     const data = {
-      "city" : this.state.searchItem
+      "location": this.state.searchItem
     }
-    await this.props.getAllRestaurantsRedux(data)
+    await this.props.locationRedux(data)
   }
 
   render() {
@@ -152,7 +161,7 @@ class AfterLoginNavbar extends React.Component {
             <div className="col-md-4" style={{marginTop:"10px"}}>
                   <div className="input-group rounded">
                 <input type="search" className="form-control rounded"
-                 onChange={(e) => {this.setState({searchItem : e.target.value})}} placeholder="What are you craving?" aria-label="Search"
+                 onChange={(e) => {this.setState({searchItem : e.target.value})}} placeholder="Enter location to search" aria-label="Search"
                   aria-describedby="search-addon" />
                 <span className="input-group-text border-0" id="search-addon">
                   <i className="fas fa-search" onClick={this.handleSearch}></i>
@@ -176,6 +185,7 @@ class AfterLoginNavbar extends React.Component {
 AfterLoginNavbar.propTypes = {
   modeRedux: PropTypes.func.isRequired,
   getAllRestaurantsRedux: PropTypes.func.isRequired,
+  locationRedux: PropTypes.func.isRequired,
   restaurantDetails: PropTypes.array.isRequired,
 }
 
@@ -186,4 +196,4 @@ const mapStateToProps = state =>{
   });
 }
 
-export default connect(mapStateToProps, { modeRedux, getAllRestaurantsRedux })(AfterLoginNavbar);
+export default connect(mapStateToProps, { modeRedux, getAllRestaurantsRedux, locationRedux })(AfterLoginNavbar);

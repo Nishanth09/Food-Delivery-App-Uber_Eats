@@ -25,6 +25,7 @@ import OrdersHome from './components/Profile/OrdersHomeComponent';
 import CustomerDelivered from './components/Profile/DeliveredComponent';
 import CustomerPreparing from './components/Profile/PreparingComponent';
 import AllOrdersComponent from './components/Profile/AllOrdersComponent';
+import CustomerCancelOrderComponent from './components/Profile/CustomerCancelOrderComponent';
 
 class Main extends React.Component {
     render() { 
@@ -45,6 +46,7 @@ class Main extends React.Component {
             <Route path = "/orders/placed" component = {CustomerOrders}/>
             <Route path = "/orders/delivered" component = {CustomerDelivered}/>
             <Route path = "/orders/preparing" component = {CustomerPreparing}/>
+            <Route path = "/orders/cancelled" component = {CustomerCancelOrderComponent}/>
             <Row>
             <Col sm={3}>
               <Route path="/dashboard" component={SideBar}></Route>

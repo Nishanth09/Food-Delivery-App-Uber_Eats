@@ -80,6 +80,7 @@ class ManageRestaurant extends React.Component {
         this.setState({dishesList : temp});
     }
     handleSave = async () => {
+        console.log("log", this.state.dishesList)
         const restaurantData = {
             restid: this.props.resDetails.restid,
             resimg : this.state.rImage,
@@ -136,7 +137,7 @@ class ManageRestaurant extends React.Component {
                 'content-type': 'multipart/form-data'
             }
         }
-        axios.post("/api/upload_image", formData, config).then((response) => {
+        axios.post("/api/upload-image", formData, config).then((response) => {
             this.editDish(i, "dishimage", response.data.file_path)
         }).catch((error) => {
             console.log(error);
@@ -151,7 +152,7 @@ class ManageRestaurant extends React.Component {
                 'content-type': 'multipart/form-data'
             }
         }
-        axios.post("/api/upload_image", formData, config).then((response) => {
+        axios.post("/api/upload-image", formData, config).then((response) => {
             this.setState({rImage : response.data.file_path})
         }).catch((error) => {
             console.log(error);
@@ -185,7 +186,7 @@ class ManageRestaurant extends React.Component {
                 <Col sm={4}>
                     <Label>Dish Image</Label>
                     <br />
-                    <img src={'/api/static/images/'+this.state.dishesList[i].dishimage} alt="nothing"
+                    <img src={'https://test-cmpe-273.s3.amazonaws.com/'+this.state.dishesList[i].dishimage} alt="nothing"
                     width={100} height={100}></img>
                     <form onSubmit={(e) => {this.imageFormSubmit(e, i)}}>
                         <input type="file" name="dishImage" />
@@ -238,7 +239,7 @@ class ManageRestaurant extends React.Component {
                     </Col>
                 </Row>
                 <Row style={{marginTop:"20px"}}>
-                <img src={'/api/static/images/'+this.state.rImage} alt="nothing"
+                <img src={'https://test-cmpe-273.s3.amazonaws.com/'+this.state.rImage} alt="nothing"
                     style={{display:"block", height:"350px"}}></img>
                 </Row>
                 <Row style={{marginTop:"20px"}}>

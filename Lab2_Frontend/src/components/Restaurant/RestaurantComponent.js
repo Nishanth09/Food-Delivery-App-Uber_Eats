@@ -95,7 +95,7 @@ class Restaurant extends React.Component {
                             <label>{item.price}</label>
                             </div>
                             <div className="col-sm-3" style={{border:"solid #D0CACA 1px"}}>
-                            <img src={'/api/static/images/'+item.dishimage} alt="nothing" width={100} height={100} style={{display:"block", marginLeft:"-20px"}}></img>
+                            <img src={'https://test-cmpe-273.s3.amazonaws.com/'+item.dishimage} alt="nothing" width={100} height={100} style={{display:"block", marginLeft:"-20px"}}></img>
                             </div>
                         </div>
                         {this.state.openPopUp[index] ? <PopUp show={this.state.openPopUp[index]} onHide={this.handleCart.bind(this, index)} dishinfo={item}/> : null}
@@ -122,7 +122,7 @@ class Restaurant extends React.Component {
                 <Navbar showFlag="open"/>
         <div className="container">
             <div className="row" style={{marginTop:"20px"}}>
-            <img src={'/api/static/images/'+restaurantImage} alt="nothing" style={{display:"block", height:"350px"}}></img>
+            <img src={'https://test-cmpe-273.s3.amazonaws.com/'+restaurantImage} alt="nothing" style={{display:"block", height:"350px"}}></img>
                 </div>
                 <div className="row" style={{marginTop:"20px"}}>
                 {restaurantName}

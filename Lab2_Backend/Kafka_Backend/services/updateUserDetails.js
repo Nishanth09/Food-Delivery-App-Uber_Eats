@@ -2,10 +2,9 @@ const User = require('../models/UserModel')
 
 async function handle_request (msg, callback) {
     try {
-        console.log("message : ", msg)
+        console.log(msg)
         const {userId} = msg
         const update = msg
-        console.log("update : ", update)
         const user = await User.findOneAndUpdate({_id: userId}, update, {new: true})
         if (user) {
             callback(null, "200")

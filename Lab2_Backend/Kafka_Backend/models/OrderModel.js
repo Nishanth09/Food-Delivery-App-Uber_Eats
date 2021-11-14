@@ -48,6 +48,10 @@ const orderSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    order_time : {
+        type : Date, 
+        default: Date.now
+    },
     delivery_address: {
         type: String
     }

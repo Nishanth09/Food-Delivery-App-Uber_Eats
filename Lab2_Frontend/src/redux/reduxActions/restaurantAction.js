@@ -1,4 +1,4 @@
-import { CART, GET_ALL_RESTAURANT, RESTAURANT, MENU, ADD_CART, QTY_CART, RMV_CART, MODE_RESTAURANTS,
+import { CART, GET_ALL_RESTAURANT, RESTAURANT, LOCATION, MENU, ADD_CART, QTY_CART, RMV_CART, MODE_RESTAURANTS,
     DIETARY_RESTAURANTS, CHECKOUT, FAVORITES, GET_FAVORITES, CLEAR_ORDER, ERROR } from "../types";
 import axios from 'axios';
 
@@ -71,6 +71,13 @@ export const getFavRedux = (data) => async dispatch => {
             type: ERROR,
             payload: error
         })
+    })
+}
+
+export const locationRedux = (data) => async dispatch => {
+    dispatch({
+        type : LOCATION,
+        payload : data
     })
 }
 

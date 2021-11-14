@@ -30,6 +30,8 @@ export const GET_ALL_RESTAURANT = 'GET_ALL_RESTAURANT';
 
 export const RESTAURANT = 'RESTAURANT';
 
+export const LOCATION = 'LOCATION';
+
 export const MANAGE_RESTAURANT = 'MANAGE_RESTAURANT';
 
 export const MENU = 'MENU';

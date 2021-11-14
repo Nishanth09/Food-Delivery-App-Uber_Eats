@@ -1,8 +1,9 @@
-import { CART, MENU, GET_ALL_RESTAURANT, RESTAURANT, ADD_CART, QTY_CART, RMV_CART, MODE_RESTAURANTS,
+import { CART, MENU, GET_ALL_RESTAURANT, RESTAURANT, LOCATION, ADD_CART, QTY_CART, RMV_CART, MODE_RESTAURANTS,
     DIETARY_RESTAURANTS, FAVORITES, GET_FAVORITES, CLEAR_ORDER, CHECKOUT } from "../types";
 
 const initialState = {
     restaurantDetails : [],
+    location : "",
     favRes : [],
     selectedRestaurantDetails : [],
     cartItems : [],
@@ -23,6 +24,11 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 selectedRestaurantDetails : action.payload
+            }
+        case LOCATION:
+            return {
+                ...state,
+                location : action.payload.location
             }
         case FAVORITES:
             return {

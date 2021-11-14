@@ -32,7 +32,7 @@ function handleTopicRequest(topic_name,fname) {
         fname.handle_request(data.data, function(err,res){
             let payloads = [
                     { 
-                        topic: data.replyTo,
+                        topic: data.replyTo, 
                         messages:JSON.stringify({
                             correlationId:data.correlationId,
                             data : res
