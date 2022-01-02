@@ -8,9 +8,10 @@ const initialState = {
 export default function (state = initialState, action) {
     switch (action.type) {
         case GET_USER_DETAILS:
+            console.log("user reducer : ",action.payload.data)
             return {
                 ...state,
-                userDetails : action.payload
+                userDetails : action.payload.data.currentUserInfo
             }
         case POST_USER_DETAILS:
             return {

@@ -61,7 +61,7 @@ class PopUp extends React.Component {
             <Modal.Body className="show-grid">
               <Container>
                   <Row>
-                      <img src={'/api/static/images/'+this.props.dishinfo.dishimage} alt="nothing"></img>
+                      <img src={'https://test-cmpe-273.s3.amazonaws.com/'+this.props.dishinfo.dishimage} alt="nothing"></img>
                     </Row>
                     <hr />
                 <Row>

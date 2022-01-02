@@ -15,7 +15,7 @@ export default function (state = initialState, action) {
         case GET_ORDERS:
             return {
                 ...state,
-                orderDetails : action.payload
+                orderDetails : action.payload.data.getUserOrders
             }
         case UPDATE_ORDER:
             return {
@@ -25,7 +25,7 @@ export default function (state = initialState, action) {
         case GET_CUSTOMER_ORDERS:
             return {
                 ...state,
-                orderDetails : action.payload
+                orderDetails : action.payload.data.getCustOrders
             }
         default:
             return state;

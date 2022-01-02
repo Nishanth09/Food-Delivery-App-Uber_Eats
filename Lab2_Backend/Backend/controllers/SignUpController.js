@@ -1,43 +1,64 @@
-const kafka = require('../kafka/client')
+const User = require('../models/UserModel');
+const bcrypt = require('bcryptjs');
 
 const createUser = async (req, res) => {
   console.log("creating user")
-  kafka.make_request('signup-user', req.body, function (err, results) {
-    if (err) {
-      res.json({
-        status: "error",
-        msg: "System Error, Try Again."
-      })
-    } else if (results === "409") {
-      res.status(409).send("User already exits")
-    } else if (results == "500") {
-      res.status(500).send("Database error")
-    } else if (results == "404") {
-      res.status(404).send("Resource not found")
+  try {
+    const { username, password, email, dob } = req.body
+    const userExists = await User.findOne({ username })
+    if (userExists) {
+        return res.status(409).send("User exists")
     } else {
-      res.status(200).send("User created")
+        const salt = await bcrypt.genSalt(10);
+        const Hashedpassword = await bcrypt.hash(password, salt)
+        const user = await User.create({
+        username,
+        email,
+        password: Hashedpassword,
+        dob,
+        account_type: "C"
+        });
+
+        if (user) {
+        console.log("Created!")
+        res.status(200).send("User created")
+        } else {
+          res.status(404).send("Resource not found")
+        }
     }
-});
+} catch (error) {
+  res.status(500).send("Database error")
+}
 }
 
 const createOwner = async (req, res) => {
   console.log("creating owner")
-  kafka.make_request('signup-owner', req.body, function (err, results) {
-    if (err) {
-      res.json({
-        status: "error",
-        msg: "System Error, Try Again."
-      })
-    } else if (results === "409") {
-      res.status(409).send("Owner already exits")
-    } else if (results == "500") {
-      res.status(500).send("Database error")
-    } else if (results == "404") {
-      res.status(404).send("Resource not found")
+  try {
+    const { username, password, email } = req.body
+    const userExists = await User.findOne({ username })
+    if (userExists) {
+      return res.status(409).send("User exists")
     } else {
-      res.status(200).send("Owner created")
-    }
-});
+        const salt = await bcrypt.genSalt(10);
+        const Hashedpassword = await bcrypt.hash(password, salt)
+        const user = await User.create({
+        username,
+        email,
+        password: Hashedpassword,
+        dob: "1999-09-09",
+        account_type: "O"
+        });
+ 
+        if (user) {
+        console.log("Created!")
+        res.status(200).send("User created")
+        } else {
+          res.status(404).send("Resource not found")
+        }
+    }   
+} catch (error) {
+  res.status(500).send("Database error")
+}
 }
 
 

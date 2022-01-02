@@ -16,14 +16,15 @@ const initialState = {
 export default function(state = initialState, action) {
     switch (action.type) {
         case GET_ALL_RESTAURANT:
+            console.log("res reducer", action.payload.data)
             return {
                 ...state,
-                restaurantDetails : action.payload
+                restaurantDetails : action.payload.data.getRestByLocation
             };
         case RESTAURANT:
             return {
                 ...state,
-                selectedRestaurantDetails : action.payload
+                selectedRestaurantDetails : action.payload.data.getRestInfo
             }
         case LOCATION:
             return {

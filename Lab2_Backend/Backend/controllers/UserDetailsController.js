@@ -1,22 +1,24 @@
-const kafka = require('../kafka/client')
+const User = require('../models/UserModel')
 
-const userDetails = (req, res) => {
-    let message = {}
-    message.userId = req.session.userId
-    kafka.make_request('user-details', message, function (err, results) {
-      if (err) {
-        res.json({
-          status: "error",
-          msg: "System Error, Try Again."
-        })
-      } else if (results == "500") {
-        res.status(500).send("Database error")
-      } else if (results == "404"){
-        res.status(404).send("Resource not found")
-      } else {
-        res.status(200).send(results)
+const userDetails = async (req, res) => {
+    let msg = {}
+    console.log(req.session)
+    msg.userId = req.session.userId
+    try { 
+      console.log("msg : ", msg)
+      if (msg) {
+          const userDetails = await User.findOne({
+              _id : msg.userId
+          })
+          if (userDetails) {
+            res.status(200).send(userDetails)
+          } else {
+            res.status(404).send("resource not found")
+          }
       }
-    })
+  } catch(err) {
+    res.status(500).send("Database error")
+  }
 }
 
 module.exports = userDetails

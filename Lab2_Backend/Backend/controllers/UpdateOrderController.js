@@ -1,24 +1,16 @@
-const kafka = require('../kafka/client')
+const Order = require('../models/OrderModel')
 
-const updateOrder = (req, res) => {
-    let message = req.body
-    message.userId = req.session.userId
-    kafka.make_request('update-order', message, function (err, results) {
-        if (err) {
-            res.json({
-              status: "error",
-              msg: "System Error, Try Again."
-            })
-          } else if (results == "500") {
-            res.status(500).send("Database error")
-          } else if (results === "404") {
-            console.log("sff")
-            res.status(404).send("Resource not found")
-          } else {
-            console.log(results)
-            res.status(200).send("order updated successfully")
-          }
-    })
+const updateOrder = async (req, res) => {
+    let msg = req.body
+    msg.userId = req.session.userId
+    console.log("message : ", msg)
+        const {userId} = msg
+        const orderDetails = await Order.findOneAndUpdate({_id: msg.orderid}, {"order_status": msg.order_status}, {new: true})
+        if (orderDetails) {
+          res.status(200).send(orderDetails)
+        } else {
+          res.status(404).send("Resource not found")
+        }
 }
 
 module.exports = updateOrder

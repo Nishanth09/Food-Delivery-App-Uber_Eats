@@ -98,7 +98,7 @@ class AllCustomerOrders extends React.Component {
         };
         await this.props.updateOrderRedux(data)
     }
-
+ 
     handleToggle = () => {
         this.setState({cancelFlag : !this.state.cancelFlag});
     }
@@ -126,7 +126,7 @@ class AllCustomerOrders extends React.Component {
                     </Row>
                     <Row>
                         <Col sm = {8}>
-                        <p>order status :<strong>{order.order_status}</strong> order time : {order.order_time.split('T')[0] + '  ' + order.order_time.split('T')[1]}&nbsp;&nbsp;
+                        <p>order status :<strong>{order.order_status}</strong> order time : {order.order_time.split('T')[0] + '  '}&nbsp;&nbsp;
                          <a onClick={this.handleReceipt.bind(this, index)} 
                          style={{fontWeight:"600", color:"black", textDecoration:"underline"}}>
                              view receipt</a></p>
@@ -177,10 +177,10 @@ class AllCustomerOrders extends React.Component {
                                 <Col>
                                     <Row>
                                         <Col sm = {6}>
-                                            <Label>Quantity : {item.qty}</Label>
+                                           
                                         </Col>
                                         <Col sm = {6}>
-                                            <Label>Instructions : {item.instructions}</Label>
+                                            
                                         </Col>
                                     </Row>
                                 </Col>
@@ -218,7 +218,7 @@ class AllCustomerOrders extends React.Component {
                         <option>6</option>
                     </select>
                     </Col>
-                    <Col sm={9}>
+                    <Col sm={9}>    
                         <Pagination count={boundary} page={this.state.page} onChange={this.handlePage} />
                     </Col>
                 </Row>

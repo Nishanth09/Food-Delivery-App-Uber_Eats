@@ -1,23 +1,29 @@
-const kafka = require('../kafka/client')
+const Order = require('../models/OrderModel')
 
-const postOrder = (req, res) => {
+const postOrder = async (req, res) => {
     console.log('post order')
-    let message = req.body
-    message.userId = req.session.userId
-    kafka.make_request('post-order', message, function (err, results) {
-        if (err) {
-            res.json({
-              status: "error",
-              msg: "System Error, Try Again."
-            })
-          } else if (results == "500") {
-            res.status(500).send("Database error")
-          } else if (results === "404") {
-            res.status(404).send("Resource not found")
-          } else {
-            res.status(200).send("order posted successfully")
-          }
-    }) 
+    let msg = req.body
+    msg.userId = req.session.userId
+    try {
+      console.log("message : ", msg)
+      const {userId, restid, order_status, order_items, price, delivery_address} = msg
+      const order = await Order.create({
+          userid: userId,
+          restid,
+          order_status, 
+          order_items, 
+          price, 
+          delivery_address
+      })
+      if (order) {
+          console.log("order posted successfully")
+          res.status(200).send(order)
+      } else {
+        res.status(404).send("Resource not found")
+      }
+  } catch(err) {
+    res.status(500).send("Database error")
+  }
 }
 
 module.exports = postOrder

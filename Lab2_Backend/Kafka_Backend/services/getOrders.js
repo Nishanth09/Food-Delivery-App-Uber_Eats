@@ -5,11 +5,11 @@ async function handle_request (msg, callback) {
     const page = parseInt(msg.page)
     const limit = parseInt(msg.limit)
 
-    const startIndex = (page - 1) * limit
+    const startIndex = (page - 1) * limit 
     const endIndex = page * limit
 
     const results = {}
-    if (page === 0 && limit === 0) {
+    if (page === 0 && limit === 0) { 
       try {
         results.results = await Order.find({userid : userId})
         if (results.results) {

@@ -1,20 +1,29 @@
-const kafka = require('../kafka/client')
+const Restaurant = require('../models/RestaurantModel')
 
 const getAllRestaurant = async (req, res) => {
-    kafka.make_request('get-all-restaurants', req.query, function (err, results) {
-      if (err) {
-        res.json({
-          status: "error",
-          msg: "System Error, Try Again."
-        })
-      } else if (results == "500") {
-        res.status(500).send("Database error")
-      } else if (results == "404"){
-        res.status(404).send("Resource not found")
-      } else {
-        res.status(200).send(results)
-      }
-    })
+  const msg = req.query
+  console.log("all res : ", msg)
+    try {
+        if (msg.location) {
+            const restaurantResult = await Restaurant.find({
+                location : msg.location
+            })
+            if (restaurantResult) {
+              res.status(200).send(restaurantResult)
+            } else {
+              res.status(404).send("resource not found")
+            }
+        } else {
+            const restaurantResult = await Restaurant.find({})
+            if (restaurantResult) {
+              res.status(200).send(restaurantResult)
+            } else {
+              res.status(404).send("resource not found")
+            }
+        }
+    } catch(err) {
+      res.status(500).send("Database error")
+    }
 } 
 
 module.exports = getAllRestaurant

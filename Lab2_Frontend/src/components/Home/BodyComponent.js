@@ -78,7 +78,7 @@ class HomeBody extends React.Component {
                 <div className="col-sm-3" style={{marginTop:"30px"}} key={index}>
                 <div className="container" style={{position:"relative"  , height:"175px"}}>
                 <button style={{border:"solid black 2px"}} onClick={() => this.handleRestaurantPage(restaurant._id)}>
-                    <img src={'https://test-cmpe-273.s3.amazonaws.com/'+restaurant.resimg} alt="nothing" width={140} height={150} 
+                    <img src={"/"+restaurant.resimg} alt="nothing" width={140} height={150} 
                     style={{display:"block"}}></img></button>
                 <a onClick={this.handleFavorites.bind(this, restaurant.name, index)}><i className="far fa-heart" 
                 style={{position:"absolute", top:"0", left:"4", marginLeft:"130px", 

@@ -17,7 +17,7 @@ export default function (state = initialState, action) {
             console.log("payload : ",action.payload)
             return {
                 ...state,
-                restaurantDetails : action.payload
+                restaurantDetails : action.payload.data.getOwnerRest
             }
         default:
             return state;

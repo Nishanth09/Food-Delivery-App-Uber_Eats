@@ -22,13 +22,14 @@ class Checkout extends React.Component {
         console.log(date, time)
         let timestamp = date + ' ' + time
         if (this.props.selectedRestaurantDetails[0]) {
+            const addData = this.props.userDetails.street + ' ' + this.props.userDetails.city + ' ' + this.props.userDetails.country + ' ' + this.props.userDetails.state + ' ' + this.props.userDetails.zip
             const data = {
                 restid : this.props.selectedRestaurantDetails[0]._id,
                 order_status : "placed",
                 order_items : this.props.cart,
                 price : this.props.amount,
                 order_time : timestamp,
-                delivery_address : this.state.address
+                delivery_address : addData
             }
             console.log(data,"place order")
             this.props.placeOrderRedux(data)

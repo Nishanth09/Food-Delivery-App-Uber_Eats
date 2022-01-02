@@ -39,7 +39,7 @@ class ManageRestaurant extends React.Component {
     }
     async componentDidMount() {
         await this.props.getRestaurantDetailsRedux()
-        if (this.props.resDetails.items) {
+        if (this.props.resDetails) {
             let temp = this.props.resDetails.items
             this.setState({dishesList : temp});
             this.setState({rImage : this.props.resDetails.resimg})
@@ -82,7 +82,6 @@ class ManageRestaurant extends React.Component {
     handleSave = async () => {
         console.log("log", this.state.dishesList)
         const restaurantData = {
-            restid: this.props.resDetails.restid,
             resimg : this.state.rImage,
             name : this.state.rName,
             address : this.state.address,
@@ -186,7 +185,7 @@ class ManageRestaurant extends React.Component {
                 <Col sm={4}>
                     <Label>Dish Image</Label>
                     <br />
-                    <img src={'https://test-cmpe-273.s3.amazonaws.com/'+this.state.dishesList[i].dishimage} alt="nothing"
+                    <img src={"/"+this.state.dishesList[i].dishimage} alt="nothing"
                     width={100} height={100}></img>
                     <form onSubmit={(e) => {this.imageFormSubmit(e, i)}}>
                         <input type="file" name="dishImage" />
@@ -239,7 +238,7 @@ class ManageRestaurant extends React.Component {
                     </Col>
                 </Row>
                 <Row style={{marginTop:"20px"}}>
-                <img src={'https://test-cmpe-273.s3.amazonaws.com/'+this.state.rImage} alt="nothing"
+                <img src={"/"+this.state.rImage} alt="nothing"
                     style={{display:"block", height:"350px"}}></img>
                 </Row>
                 <Row style={{marginTop:"20px"}}>

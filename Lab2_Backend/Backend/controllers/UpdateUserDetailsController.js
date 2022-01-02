@@ -1,23 +1,21 @@
-const kafka = require('../kafka/client')
+const User = require('../models/UserModel')
 
-const updateUser = (req, res) => {
-    let message = req.body
-    message.userId = req.session.userId
-    kafka.make_request('update-user', message, function (err, results) {
-        if (err) {
-            res.json({
-              status: "error",
-              msg: "System Error, Try Again."
-            })
-          } else if (results == "500") {
-            res.status(500).send("Database error")
-          } else if (results === "404") {
-            res.status(404).send("Resource not found")
-          } else {
-            console.log(results)
-            res.status(200).send("User updated")
-          }
-    })
+const updateUser = async (req, res) => {
+    let msg = req.body 
+    msg.userId = req.session.userId
+    try {
+      console.log(msg)
+      const {userId} = msg
+      const update = msg
+      const user = await User.findOneAndUpdate({_id: userId}, update, {new: true})
+      if (user) {
+        res.status(200).send(user)
+      } else {
+        res.status(404).send("Resource not found")
+      }  
+  } catch (err) {
+    res.status(500).send("Database error")
+  }
 }
 
 module.exports = updateUser

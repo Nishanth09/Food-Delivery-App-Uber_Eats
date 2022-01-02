@@ -1,24 +1,22 @@
-const kafka = require('../kafka/client')
+const Restaurant = require('../models/RestaurantModel')
 
-const updateRestaurant = (req, res) => {
-    let message = req.body
-    message.userId = req.session.userId
-    console.log(message,";;;;;")
-    kafka.make_request('update-restaurant', message, function (err, results) {
-        if (err) {
-            res.json({
-              status: "error",
-              msg: "System Error, Try Again."
-            })
-          } else if (results == "500") {
-            res.status(500).send("Database error")
-          } else if (results === "404") {
-            res.status(404).send("Resource not found")
-          } else {
-            console.log(results)
-            res.status(200).send("Restaurant updated")
-          }
-    })
+const updateRestaurant = async (req, res) => {
+    let msg = req.body
+    msg.userId = req.session.userId
+    try {
+      console.log("message : ", msg)
+      const {userId} = msg
+      const update = msg
+      console.log("update : ", update)
+      const restaurant = await Restaurant.findOneAndUpdate({ownerid: userId}, update, {new: true})
+      if (restaurant) {
+        res.status(200).send(restaurant)
+      } else {
+        res.status(404).send("Resource not found")
+      }
+  } catch(err) {
+    res.status(500).send("Database error")
+  }
 }
 
 module.exports = updateRestaurant

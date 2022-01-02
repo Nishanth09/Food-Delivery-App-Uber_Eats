@@ -159,7 +159,7 @@ async componentDidMount() {
                 <label>Update your profile picture</label>
               </div>
               <div className="row">
-              <img src={'https://test-cmpe-273.s3.amazonaws.com/'+this.state.userinfo.userimage} alt="no picture found" style={{width:"100px", height:"100px"}}></img>
+              <img src={"/"+this.state.userinfo.userimage} alt="no picture found" style={{width:"100px", height:"100px"}}></img>
                 </div>
                 <div className="row">
                 <form onSubmit={this.handleImage}>
