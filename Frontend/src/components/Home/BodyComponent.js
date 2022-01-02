@@ -19,19 +19,19 @@ class HomeBody extends React.Component {
      
     async componentDidMount() {
         await this.props.getUserDetailsRedux()
-        console.log(this.props.userDetails)
         const data = {
-            "city" : this.props.userDetails.city
-        } 
+            "location" : this.props.location
+        }
+        console.log("get all",data)
         await this.props.getAllRestaurantsRedux(data)
     }
 
     handleFavorites = async (name, index) => {
-        let f_name = null
-        f_name = this.props.userDetails.fav_restaurant + ',' + name;
-        console.log("---,,,", f_name) 
+        // let f_name = null
+        // f_name = this.props.userDetails.fav_restaurant + ',' + name;
+        // console.log("---,,,", f_name) 
         const data = {
-            fav_restaurant : f_name
+            fav_restaurant : name
         }
         await this.props.favRedux(data);
         let temp = this.state.favPopUp;
@@ -45,8 +45,8 @@ class HomeBody extends React.Component {
         this.setState({favPopUp : temp});
     }
 
-    handleRestaurantPage = async (restid) => {
-        this.setState({restaurantId : restid, flag : true});
+    handleRestaurantPage = async (_id) => {
+        this.setState({restaurantId : _id, flag : true});
     }
 
     handleClose = (index) => {
@@ -59,6 +59,10 @@ class HomeBody extends React.Component {
         let redirectRestaurantPage = null; 
         let details = null;
         let redirectHome = null;
+        let redirectVar = null;
+        if(!localStorage.getItem('token')){
+            redirectVar = <Redirect to= "/login"/>
+        }
         if (this.state.homeFlag) {
             redirectHome = <Redirect to='/home'/>
         }
@@ -73,8 +77,8 @@ class HomeBody extends React.Component {
                 return (
                 <div className="col-sm-3" style={{marginTop:"30px"}} key={index}>
                 <div className="container" style={{position:"relative"  , height:"175px"}}>
-                <button style={{border:"solid black 2px"}} onClick={() => this.handleRestaurantPage(restaurant.restid)}>
-                    <img src={'/api/static/images/'+restaurant.resimg} alt="nothing" width={140} height={150} 
+                <button style={{border:"solid black 2px"}} onClick={() => this.handleRestaurantPage(restaurant._id)}>
+                    <img src={"/"+restaurant.resimg} alt="nothing" width={140} height={150} 
                     style={{display:"block"}}></img></button>
                 <a onClick={this.handleFavorites.bind(this, restaurant.name, index)}><i className="far fa-heart" 
                 style={{position:"absolute", top:"0", left:"4", marginLeft:"130px", 
@@ -96,6 +100,7 @@ class HomeBody extends React.Component {
         }
         return (
             <div className="col-sm-9">
+                {redirectVar}
                 {redirectHome}
                 {redirectRestaurantPage}
                 <link href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" 
@@ -118,12 +123,14 @@ HomeBody.propTypes = {
     userDetails: PropTypes.object.isRequired,
     getAllRestaurantsRedux: PropTypes.func.isRequired,
     restaurantDetails: PropTypes.array.isRequired,
+    location: PropTypes.string.isRequired,
     selectedRestaurantDetails : PropTypes.array.isRequired
 }
   
 const mapStateToProps = state =>{
     return({
         restaurantDetails : state.restaurant.restaurantDetails,
+        location : state.restaurant.location,
         selectedRestaurantDetails : state.restaurant.selectedRestaurantDetails,
         userDetails : state.user.userDetails
     });

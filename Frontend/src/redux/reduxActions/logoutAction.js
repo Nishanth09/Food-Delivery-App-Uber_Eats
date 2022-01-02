@@ -2,7 +2,7 @@ import axios from 'axios';
 import {LOGOUT_CUSTOMER, LOGOUT_RESTAURANT, ERROR} from '../types';
 
 export const logoutCustomerRedux = () => async dispatch => {
-    await axios.get('/api/logout')
+    await axios.get('/api/users/logout')
     .then((response) => {
         dispatch({
             type : LOGOUT_CUSTOMER,
@@ -18,7 +18,7 @@ export const logoutCustomerRedux = () => async dispatch => {
 }
 
 export const logoutRestaurantRedux = (data) => async dispatch => {
-    await axios.get('/api/logout')
+    await axios.get('/api/users/logout')
     .then((response) => {
         dispatch({
             type : LOGOUT_RESTAURANT,

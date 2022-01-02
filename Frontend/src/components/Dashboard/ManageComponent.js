@@ -39,13 +39,13 @@ class ManageRestaurant extends React.Component {
     }
     async componentDidMount() {
         await this.props.getRestaurantDetailsRedux()
-        if (this.props.resDetails.items) {
+        if (this.props.resDetails) {
             let temp = this.props.resDetails.items
             this.setState({dishesList : temp});
             this.setState({rImage : this.props.resDetails.resimg})
             this.setState({rName : this.props.resDetails.name})
             this.setState({address : this.props.resDetails.address})
-            this.setState({selectedState : this.props.resDetails.state})
+            this.setState({selectedState : this.props.resDetails.location})
             this.setState({open_timings : this.props.resDetails.open_timings})
             this.setState({close_timings : this.props.resDetails.close_timings})
             this.setState({mode : this.props.resDetails.mode})
@@ -80,12 +80,12 @@ class ManageRestaurant extends React.Component {
         this.setState({dishesList : temp});
     }
     handleSave = async () => {
+        console.log("log", this.state.dishesList)
         const restaurantData = {
-            restid: this.props.resDetails.restid,
             resimg : this.state.rImage,
             name : this.state.rName,
             address : this.state.address,
-            state : this.state.selectedState,   
+            location : this.state.selectedState,   
             open_timings : this.state.open_timings,
             close_timings : this.state.close_timings,
             description : this.state.resDescription,
@@ -113,6 +113,7 @@ class ManageRestaurant extends React.Component {
             dietary : this.state.dietary,
             items : this.state.dishesList
         }
+        console.log("all data : ",restaurantData)
         await this.props.putRestaurantRedux(restaurantData);
         console.log(this.props.msg);
         this.setState({updateFlag : true})
@@ -135,7 +136,7 @@ class ManageRestaurant extends React.Component {
                 'content-type': 'multipart/form-data'
             }
         }
-        axios.post("/api/upload_image", formData, config).then((response) => {
+        axios.post("/api/upload-image", formData, config).then((response) => {
             this.editDish(i, "dishimage", response.data.file_path)
         }).catch((error) => {
             console.log(error);
@@ -150,7 +151,7 @@ class ManageRestaurant extends React.Component {
                 'content-type': 'multipart/form-data'
             }
         }
-        axios.post("/api/upload_image", formData, config).then((response) => {
+        axios.post("/api/upload-image", formData, config).then((response) => {
             this.setState({rImage : response.data.file_path})
         }).catch((error) => {
             console.log(error);
@@ -184,7 +185,7 @@ class ManageRestaurant extends React.Component {
                 <Col sm={4}>
                     <Label>Dish Image</Label>
                     <br />
-                    <img src={'/api/static/images/'+this.state.dishesList[i].dishimage} alt="nothing"
+                    <img src={"/"+this.state.dishesList[i].dishimage} alt="nothing"
                     width={100} height={100}></img>
                     <form onSubmit={(e) => {this.imageFormSubmit(e, i)}}>
                         <input type="file" name="dishImage" />
@@ -193,7 +194,7 @@ class ManageRestaurant extends React.Component {
                 </Col>
                 <Col sm={4}>
                     <Label>Dish Name</Label>
-                    <Input type="text" value={this.state.dishesList[i].name} onChange={(e) => {this.editDish(i, "name", e.target.value)}} name="dishname" id="dishname"/>
+                    <Input type="text" value={this.state.dishesList[i].dishName} onChange={(e) => {this.editDish(i, "dishName", e.target.value)}} name="dishname" id="dishname"/>
                 </Col>
                 <Col sm={4}>
                     <Label>Description</Label>
@@ -237,7 +238,7 @@ class ManageRestaurant extends React.Component {
                     </Col>
                 </Row>
                 <Row style={{marginTop:"20px"}}>
-                <img src={'/api/static/images/'+this.state.rImage} alt="nothing"
+                <img src={"/"+this.state.rImage} alt="nothing"
                     style={{display:"block", height:"350px"}}></img>
                 </Row>
                 <Row style={{marginTop:"20px"}}>

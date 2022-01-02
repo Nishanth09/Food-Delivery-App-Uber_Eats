@@ -38,13 +38,13 @@ class Orders extends React.Component {
                         to="/dashboard/orders/delivered">Delivered Orders</Link>
                         </div>
                     </Col>
-                    {/* <Col>
+                    <Col>
                     <div onClick={() => {this.setState({cancelled : true})}} style={{borderRadius:"30px", border:"solid black 1px", paddingTop:"9px", backgroundColor:"#ECF0F1", 
                     height:"50px", textAlign:"center", color:"black"}}>
                     <Link style={{ textDecoration:'none', border:'none', color:'black'}}
                         to="/dashboard/orders/cancelled">Cancelled Orders</Link>
                         </div>
-                    </Col> */}
+                    </Col>
                 </Row>
                 </Container>
         );

@@ -12,7 +12,7 @@ class Landing extends React.Component {
     };
     render() {
       let renderHome = null;
-      if (JSON.parse(localStorage.getItem("userData"))) {
+      if (localStorage.getItem("token")) {
         renderHome = <Redirect to = '/home'/>;
       }
       let renderContent = null; 

@@ -24,6 +24,8 @@ import Favorites from './components/Profile/FavoritesComponent';
 import OrdersHome from './components/Profile/OrdersHomeComponent';
 import CustomerDelivered from './components/Profile/DeliveredComponent';
 import CustomerPreparing from './components/Profile/PreparingComponent';
+import AllOrdersComponent from './components/Profile/AllOrdersComponent';
+import CustomerCancelOrderComponent from './components/Profile/CustomerCancelOrderComponent';
 
 class Main extends React.Component {
     render() { 
@@ -40,9 +42,11 @@ class Main extends React.Component {
             <Route path = "/home" component = {Home}/>
             <Route path = "/checkout" component = {Checkout}/>
             <Route path = "/orders" component = {OrdersHome}/>
+            <Route path = "/orders/all" component = {AllOrdersComponent}/>
             <Route path = "/orders/placed" component = {CustomerOrders}/>
             <Route path = "/orders/delivered" component = {CustomerDelivered}/>
             <Route path = "/orders/preparing" component = {CustomerPreparing}/>
+            <Route path = "/orders/cancelled" component = {CustomerCancelOrderComponent}/>
             <Row>
             <Col sm={3}>
               <Route path="/dashboard" component={SideBar}></Route>

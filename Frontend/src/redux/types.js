@@ -30,11 +30,15 @@ export const GET_ALL_RESTAURANT = 'GET_ALL_RESTAURANT';
 
 export const RESTAURANT = 'RESTAURANT';
 
+export const LOCATION = 'LOCATION';
+
 export const MANAGE_RESTAURANT = 'MANAGE_RESTAURANT';
 
 export const MENU = 'MENU';
 
 export const CART = 'CART';
+
+export const QTY_CART = 'QTY_CART';
 
 export const ADD_CART = 'ADD_CART';
 

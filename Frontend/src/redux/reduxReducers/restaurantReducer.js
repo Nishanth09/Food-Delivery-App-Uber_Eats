@@ -1,8 +1,10 @@
-import { CART, MENU, GET_ALL_RESTAURANT, RESTAURANT, ADD_CART, RMV_CART, MODE_RESTAURANTS,
-    DIETARY_RESTAURANTS, FAVORITES, CLEAR_ORDER, CHECKOUT } from "../types";
+import { CART, MENU, GET_ALL_RESTAURANT, RESTAURANT, LOCATION, ADD_CART, QTY_CART, RMV_CART, MODE_RESTAURANTS,
+    DIETARY_RESTAURANTS, FAVORITES, GET_FAVORITES, CLEAR_ORDER, CHECKOUT } from "../types";
 
 const initialState = {
     restaurantDetails : [],
+    location : "",
+    favRes : [],
     selectedRestaurantDetails : [],
     cartItems : [],
     totalAmount : "",
@@ -14,19 +16,30 @@ const initialState = {
 export default function(state = initialState, action) {
     switch (action.type) {
         case GET_ALL_RESTAURANT:
+            console.log("res reducer", action.payload.data)
             return {
                 ...state,
-                restaurantDetails : action.payload
+                restaurantDetails : action.payload.data.getRestByLocation
             };
         case RESTAURANT:
             return {
                 ...state,
-                selectedRestaurantDetails : action.payload
+                selectedRestaurantDetails : action.payload.data.getRestInfo
+            }
+        case LOCATION:
+            return {
+                ...state,
+                location : action.payload.location
             }
         case FAVORITES:
             return {
                 ...state,
                 msg : action.payload
+            }
+        case GET_FAVORITES:
+            return {
+                ...state,
+                favRes : action.payload
             }
         case MODE_RESTAURANTS:
             const resItems = state.restaurantDetails.filter(
@@ -50,28 +63,36 @@ export default function(state = initialState, action) {
                 menuDetails : action.payload
             }
         case CART:
-            const item = state.selectedRestaurantDetails[0].items.find(
-                (foodItem) => foodItem.name === action.payload.dishDetails.name
+            const selItem = state.selectedRestaurantDetails[0].items.find(
+                (foodItem) => foodItem.dishName === action.payload.dishDetails.dishName
             );
+            const item = {...selItem, instructions: action.payload.dishDetails.instructions}
             const inCart = state.cartItems.find((item) =>
-            item.name === action.payload.dishDetails.name ? true : false
+            item.dishName === action.payload.dishDetails.dishName ? true : false
             );
-            // const isResId = state.resIdList.find(id => 
-            //     id === state.selectedRestaurantDetails[0].restid)
             return {
                 ...state,
                 cartItems : inCart
                 ? state.cartItems.map((item) =>
-                    item.name === action.payload.dishDetails.name ? { ...item, qty: item.qty + 1 }
+                    item.dishName === action.payload.dishDetails.dishName ? { ...item, qty: item.qty + 1 }
                       : item
                   ) : [...state.cartItems, {...item, qty : action.payload.qty}],
-                resIdList : [...state.resIdList, state.selectedRestaurantDetails[0].restid]
+                resIdList : [...state.resIdList, state.selectedRestaurantDetails[0]._id]
+            };
+        case QTY_CART:
+            return {
+                ...state,
+                cartItems : state.cartItems.map((item) =>
+                item.dishName === action.payload.dishinfo.dishName
+                  ? { ...item, qty: action.payload.qty }
+                  : item
+              )
             };
         case ADD_CART:
             return {
                 ...state,
                 cartItems : state.cartItems.map((item) =>
-                item.name === action.payload.name
+                item.dishName === action.payload.dishName
                   ? { ...item, qty: item.qty + 1 }
                   : item
               )
@@ -80,7 +101,7 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 cartItems : state.cartItems.map((item) =>
-                item.name === action.payload.name
+                item.dishName === action.payload.dishName
                   ? { ...item, qty: item.qty - 1 }
                   : item
               )
@@ -91,12 +112,10 @@ export default function(state = initialState, action) {
                 clearStatus : action.payload
             };
         case CHECKOUT:
-            console.log(action.payload,"+++++++")
             let totalAmt = 0
             for (let i = 0; i < (action.payload.price).length; i++) {
                 totalAmt += (parseFloat(action.payload.price[i].split('$')[1]) * parseFloat(action.payload.qty[i]))
             }
-            console.log(":::",totalAmt)
             return {
                 ...state,
                 totalAmount : totalAmt.toFixed(2)

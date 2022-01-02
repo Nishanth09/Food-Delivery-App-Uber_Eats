@@ -5,22 +5,30 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {Modal, Button} from 'react-bootstrap';
 
+
 class CustomerDelivered extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             popUpFlag : [],
-            restaurantname : null,
+            restaurantname : [],
             orderDetails : []
         }
     }
 
     async componentDidMount() {
-        await this.props.getOrdersRedux()
+        const pageData = {
+            "page": 1,
+            "limit": 20
+        };
+        await this.props.getOrdersRedux(pageData)
         if(this.props.restaurantDetails && this.props.orderDetails) {
-            for(let restaurant of this.props.restaurantDetails) {
-                if (restaurant.restid == this.props.orderDetails[0].restid ) {
-                    this.setState({restaurantname : restaurant.name})
+            let resList = []
+            for (let order of this.props.orderDetails) {
+                for (let restaurant of this.props.restaurantDetails) {
+                    if (restaurant._id == order.restid ) {
+                        resList.push(restaurant.name)
+                    }
                 }
             }
             let temp = []
@@ -29,7 +37,7 @@ class CustomerDelivered extends React.Component {
                     temp.push(order)
                 }
             }
-            this.setState({orderDetails : temp})
+            this.setState({orderDetails : temp, restaurantname : resList})
         }
         else {
             this.setState({orderDetails : []})
@@ -48,7 +56,7 @@ class CustomerDelivered extends React.Component {
             displayOrders = this.state.orderDetails.map((order, index) =>
                 <Row style={{marginTop:"30px"}}>
                     <Row style={{marginTop:"10px"}}>
-                        <Label style={{fontWeight:"600", fontSize:"20px"}}>{this.state.restaurantname}
+                        <Label style={{fontWeight:"600", fontSize:"20px"}}>{this.state.restaurantname[index]}
                         </Label>
                     </Row>
                     <Row>
@@ -70,7 +78,7 @@ class CustomerDelivered extends React.Component {
                                 <h2>Total</h2>
                             </Col>
                             <Col sm={{size : 3, offset : 3}}>
-                                <h2>{'$'+ order.price.toFixed(2)}</h2>
+                                <h2>{order.price}</h2>
                             </Col>
                             </Row>
                                 {order.order_items.map(item =>

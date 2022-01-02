@@ -6,7 +6,7 @@ import {loginRestaurantRedux} from '../../redux/reduxActions/loginAction';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
-
+import jwt_decode from "jwt-decode";
 class RestaurantLogin extends React.Component {
     constructor(props) {
         super(props);
@@ -40,7 +40,13 @@ class RestaurantLogin extends React.Component {
         let displayError = null;
         if (this.state.flag) {
             if (this.props.userDetails.username && this.props.userDetails.email && this.props.userDetails.account_type === "O") {
-            localStorage.setItem("userData", JSON.stringify(this.props.userDetails));
+            //localStorage.setItem("userData", JSON.stringify(this.props.userDetails));
+            let decoded = jwt_decode(this.props.userDetails.JWT)
+            console.log("decoded : ", decoded)
+            let token = "JWT " + this.props.userDetails.JWT
+            localStorage.setItem("username", decoded.username)
+            localStorage.setItem("userid", decoded._id)
+            localStorage.setItem("token", token)
             renderDashboard = <Redirect to = '/dashboard/manage'/>;
             // renderHome = <Redirect to={{
             //   pathname: '/home',

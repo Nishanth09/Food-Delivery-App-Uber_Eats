@@ -100,14 +100,16 @@ async componentDidMount() {
   }
   handleImage = (e) => {
         e.preventDefault();
+        console.log(e)
         const formData = new FormData();
         formData.append('file',e.target[0].files[0])
+        console.log(e.target[0].files[0])
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
             }
-        }
-        axios.post("/api/upload_image", formData, config).then((response) => {
+        } 
+        axios.post("/api/upload-image", formData, config).then((response) => {
           this.setState({
             userinfo: {
               ...this.state.userinfo,
@@ -133,6 +135,10 @@ async componentDidMount() {
     } else {
       picture = "../../userIcon.jpg";
     }
+    let birthDate = null;
+    if (this.state.userinfo.dob) {
+      birthDate = this.state.userinfo.dob.split('T')[0];
+    }
     return (
       <div>
         {this.state.updateFlag && <Redirect to='/home' />}
@@ -153,13 +159,13 @@ async componentDidMount() {
                 <label>Update your profile picture</label>
               </div>
               <div className="row">
-              <img src={'/api/static/images/'+this.state.userinfo.userimage} alt="no picture found" style={{width:"100px", height:"100px"}}></img>
+              <img src={"/"+this.state.userinfo.userimage} alt="no picture found" style={{width:"100px", height:"100px"}}></img>
                 </div>
                 <div className="row">
                 <form onSubmit={this.handleImage}>
                         <input type="file" name="userimage" />
                         <input type='submit' value='Upload!' />
-                    </form>
+                </form>
                 </div>
                 </div>
                 
@@ -196,7 +202,7 @@ async componentDidMount() {
 
                         <div className="col col-sm-3">
                             <label>Date of birth</label>
-                            <input onChange={this.handleChange} value={this.state.userinfo.dob} name="dob" type="text" className="form-control" id="dob" placeholder="mm-dd-yyyy" />
+                            <input onChange={this.handleChange} value={birthDate} name="dob" type="text" className="form-control" id="dob" placeholder="mm-dd-yyyy" />
                         </div>
                     </div>
                     <div className="row">

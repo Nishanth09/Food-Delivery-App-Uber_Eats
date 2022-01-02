@@ -24,11 +24,16 @@ class Restaurant extends React.Component {
             const data = {
                 "restid" : this.props.location.state.id
             }
-            await this.props.getRestaurantRedux(data);
+            console.log("_id",data)
+            const resData = await this.props.getRestaurantRedux(data);
+            if (resData) {
+                console.log("[]][]", resData)
+            }
+            console.log(this.props.selectedRestaurantDetails,";;;;;")
             let temp = this.props.selectedRestaurantDetails
             this.setState({restaurantSelected : temp})
         }
-    } 
+    }
    
     handleDish = (e) => {
         this.setState({flag : true});
@@ -64,6 +69,10 @@ class Restaurant extends React.Component {
         let details = null; 
         let redirectDish = null;
         let redirectHome = null;
+        let redirectVar = null;
+        if(!localStorage.getItem('token')){
+            redirectVar = <Redirect to= "/login"/>
+        }
         if (!this.props.location.state) {
             redirectHome = <Redirect to='/home' />
         }
@@ -82,7 +91,7 @@ class Restaurant extends React.Component {
                         <div className="row" onClick={this.handleCart.bind(this, index)}>
                             <div className="col-sm-6" style={{border:"solid #D0CACA 1px"}}>
                                 <div className="row">
-                                <label><strong>{item.name}</strong></label>
+                                <label><strong>{item.dishName}</strong></label>
                                 </div>
                                 <div className="row">
                                 <label style={{fontSize:"12px"}}>{item.description}</label>
@@ -90,7 +99,7 @@ class Restaurant extends React.Component {
                             <label>{item.price}</label>
                             </div>
                             <div className="col-sm-3" style={{border:"solid #D0CACA 1px"}}>
-                            <img src={'/api/static/images/'+item.dishimage} alt="nothing" width={100} height={100} style={{display:"block", marginLeft:"-20px"}}></img>
+                            <img src={"/"+item.dishimage} alt="nothing" width={100} height={100} style={{display:"block", marginLeft:"-20px"}}></img>
                             </div>
                         </div>
                         {this.state.openPopUp[index] ? <PopUp show={this.state.openPopUp[index]} onHide={this.handleCart.bind(this, index)} dishinfo={item}/> : null}
@@ -98,8 +107,9 @@ class Restaurant extends React.Component {
                 )
             })
         }
-        return (
+        return ( 
             <React.Fragment>
+                {redirectVar}
                 {this.state.redFlag ? <Modal show={this.state.redFlag} onHide={this.handleClose}>
                                             <Modal.Header closeButton>
                                             <Modal.Title>Create new order?</Modal.Title>
@@ -116,9 +126,10 @@ class Restaurant extends React.Component {
                 <Navbar showFlag="open"/>
         <div className="container">
             <div className="row" style={{marginTop:"20px"}}>
-            <img src={'/api/static/images/'+restaurantImage} alt="nothing" style={{display:"block", height:"350px"}}></img>
+            <img src={"/"+restaurantImage} alt="nothing" style={{display:"block", height:"350px"}}></img>
                 </div>
                 <div className="row" style={{marginTop:"20px"}}>
+                {restaurantName}
                 {restaurantDescription}
                 <br />
                 {restaurantAddress}
